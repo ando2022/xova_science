@@ -219,4 +219,4 @@ function App() {
   return null;
 }
 
-export default App;
+export default App;// Manual rebuild trigger - Wed Oct 15 19:29:51 CEST 2025
