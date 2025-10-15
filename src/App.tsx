@@ -221,3 +221,4 @@ function App() {
 
 export default App;// Manual rebuild trigger - Wed Oct 15 19:29:51 CEST 2025
 // Fixed build output directory - Wed Oct 15 19:32:40 CEST 2025
+// Fixed Supabase configuration - Wed Oct 15 21:38:24 CEST 2025
