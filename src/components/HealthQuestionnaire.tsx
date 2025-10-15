@@ -240,6 +240,7 @@ export function HealthQuestionnaire({ onComplete, onSkip }: HealthQuestionnaireP
     };
 
     // Save to database
+    console.log('Saving profile to database...');
     const { error } = await supabase
       .from('user_profiles')
       .upsert({
@@ -254,9 +255,11 @@ export function HealthQuestionnaire({ onComplete, onSkip }: HealthQuestionnaireP
       });
 
     if (error) {
-      console.error('Error saving profile:', error);
-      throw error;
+      console.error('Database error:', error);
+      throw new Error(`Database error: ${error.message}`);
     }
+    
+    console.log('Profile saved successfully to database');
 
     return profile;
   };
@@ -276,11 +279,23 @@ export function HealthQuestionnaire({ onComplete, onSkip }: HealthQuestionnaireP
   const handleSubmit = async () => {
     setLoading(true);
     try {
+      // Check if user is authenticated first
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
+      
+      if (authError || !user) {
+        console.error('User not authenticated:', authError);
+        alert('Please log in to complete your profile. You will be redirected to the login page.');
+        // Redirect to login or handle authentication
+        return;
+      }
+
+      console.log('User authenticated:', user.email);
       const profile = await generateNutritionalProfile();
+      console.log('Profile generated successfully:', profile);
       onComplete(profile);
     } catch (error) {
       console.error('Error generating profile:', error);
-      // Handle error - maybe show error message
+      alert(`Error completing profile: ${error.message || 'Unknown error'}. Please try again or contact support.`);
     } finally {
       setLoading(false);
     }
