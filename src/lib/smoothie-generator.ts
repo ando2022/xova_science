@@ -69,6 +69,7 @@ export interface SmoothieRecipe {
   id: string;
   name: string;
   flavor_profile: string;
+  time_of_day: string;
   tier: 'essential' | 'enhanced' | 'premium';
   ingredients: {
     ingredient: Ingredient;
@@ -402,7 +403,7 @@ class SmoothieGenerator {
     const nutritionalBreakdown = this.calculateNutritionalBreakdown(selectedIngredients);
     
     // Generate recipe name and description
-    const { name, flavorProfile } = this.generateRecipeName(selectedIngredients, profile, tier);
+    const { name, flavorProfile, timeOfDay } = this.generateRecipeName(selectedIngredients, profile, tier);
     
     // Generate health benefits
     const healthBenefits = this.generateHealthBenefits(selectedIngredients, profile, tier);
@@ -420,6 +421,7 @@ class SmoothieGenerator {
       id: `smoothie-${tier}-${index + 1}`,
       name,
       flavor_profile: flavorProfile,
+      time_of_day: timeOfDay,
       tier,
       ingredients: selectedIngredients.map(ing => ({
         ingredient: ing.ingredient,
@@ -595,46 +597,126 @@ class SmoothieGenerator {
     };
   }
 
-  private generateRecipeName(ingredients: Array<{ingredient: Ingredient}>, profile: NutritionalProfile, tier: 'essential' | 'enhanced' | 'premium'): {name: string, flavorProfile: string} {
+  private generateRecipeName(ingredients: Array<{ingredient: Ingredient}>, profile: NutritionalProfile, tier: 'essential' | 'enhanced' | 'premium'): {name: string, flavorProfile: string, timeOfDay: string} {
     const primaryFruit = ingredients.find(ing => ing.ingredient.category === 'fruit');
     const primaryGoal = profile.health_goals[0] || 'balanced';
     
-    const goalNames = {
-      'energy': 'Energy',
+    // Create beautiful, unique names based on theme and ingredients
+    const fruitNames = {
+      'banana': 'Golden',
+      'strawberry': 'Ruby',
+      'blueberry': 'Sapphire',
+      'mango': 'Sunset',
+      'pineapple': 'Tropical',
+      'apple': 'Crisp',
+      'orange': 'Citrus',
+      'kiwi': 'Emerald',
+      'avocado': 'Creamy',
+      'pear': 'Delicate',
+      'lemon': 'Zesty',
+      'grapefruit': 'Pink',
+      'raspberry': 'Crimson',
+      'blackberry': 'Midnight',
+      'coconut': 'Island'
+    };
+
+    const themeNames = {
+      'tropical': ['Breeze', 'Paradise', 'Island', 'Sunset', 'Oasis'],
+      'berry': ['Berry Bliss', 'Berry Burst', 'Berry Dream', 'Berry Fusion', 'Berry Harmony'],
+      'green': ['Green Goddess', 'Nature\'s Gift', 'Vitality', 'Pure Green', 'Fresh Start'],
+      'citrus': ['Sunrise', 'Morning Glory', 'Golden Hour', 'Fresh Zest', 'Bright Start'],
+      'creamy': ['Silk', 'Velvet', 'Smooth Operator', 'Cream Dream', 'Luxury'],
+      'nutty': ['Nutty Delight', 'Crunch Time', 'Nourish', 'Rich Blend', 'Satisfaction'],
+      'spiced': ['Spice Route', 'Warm Embrace', 'Golden Spice', 'Comfort', 'Cozy']
+    };
+
+    const goalThemes = {
+      'energy': 'Vitality',
       'weight-loss': 'Slim',
-      'muscle-gain': 'Power',
-      'immune-support': 'Immunity',
+      'muscle-gain': 'Strength',
+      'immune-support': 'Defense',
       'heart-health': 'Heart',
       'stress-relief': 'Zen'
     };
 
-    const goalName = goalNames[primaryGoal] || 'Balanced';
-    const fruitName = primaryFruit ? primaryFruit.ingredient.display_name : 'Berry';
+    // Determine theme based on ingredients
+    const theme = this.determineTheme(ingredients);
+    const fruitName = primaryFruit ? fruitNames[primaryFruit.ingredient.name.toLowerCase()] || primaryFruit.ingredient.display_name : 'Berry';
+    const goalTheme = goalThemes[primaryGoal] || 'Balance';
+    
+    // Create unique combinations
+    const themeOptions = themeNames[theme] || ['Blend', 'Fusion', 'Mix', 'Delight'];
+    const themeName = themeOptions[Math.floor(Math.random() * themeOptions.length)];
     
     // Tier-specific naming
-    const tierSuffixes = {
-      essential: ['Classic', 'Essential', 'Pure', 'Natural'],
-      enhanced: ['Enhanced', 'Boosted', 'Super', 'Power'],
-      premium: ['Elite', 'Premium', 'Ultimate', 'Signature']
-    };
+    let name = '';
+    if (tier === 'premium') {
+      name = `${fruitName} ${themeName} Elite`;
+    } else if (tier === 'enhanced') {
+      name = `${fruitName} ${themeName} Pro`;
+    } else {
+      name = `${fruitName} ${themeName}`;
+    }
 
-    const tierPrefixes = {
-      essential: ['Essential'],
-      enhanced: ['Enhanced', 'Super'],
-      premium: ['Premium', 'Elite', 'Ultimate']
-    };
+    // Add goal-specific suffix occasionally
+    if (Math.random() > 0.7) {
+      name += ` ${goalTheme}`;
+    }
 
-    const suffix = tierSuffixes[tier][Math.floor(Math.random() * tierSuffixes[tier].length)];
-    const prefix = tier === 'essential' ? '' : tierPrefixes[tier][Math.floor(Math.random() * tierPrefixes[tier].length)];
-    
-    const name = tier === 'essential' 
-      ? `${goalName} ${fruitName} ${suffix}`
-      : `${prefix} ${goalName} ${fruitName}`;
+    // Determine time of day based on ingredients and goals
+    const timeOfDay = this.determineTimeOfDay(ingredients, profile.health_goals);
 
     return {
       name,
-      flavorProfile: tier === 'premium' ? 'Gourmet & Complex' : tier === 'enhanced' ? 'Rich & Balanced' : 'Pure & Natural'
+      flavorProfile: tier === 'premium' ? 'Gourmet & Complex' : tier === 'enhanced' ? 'Rich & Balanced' : 'Pure & Natural',
+      timeOfDay
     };
+  }
+
+  private determineTheme(ingredients: Array<{ingredient: Ingredient}>): string {
+    const fruitNames = ingredients.map(ing => ing.ingredient.name.toLowerCase());
+    
+    if (fruitNames.some(name => ['mango', 'pineapple', 'coconut', 'passion fruit'].includes(name))) {
+      return 'tropical';
+    }
+    if (fruitNames.some(name => ['strawberry', 'blueberry', 'raspberry', 'blackberry'].includes(name))) {
+      return 'berry';
+    }
+    if (fruitNames.some(name => ['kiwi', 'green apple', 'lime'].includes(name))) {
+      return 'green';
+    }
+    if (fruitNames.some(name => ['orange', 'lemon', 'grapefruit'].includes(name))) {
+      return 'citrus';
+    }
+    if (fruitNames.some(name => ['banana', 'avocado', 'pear'].includes(name))) {
+      return 'creamy';
+    }
+    if (fruitNames.some(name => ['apple', 'pear'].includes(name))) {
+      return 'nutty';
+    }
+    
+    return 'spiced';
+  }
+
+  private determineTimeOfDay(ingredients: Array<{ingredient: Ingredient}>, healthGoals: string[]): string {
+    const hasCaffeine = ingredients.some(ing => ing.ingredient.name.toLowerCase().includes('coffee') || ing.ingredient.name.toLowerCase().includes('green tea'));
+    const hasHeavyFruit = ingredients.some(ing => ['banana', 'mango', 'avocado'].includes(ing.ingredient.name.toLowerCase()));
+    const hasProtein = ingredients.some(ing => ing.ingredient.category === 'protein');
+    
+    if (healthGoals.includes('energy') || hasCaffeine) {
+      return 'Best for: Morning Boost';
+    }
+    if (healthGoals.includes('muscle-gain') && hasProtein) {
+      return 'Best for: Post-Workout';
+    }
+    if (hasHeavyFruit && !hasProtein) {
+      return 'Best for: Afternoon Snack';
+    }
+    if (healthGoals.includes('stress-relief')) {
+      return 'Best for: Evening Wind-down';
+    }
+    
+    return 'Best for: Any Time';
   }
 
   private generateHealthBenefits(ingredients: Array<{ingredient: Ingredient}>, profile: NutritionalProfile, tier: 'essential' | 'enhanced' | 'premium'): string[] {

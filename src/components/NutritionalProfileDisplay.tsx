@@ -204,11 +204,56 @@ export function NutritionalProfileDisplay({ profile, onContinue, onEdit }: Nutri
           <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
             <span className="text-blue-600 text-sm">🧬</span>
           </div>
-          <div>
+          <div className="flex-1">
             <h2 className="text-xl font-bold mb-3">Scientific Foundation</h2>
-            <p className="text-gray-700 leading-relaxed">
+            <p className="text-gray-700 leading-relaxed mb-4">
               {profile.scientific_rationale}
             </p>
+            
+            {/* Detailed Scientific Breakdown */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Macronutrient Science */}
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <h3 className="font-semibold text-blue-800 mb-2">Macronutrient Optimization</h3>
+                <div className="text-sm text-blue-700 space-y-1">
+                  <p><strong>Protein:</strong> {profile.daily_targets.protein}g supports muscle synthesis and satiety</p>
+                  <p><strong>Carbs:</strong> {profile.daily_targets.carbs}g provides sustained energy for your activity level</p>
+                  <p><strong>Fiber:</strong> {profile.daily_targets.fiber}g supports digestive health and blood sugar control</p>
+                </div>
+              </div>
+
+              {/* Micronutrient Science */}
+              <div className="bg-green-50 p-4 rounded-lg">
+                <h3 className="font-semibold text-green-800 mb-2">Micronutrient Support</h3>
+                <div className="text-sm text-green-700 space-y-1">
+                  <p><strong>Iron:</strong> {profile.daily_targets.iron}mg supports oxygen transport and energy metabolism</p>
+                  <p><strong>Vitamin C:</strong> {profile.daily_targets.vitamin_c}mg enhances iron absorption and immune function</p>
+                  <p><strong>Magnesium:</strong> {profile.daily_targets.magnesium}mg supports muscle function and stress management</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Goal-Specific Science */}
+            <div className="bg-purple-50 p-4 rounded-lg mt-4">
+              <h3 className="font-semibold text-purple-800 mb-2">Goal-Specific Nutritional Strategy</h3>
+              <div className="text-sm text-purple-700">
+                {profile.health_goals.map((goal, index) => {
+                  const goalScience = {
+                    'energy': 'Higher B-vitamins and iron support cellular energy production',
+                    'weight-loss': 'Increased protein and fiber promote satiety and metabolic rate',
+                    'muscle-gain': 'Elevated protein intake supports muscle protein synthesis',
+                    'immune-support': 'Enhanced vitamin C and zinc boost immune cell function',
+                    'heart-health': 'Omega-3 fatty acids and antioxidants support cardiovascular health',
+                    'stress-relief': 'Magnesium and adaptogens help regulate stress hormones'
+                  };
+                  return (
+                    <p key={index} className="mb-1">
+                      <strong>{goal.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}:</strong> {goalScience[goal] || 'Optimized nutrient ratios for this goal'}
+                    </p>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
       </Card>

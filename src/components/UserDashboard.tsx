@@ -280,8 +280,7 @@ export function UserDashboard({ user, onLogout, onStartSmoothieSelection }: User
               </div>
               <Button 
                 onClick={() => setShowQuestionnaire(true)}
-                variant="outline"
-                className="w-full"
+                className="w-full bg-gradient-to-r from-xova-primary to-xova-secondary hover:from-xova-primary-dark hover:to-xova-secondary shadow-lg shadow-xova-primary/25"
               >
                 Update Profile
               </Button>

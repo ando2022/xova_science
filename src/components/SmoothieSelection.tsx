@@ -6,6 +6,7 @@ import { createClient } from '@supabase/supabase-js';
 import { ArrowRight, ArrowLeft, CheckCircle, Star, Heart, Clock, Zap, Target, ShoppingCart, Filter, Eye } from 'lucide-react';
 import { smoothieGenerator, NutritionalProfile, SmoothieRecipe } from '../lib/smoothie-generator';
 import { SmoothieDetailModal } from './SmoothieDetailModal';
+import { DataService } from '../lib/data-service';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -56,13 +57,23 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
     }
   };
 
-  const handleSmoothieSelect = (smoothie: SmoothieRecipe) => {
+  const handleSmoothieSelect = async (smoothie: SmoothieRecipe) => {
     if (selectedSmoothies.includes(smoothie)) {
       // Remove from selection
       setSelectedSmoothies(selectedSmoothies.filter(s => s.id !== smoothie.id));
     } else if (selectedSmoothies.length < MAX_SELECTION) {
       // Add to selection
       setSelectedSmoothies([...selectedSmoothies, smoothie]);
+
+      // Track smoothie selection
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          await DataService.trackSmoothieSelection(user.id, smoothie.id, smoothie.name, smoothie.tier);
+        }
+      } catch (error) {
+        console.error('Error tracking smoothie selection:', error);
+      }
     }
   };
 
@@ -112,26 +123,90 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
   };
 
   const getPlanPrice = () => {
+    if (selectedSmoothies.length === 0) return 0;
+    
     const quantity = planType === 'first-order' ? FIRST_ORDER_QUANTITY : WEEKLY_QUANTITY;
-    const pricePerSmoothie = 12;
-    return quantity * pricePerSmoothie;
+    
+    // Calculate total based on selected smoothies' tier pricing
+    const totalPrice = selectedSmoothies.reduce((sum, smoothie) => {
+      const pricePerSmoothie = planType === 'first-order' ? smoothie.price.fourteen_day : smoothie.price.seven_day;
+      return sum + pricePerSmoothie;
+    }, 0);
+    
+    // Scale up to match the required quantity
+    const scaleFactor = quantity / selectedSmoothies.length;
+    return Math.round(totalPrice * scaleFactor);
   };
 
   const getPlanDescription = () => {
     if (planType === 'first-order') {
-      return `${FIRST_ORDER_QUANTITY} smoothies over 2 weeks (${FIRST_ORDER_QUANTITY / 2} per week)`;
+      return `${FIRST_ORDER_QUANTITY} smoothies over 2 weeks (minimum order)`;
     } else {
-      return `${WEEKLY_QUANTITY} smoothies per week`;
+      return `${WEEKLY_QUANTITY} smoothies per week (minimum order)`;
     }
   };
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (selectedSmoothies.length !== MAX_SELECTION) {
       setError(`Please select exactly ${MAX_SELECTION} smoothies`);
       return;
     }
 
-    onSelectionComplete(selectedSmoothies, planType);
+    setLoading(true);
+    setError('');
+
+    try {
+      // Get current user
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
+      
+      if (authError || !user) {
+        throw new Error('Please log in to complete your order');
+      }
+
+      console.log('Starting checkout process...');
+      console.log('Selected smoothies:', selectedSmoothies);
+      console.log('Plan type:', planType);
+      console.log('Total price:', getPlanPrice());
+
+      // Save smoothie recipes to database
+      await DataService.saveSmoothieRecipes(user.id, smoothies);
+
+      // Track checkout started
+      await DataService.trackCheckoutStarted(
+        user.id, 
+        selectedSmoothies, 
+        planType, 
+        getPlanPrice()
+      );
+
+      // Create order in database
+      const orderResult = await DataService.createOrder({
+        user_id: user.id,
+        order_date: new Date().toISOString(),
+        delivery_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 days from now
+        plan_type: planType,
+        smoothie_ids: selectedSmoothies.map(s => s.id),
+        total_amount: getPlanPrice(),
+        status: 'pending',
+        payment_status: 'pending',
+        notes: `Order created with ${selectedSmoothies.length} selected smoothies`
+      });
+
+      if (!orderResult.success) {
+        throw new Error('Failed to create order');
+      }
+
+      console.log('✅ Order created successfully:', orderResult.orderNumber);
+
+      // Call the completion handler
+      onSelectionComplete(selectedSmoothies, planType);
+
+    } catch (error: any) {
+      console.error('Checkout error:', error);
+      setError(error.message || 'Failed to process order. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (loading) {
@@ -304,24 +379,30 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
                       {smoothie.tier === 'premium' ? 'Premium' : smoothie.tier === 'enhanced' ? 'Enhanced' : 'Essential'}
                     </Badge>
                   </div>
-                  <Badge variant="outline" className="text-xs">
-                    {smoothie.flavor_profile}
-                  </Badge>
+                  <div className="space-y-1">
+                    <Badge variant="outline" className="text-xs">
+                      {smoothie.flavor_profile}
+                    </Badge>
+                    <div className="text-xs text-blue-600 font-medium">
+                      {smoothie.time_of_day}
+                    </div>
+                  </div>
                 </div>
 
-                {/* Key Ingredients Preview */}
+                {/* Ingredients List */}
                 <div className="mb-4">
-                  <h4 className="text-sm font-semibold mb-2 text-gray-700">Key Ingredients:</h4>
-                  <div className="flex flex-wrap gap-1">
-                    {smoothie.ingredients.slice(0, 4).map((ingredient, idx) => (
-                      <Badge key={idx} variant="secondary" className="text-xs">
-                        {ingredient.ingredient.display_name}
-                      </Badge>
+                  <h4 className="text-sm font-semibold mb-2 text-gray-700">Ingredients:</h4>
+                  <div className="space-y-1">
+                    {smoothie.ingredients.slice(0, 6).map((ingredient, idx) => (
+                      <div key={idx} className="flex items-center justify-between text-xs">
+                        <span className="text-gray-700">{ingredient.ingredient.display_name}</span>
+                        <span className="text-gray-500 font-medium">{ingredient.amount_grams}g</span>
+                      </div>
                     ))}
-                    {smoothie.ingredients.length > 4 && (
-                      <Badge variant="outline" className="text-xs">
-                        +{smoothie.ingredients.length - 4} more
-                      </Badge>
+                    {smoothie.ingredients.length > 6 && (
+                      <div className="text-xs text-gray-500 italic">
+                        +{smoothie.ingredients.length - 6} more ingredients
+                      </div>
                     )}
                   </div>
                 </div>
@@ -380,9 +461,17 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
                     variant="outline"
                     size="sm"
                     className="w-full"
-                    onClick={(e) => {
+                    onClick={async (e) => {
                       e.stopPropagation();
                       setSelectedSmoothie(smoothie);
+                      
+                      // Track smoothie view
+                      try {
+                        const { data: { user } } = await supabase.auth.getUser();
+                        await DataService.trackSmoothieView(user?.id || null, smoothie.id, smoothie.name);
+                      } catch (error) {
+                        console.error('Error tracking smoothie view:', error);
+                      }
                     }}
                   >
                     <Eye className="w-4 h-4 mr-2" />
@@ -409,59 +498,120 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
           })}
         </div>
 
-        {/* Plan Selection */}
+        {/* Basket & Plan Selection */}
         <Card className="p-6 mb-8">
-          <h2 className="text-xl font-bold mb-4">Choose Your Plan</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Card 
-              className={`p-4 cursor-pointer transition-all ${
-                planType === 'first-order' 
-                  ? 'border-xova-primary bg-xova-primary/5' 
-                  : 'border-border hover:border-xova-primary/50'
-              }`}
-              onClick={() => setPlanType('first-order')}
-            >
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="font-semibold">First Order (Recommended)</h3>
-                {planType === 'first-order' && (
-                  <CheckCircle className="w-5 h-5 text-xova-primary" />
-                )}
-              </div>
-              <p className="text-sm text-muted-foreground mb-2">
-                {getPlanDescription()}
-              </p>
-              <div className="text-2xl font-bold text-xova-primary">
-                CHF {getPlanPrice()}
-              </div>
-              <p className="text-xs text-muted-foreground mt-1">
-                {FIRST_ORDER_QUANTITY / 2} smoothies per week
-              </p>
-            </Card>
+          <h2 className="text-xl font-bold mb-4">Your Smoothie Basket</h2>
+          
+          {/* Selected Smoothies Summary */}
+          <div className="mb-6">
+            <h3 className="font-semibold mb-3">Selected Smoothies (3 of 3):</h3>
+            <div className="space-y-2">
+              {selectedSmoothies.map((smoothie, index) => (
+                <div key={smoothie.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-xova-primary text-white rounded-full flex items-center justify-center text-sm font-semibold">
+                      {index + 1}
+                    </div>
+                    <div>
+                      <div className="font-medium">{smoothie.name}</div>
+                      <Badge 
+                        className={`text-xs ${
+                          smoothie.tier === 'premium' 
+                            ? 'bg-purple-100 text-purple-700' 
+                            : smoothie.tier === 'enhanced' 
+                            ? 'bg-blue-100 text-blue-700'
+                            : 'bg-green-100 text-green-700'
+                        }`}
+                      >
+                        {smoothie.tier}
+                      </Badge>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="font-semibold">
+                      CHF {planType === 'first-order' ? smoothie.price.fourteen_day : smoothie.price.seven_day}
+                    </div>
+                    <div className="text-xs text-gray-500">per smoothie</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
 
-            <Card 
-              className={`p-4 cursor-pointer transition-all ${
-                planType === 'weekly' 
-                  ? 'border-xova-primary bg-xova-primary/5' 
-                  : 'border-border hover:border-xova-primary/50'
-              }`}
-              onClick={() => setPlanType('weekly')}
-            >
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="font-semibold">Weekly Plan</h3>
-                {planType === 'weekly' && (
-                  <CheckCircle className="w-5 h-5 text-xova-primary" />
-                )}
+          {/* Plan Selection */}
+          <div className="border-t pt-6">
+            <h3 className="font-semibold mb-4">Choose Your Delivery Plan:</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Card 
+                className={`p-4 cursor-pointer transition-all ${
+                  planType === 'first-order' 
+                    ? 'border-xova-primary bg-xova-primary/5' 
+                    : 'border-border hover:border-xova-primary/50'
+                }`}
+                onClick={() => setPlanType('first-order')}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="font-semibold">First Order (Recommended)</h4>
+                  {planType === 'first-order' && (
+                    <CheckCircle className="w-5 h-5 text-xova-primary" />
+                  )}
+                </div>
+                <p className="text-sm text-muted-foreground mb-2">
+                  {getPlanDescription()}
+                </p>
+                <div className="text-2xl font-bold text-xova-primary">
+                  CHF {getPlanPrice()}
+                </div>
+                <p className="text-xs text-green-600 mt-1">
+                  Save CHF {selectedSmoothies.reduce((sum, s) => sum + (s.price.seven_day - s.price.fourteen_day), 0) * FIRST_ORDER_QUANTITY / selectedSmoothies.length} vs weekly
+                </p>
+              </Card>
+
+              <Card 
+                className={`p-4 cursor-pointer transition-all ${
+                  planType === 'weekly' 
+                    ? 'border-xova-primary bg-xova-primary/5' 
+                    : 'border-border hover:border-xova-primary/50'
+                }`}
+                onClick={() => setPlanType('weekly')}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="font-semibold">Weekly Plan</h4>
+                  {planType === 'weekly' && (
+                    <CheckCircle className="w-5 h-5 text-xova-primary" />
+                  )}
+                </div>
+                <p className="text-sm text-muted-foreground mb-2">
+                  {getPlanDescription()}
+                </p>
+                <div className="text-2xl font-bold text-xova-primary">
+                  CHF {getPlanPrice()}
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Recurring weekly delivery
+                </p>
+              </Card>
+            </div>
+          </div>
+
+          {/* Order Summary */}
+          <div className="border-t pt-6 mt-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="font-semibold text-lg">Total Order</div>
+                <div className="text-sm text-gray-600">
+                  {planType === 'first-order' ? FIRST_ORDER_QUANTITY : WEEKLY_QUANTITY} smoothies
+                </div>
               </div>
-              <p className="text-sm text-muted-foreground mb-2">
-                {getPlanDescription()}
-              </p>
-              <div className="text-2xl font-bold text-xova-primary">
-                CHF {getPlanPrice()}
+              <div className="text-right">
+                <div className="text-3xl font-bold text-xova-primary">
+                  CHF {getPlanPrice()}
+                </div>
+                <div className="text-sm text-green-600">
+                  Free delivery included
+                </div>
               </div>
-              <p className="text-xs text-muted-foreground mt-1">
-                Recurring weekly delivery
-              </p>
-            </Card>
+            </div>
           </div>
         </Card>
 
