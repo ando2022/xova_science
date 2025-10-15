@@ -34,7 +34,7 @@ export function CleanLandingPage({ onNavigate }: CleanLandingPageProps) {
       {/* Hero Section */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-32 text-center">
         <div className="inline-block px-5 py-2 bg-gradient-to-r from-xova-primary/10 to-xova-secondary/10 border border-xova-primary/20 rounded-full mb-8 backdrop-blur-sm">
-          <span className="bg-gradient-to-r from-xova-primary to-xova-secondary bg-clip-text text-transparent font-medium">AI-Powered Nutrition</span>
+          <span className="bg-gradient-to-r from-xova-primary to-xova-secondary bg-clip-text text-transparent font-medium">Personalized Nutrition</span>
         </div>
         <h1 className="text-6xl md:text-7xl lg:text-8xl mb-8 bg-gradient-to-r from-xova-primary via-xova-accent to-xova-secondary bg-clip-text text-transparent leading-tight">
           Your shortcut to mindful eating
@@ -99,9 +99,9 @@ export function CleanLandingPage({ onNavigate }: CleanLandingPageProps) {
               <div className="w-16 h-16 bg-gradient-to-br from-xova-accent to-xova-success rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-xova-accent/30">
                 <Brain className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-xl font-semibold mb-4">2. AI Smoothie Generation</h3>
+              <h3 className="text-xl font-semibold mb-4">2. Personalized Recipe Generation</h3>
               <p className="text-muted-foreground mb-6 flex-grow">
-                Our AI creates the perfect smoothie recipe that maximizes your nutritional needs and tastes great.
+                We create the perfect smoothie recipe that maximizes your nutritional needs and tastes great.
               </p>
               <div className="flex items-center justify-center text-sm text-xova-accent">
                 <span className="w-2 h-2 bg-xova-accent rounded-full mr-2"></span>
@@ -195,7 +195,7 @@ export function CleanLandingPage({ onNavigate }: CleanLandingPageProps) {
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4">Simple, Transparent Pricing</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Choose the plan that fits your lifestyle. All plans include AI personalization and scientific optimization.
+              Choose the plan that fits your lifestyle. All plans include personalized nutrition targeting and scientific optimization.
             </p>
           </div>
 
@@ -216,7 +216,7 @@ export function CleanLandingPage({ onNavigate }: CleanLandingPageProps) {
               <ul className="space-y-3 mb-8 text-left">
                 <li className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-xova-success flex-shrink-0" />
-                  <span className="text-sm">7 AI-personalized recipes</span>
+                  <span className="text-sm">7 personalized recipes</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-xova-success flex-shrink-0" />
@@ -250,7 +250,7 @@ export function CleanLandingPage({ onNavigate }: CleanLandingPageProps) {
               <ul className="space-y-3 mb-8 text-left">
                 <li className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-xova-success flex-shrink-0" />
-                  <span className="text-sm">14 AI-personalized recipes</span>
+                  <span className="text-sm">14 personalized recipes</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-xova-success flex-shrink-0" />
@@ -338,7 +338,7 @@ export function CleanLandingPage({ onNavigate }: CleanLandingPageProps) {
               <strong>Consult Healthcare Provider:</strong> Always consult with your healthcare provider or registered dietitian before making significant dietary changes, especially if you have medical conditions, food allergies, or take medications.
             </p>
             <p>
-              <strong>Individual Results May Vary:</strong> Nutritional needs vary by individual. Our AI-generated profiles are general recommendations and should be personalized further with professional guidance.
+              <strong>Individual Results May Vary:</strong> Nutritional needs vary by individual. Our generated profiles are general recommendations and should be personalized further with professional guidance.
             </p>
             <p>
               <strong>Emergency Situations:</strong> In case of allergic reactions or medical emergencies related to food consumption, seek immediate medical attention.

@@ -53,7 +53,7 @@ export function PricingDisplay({ onSelectPlan }: PricingDisplayProps) {
             Simple, Transparent Pricing
           </h2>
           <p className="text-xl text-muted-foreground mb-8">
-            Choose the plan that works for you. All plans include AI-powered personalization.
+            Choose the plan that works for you. All plans include personalized nutrition targeting.
           </p>
           
           {/* Savings Badge */}
@@ -128,7 +128,7 @@ export function PricingDisplay({ onSelectPlan }: PricingDisplayProps) {
                 <div className="w-12 h-12 bg-gradient-to-br from-xova-primary to-xova-accent rounded-xl mx-auto mb-4 flex items-center justify-center">
                   <Sparkles className="w-6 h-6 text-white" />
                 </div>
-                <h4 className="font-semibold mb-2">AI-Powered Recipes</h4>
+                <h4 className="font-semibold mb-2">Personalized Recipes</h4>
                 <p className="text-sm text-muted-foreground">
                   Personalized smoothies based on your health profile and goals
                 </p>
