@@ -466,21 +466,28 @@ class SmoothieGenerator {
     }
     // Premium tier can use all ingredients
     
-    // Always include a base liquid
+    // Create recipe themes for variety
+    const recipeThemes = [
+      'tropical', 'berry', 'green', 'citrus', 'creamy', 'nutty', 'spiced'
+    ];
+    const selectedTheme = recipeThemes[index % recipeThemes.length];
+
+    // Always include a base liquid based on theme
     const liquids = tierIngredients.filter(ing => ing.category === 'liquid');
     if (liquids.length > 0) {
-      const liquid = liquids[index % liquids.length];
+      const themeLiquid = this.selectLiquidByTheme(liquids, selectedTheme);
       selected.push({
-        ingredient: liquid,
+        ingredient: themeLiquid,
         amount_grams: 200
       });
     }
 
-    // Add fruits based on tier
+    // Add fruits based on theme and tier
     const fruits = tierIngredients.filter(ing => ing.category === 'fruit');
+    const themeFruits = this.selectFruitsByTheme(fruits, selectedTheme);
     const fruitCount = tier === 'premium' ? 3 : 2;
-    for (let i = 0; i < Math.min(fruitCount, fruits.length); i++) {
-      const fruit = fruits[(index + i) % fruits.length];
+    for (let i = 0; i < Math.min(fruitCount, themeFruits.length); i++) {
+      const fruit = themeFruits[i % themeFruits.length];
       const amount = 80 + (i * 20); // 80g, 100g, 120g
       selected.push({
         ingredient: fruit,
@@ -492,23 +499,28 @@ class SmoothieGenerator {
     if (profile.health_goals.includes('muscle-gain') || tier !== 'essential') {
       const proteins = tierIngredients.filter(ing => ing.category === 'protein');
       if (proteins.length > 0) {
-        const protein = proteins[index % proteins.length];
+        const goalProtein = this.selectProteinByGoal(proteins, profile.health_goals);
         selected.push({
-          ingredient: protein,
+          ingredient: goalProtein,
           amount_grams: tier === 'premium' ? 40 : 30
         });
       }
     }
 
-    // Add vegetables
+    // Add vegetables based on theme
     const vegetables = tierIngredients.filter(ing => ing.category === 'vegetable');
     if (vegetables.length > 0) {
-      const vegetable = vegetables[index % vegetables.length];
-      selected.push({
-        ingredient: vegetable,
-        amount_grams: tier === 'premium' ? 70 : 50
-      });
+      const themeVegetables = this.selectVegetablesByTheme(vegetables, selectedTheme);
+      const veggieCount = tier === 'premium' ? 2 : 1;
+      for (let i = 0; i < Math.min(veggieCount, themeVegetables.length); i++) {
+        const veggie = themeVegetables[i % themeVegetables.length];
+        selected.push({
+          ingredient: veggie,
+          amount_grams: 30 + (i * 20) // 30g, 50g
+        });
+      }
     }
+
 
     // Add superfoods for enhanced and premium tiers
     if (tier !== 'essential') {
@@ -704,6 +716,113 @@ class SmoothieGenerator {
     }
 
     return Array.from(benefits).slice(0, tier === 'premium' ? 6 : tier === 'enhanced' ? 5 : 4);
+  }
+
+  private selectFruitsByTheme(fruits: Ingredient[], theme: string): Ingredient[] {
+    const themeMap = {
+      'tropical': ['mango', 'pineapple', 'coconut', 'banana', 'passion fruit', 'papaya'],
+      'berry': ['strawberry', 'blueberry', 'raspberry', 'blackberry', 'cranberry'],
+      'green': ['kiwi', 'green apple', 'lime', 'avocado'],
+      'citrus': ['orange', 'lemon', 'grapefruit', 'lime', 'tangerine'],
+      'creamy': ['banana', 'avocado', 'mango', 'pear'],
+      'nutty': ['banana', 'apple', 'pear'],
+      'spiced': ['apple', 'pear', 'banana']
+    };
+
+    const themeKeywords = themeMap[theme] || ['banana', 'apple'];
+    return fruits.filter(fruit => 
+      themeKeywords.some(keyword => 
+        fruit.name.toLowerCase().includes(keyword) || 
+        fruit.display_name.toLowerCase().includes(keyword)
+      )
+    );
+  }
+
+  private selectVegetablesByTheme(vegetables: Ingredient[], theme: string): Ingredient[] {
+    const themeMap = {
+      'tropical': ['spinach', 'kale'],
+      'berry': ['spinach'],
+      'green': ['spinach', 'kale', 'cucumber', 'celery', 'parsley'],
+      'citrus': ['spinach', 'cucumber'],
+      'creamy': ['spinach', 'avocado'],
+      'nutty': ['spinach'],
+      'spiced': ['spinach', 'ginger root']
+    };
+
+    const themeKeywords = themeMap[theme] || ['spinach'];
+    return vegetables.filter(veggie => 
+      themeKeywords.some(keyword => 
+        veggie.name.toLowerCase().includes(keyword) || 
+        veggie.display_name.toLowerCase().includes(keyword)
+      )
+    );
+  }
+
+  private selectLiquidByTheme(liquids: Ingredient[], theme: string): Ingredient {
+    const themeMap = {
+      'tropical': ['coconut milk', 'coconut water'],
+      'berry': ['almond milk', 'oat milk'],
+      'green': ['coconut water', 'almond milk'],
+      'citrus': ['coconut water', 'orange juice'],
+      'creamy': ['oat milk', 'coconut milk'],
+      'nutty': ['almond milk', 'cashew milk'],
+      'spiced': ['oat milk', 'almond milk']
+    };
+
+    const themeKeywords = themeMap[theme] || ['almond milk'];
+    const themeLiquids = liquids.filter(liquid => 
+      themeKeywords.some(keyword => 
+        liquid.name.toLowerCase().includes(keyword) || 
+        liquid.display_name.toLowerCase().includes(keyword)
+      )
+    );
+
+    return themeLiquids.length > 0 ? themeLiquids[0] : liquids[0];
+  }
+
+  private selectProteinByGoal(proteins: Ingredient[], goals: string[]): Ingredient {
+    if (goals.includes('muscle-gain')) {
+      const wheyProtein = proteins.find(p => p.name.toLowerCase().includes('whey'));
+      if (wheyProtein) return wheyProtein;
+    }
+    if (goals.includes('weight-loss')) {
+      const plantProtein = proteins.find(p => p.name.toLowerCase().includes('pea') || p.name.toLowerCase().includes('plant'));
+      if (plantProtein) return plantProtein;
+    }
+    return proteins[0];
+  }
+
+  private selectSuperfoodsByTheme(superfoods: Ingredient[], theme: string, goals: string[]): Ingredient[] {
+    const themeMap = {
+      'tropical': ['acai', 'maca powder', 'spirulina'],
+      'berry': ['acai', 'goji berries', 'blueberry powder'],
+      'green': ['spirulina', 'chlorella', 'wheatgrass'],
+      'citrus': ['camu camu', 'acerola', 'vitamin c'],
+      'creamy': ['maca powder', 'hemp seeds', 'flax seeds'],
+      'nutty': ['hemp seeds', 'flax seeds', 'chia seeds'],
+      'spiced': ['turmeric', 'ginger', 'cinnamon']
+    };
+
+    const themeKeywords = themeMap[theme] || ['spirulina'];
+    let themeSuperfoods = superfoods.filter(superfood => 
+      themeKeywords.some(keyword => 
+        superfood.name.toLowerCase().includes(keyword) || 
+        superfood.display_name.toLowerCase().includes(keyword)
+      )
+    );
+
+    // If no theme matches, select based on goals
+    if (themeSuperfoods.length === 0) {
+      if (goals.includes('energy')) {
+        themeSuperfoods = superfoods.filter(s => s.name.toLowerCase().includes('maca') || s.name.toLowerCase().includes('acai'));
+      } else if (goals.includes('immune-support')) {
+        themeSuperfoods = superfoods.filter(s => s.name.toLowerCase().includes('spirulina') || s.name.toLowerCase().includes('camu'));
+      } else if (goals.includes('muscle-gain')) {
+        themeSuperfoods = superfoods.filter(s => s.name.toLowerCase().includes('hemp') || s.name.toLowerCase().includes('flax'));
+      }
+    }
+
+    return themeSuperfoods.length > 0 ? themeSuperfoods : superfoods.slice(0, 3);
   }
 
   private calculateCosts(ingredients: Array<{cost: number}>): any {

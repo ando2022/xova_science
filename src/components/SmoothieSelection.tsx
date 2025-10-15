@@ -3,8 +3,9 @@ import { Button } from './ui/button';
 import { Card } from './ui/card';
 import { Badge } from './ui/badge';
 import { createClient } from '@supabase/supabase-js';
-import { ArrowRight, ArrowLeft, CheckCircle, Star, Heart, Clock, Zap, Target, ShoppingCart, Filter } from 'lucide-react';
+import { ArrowRight, ArrowLeft, CheckCircle, Star, Heart, Clock, Zap, Target, ShoppingCart, Filter, Eye } from 'lucide-react';
 import { smoothieGenerator, NutritionalProfile, SmoothieRecipe } from '../lib/smoothie-generator';
+import { SmoothieDetailModal } from './SmoothieDetailModal';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -24,6 +25,7 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
   const [loading, setLoading] = useState(true);
   const [planType, setPlanType] = useState<'first-order' | 'weekly'>('first-order');
   const [filter, setFilter] = useState<FilterType>('all');
+  const [selectedSmoothie, setSelectedSmoothie] = useState<SmoothieRecipe | null>(null);
   const [error, setError] = useState<string>('');
 
   const MAX_SELECTION = 3;
@@ -307,6 +309,23 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
                   </Badge>
                 </div>
 
+                {/* Key Ingredients Preview */}
+                <div className="mb-4">
+                  <h4 className="text-sm font-semibold mb-2 text-gray-700">Key Ingredients:</h4>
+                  <div className="flex flex-wrap gap-1">
+                    {smoothie.ingredients.slice(0, 4).map((ingredient, idx) => (
+                      <Badge key={idx} variant="secondary" className="text-xs">
+                        {ingredient.ingredient.display_name}
+                      </Badge>
+                    ))}
+                    {smoothie.ingredients.length > 4 && (
+                      <Badge variant="outline" className="text-xs">
+                        +{smoothie.ingredients.length - 4} more
+                      </Badge>
+                    )}
+                  </div>
+                </div>
+
                 {/* Key Nutrients */}
                 <div className="grid grid-cols-2 gap-2 mb-4 text-xs">
                   <div className="flex justify-between">
@@ -355,8 +374,20 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
                   </div>
                 </div>
 
-                {/* Selection Status */}
-                <div className="mt-4 pt-4 border-t">
+                {/* Action Buttons */}
+                <div className="mt-4 pt-4 border-t space-y-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-full"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedSmoothie(smoothie);
+                    }}
+                  >
+                    <Eye className="w-4 h-4 mr-2" />
+                    View Details
+                  </Button>
                   {isSelected ? (
                     <div className="flex items-center text-xova-primary">
                       <CheckCircle className="w-4 h-4 mr-2" />
@@ -468,6 +499,20 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
           </Card>
         )}
       </div>
+
+      {/* Smoothie Detail Modal */}
+      <SmoothieDetailModal
+        smoothie={selectedSmoothie}
+        profile={profile}
+        onClose={() => setSelectedSmoothie(null)}
+        onSelect={() => {
+          if (selectedSmoothie) {
+            handleSmoothieSelect(selectedSmoothie);
+            setSelectedSmoothie(null);
+          }
+        }}
+        isSelected={selectedSmoothie ? selectedSmoothies.some(s => s.id === selectedSmoothie.id) : false}
+      />
     </div>
   );
 }
