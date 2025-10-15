@@ -350,3 +350,4 @@ export function CleanLandingPage({ onNavigate }: CleanLandingPageProps) {
     </div>
   );
 }
+// Complete rebuild trigger - Wed Oct 15 19:35:02 CEST 2025
