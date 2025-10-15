@@ -33,14 +33,28 @@ export function UserDashboard({ user, onLogout, onStartSmoothieSelection }: User
 
   const loadUserData = async () => {
     try {
+      console.log('Loading user data for user:', user.id);
+      
       // Load user profile
-      const { data: profile } = await supabase
-        .from('profiles')
+      const { data: profile, error: profileError } = await supabase
+        .from('user_profiles')
         .select('*')
         .eq('id', user.id)
         .single();
 
-      setUserProfile(profile);
+      if (profileError) {
+        console.error('Error loading profile:', profileError);
+        // If profile doesn't exist, create a default one
+        if (profileError.code === 'PGRST116') {
+          console.log('Profile does not exist yet, will be created during questionnaire');
+          setUserProfile(null);
+        } else {
+          setUserProfile(null);
+        }
+      } else {
+        console.log('Profile loaded:', profile);
+        setUserProfile(profile);
+      }
 
       // Load orders (mock data for now)
       setOrders([
@@ -102,6 +116,15 @@ export function UserDashboard({ user, onLogout, onStartSmoothieSelection }: User
 
   // Check if user has completed questionnaire
   const hasCompletedProfile = userProfile && userProfile.health_goals && userProfile.health_goals.length > 0;
+  
+  // Debug logging
+  console.log('UserDashboard render:', {
+    userProfile,
+    hasCompletedProfile,
+    showQuestionnaire,
+    showProfileDisplay,
+    generatedProfile: !!generatedProfile
+  });
 
   if (loading) {
     return (
@@ -136,17 +159,8 @@ export function UserDashboard({ user, onLogout, onStartSmoothieSelection }: User
     );
   }
 
-  // Debug logging
-  console.log('Dashboard state:', {
-    showQuestionnaire,
-    showProfileDisplay,
-    generatedProfile: !!generatedProfile,
-    hasCompletedProfile,
-    userProfile: !!userProfile
-  });
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-xova-primary/3 via-xova-accent/3 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-xova-primary/3 via-xova-accent/3 to-white" data-testid="user-dashboard">
       {/* Header */}
       <header className="border-b border-border/50 bg-white/80 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
@@ -278,8 +292,12 @@ export function UserDashboard({ user, onLogout, onStartSmoothieSelection }: User
                 Complete your health profile to get personalized smoothie recommendations
               </p>
               <Button 
-                onClick={() => setShowQuestionnaire(true)}
+                onClick={() => {
+                  console.log('Complete Profile button clicked');
+                  setShowQuestionnaire(true);
+                }}
                 className="bg-gradient-to-r from-xova-primary to-xova-secondary"
+                data-testid="complete-profile-button"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Complete Health Profile

@@ -1,6 +1,6 @@
 import { Card } from './ui/card';
 import { Button } from './ui/button';
-import { Target, Activity, Utensils, AlertTriangle, TrendingUp, CheckCircle, ArrowRight, Sparkles } from 'lucide-react';
+import { Target, Activity, Utensils, AlertTriangle, TrendingUp, CheckCircle, ArrowRight, Sparkles, Heart } from 'lucide-react';
 
 interface NutritionalProfile {
   user_id: string;
