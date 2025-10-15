@@ -4,21 +4,36 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
+// Types
 export interface NutritionalProfile {
   user_id: string;
-  activity_level: 'sedentary' | 'light' | 'moderate' | 'active' | 'very-active';
+  activity_level: string;
   health_goals: string[];
   dietary_restrictions: string[];
   allergens: string[];
   preferences: string[];
+  daily_targets: {
+    calories: number;
+    protein: number;
+    carbs: number;
+    fiber: number;
+    iron: number;
+    vitamin_c: number;
+    calcium: number;
+    magnesium: number;
+    omega3: number;
+  };
+  scientific_rationale: string;
+  priority_nutrients: string[];
 }
 
 export interface Ingredient {
   id: string;
   name: string;
+  display_name: string;
   cost_per_100g: number;
-  density: number;
   category: string;
+  subcategory: string;
   protein: number;
   carbs: number;
   fiber: number;
@@ -26,35 +41,39 @@ export interface Ingredient {
   calories: number;
   iron: number;
   vitamin_c: number;
-  vitamin_a: number;
   calcium: number;
   magnesium: number;
   potassium: number;
   folate: number;
   omega3: number;
+  zinc: number;
+  vitamin_d: number;
   energy_boost: boolean;
   muscle_recovery: boolean;
-  weight_management: boolean;
-  stress_relief: boolean;
+  weight_loss: boolean;
   immune_support: boolean;
-  anti_inflammatory: boolean;
-  digestive_health: boolean;
   heart_health: boolean;
-  allergens: string[];
-  dietary_tags: string[];
-  max_percentage: number;
-  min_percentage: number;
-  flavor_profile: string;
+  digestive_health: boolean;
+  anti_aging: boolean;
+  stress_relief: boolean;
+  contains_gluten: boolean;
+  contains_dairy: boolean;
+  contains_nuts: boolean;
+  contains_soy: boolean;
+  is_vegan: boolean;
+  is_vegetarian: boolean;
+  description: string;
 }
 
 export interface SmoothieRecipe {
   id: string;
   name: string;
-  ingredients: Array<{
-    name: string;
-    amount: number; // in grams
-    percentage: number; // % of total
-  }>;
+  flavor_profile: string;
+  ingredients: {
+    ingredient: Ingredient;
+    amount_grams: number;
+    cost: number;
+  }[];
   nutritional_breakdown: {
     calories: number;
     protein: number;
@@ -63,257 +82,390 @@ export interface SmoothieRecipe {
     fat: number;
     iron: number;
     vitamin_c: number;
-    vitamin_a: number;
     calcium: number;
     magnesium: number;
-    potassium: number;
-    folate: number;
     omega3: number;
   };
-  cost_breakdown: {
-    total_cost: number; // CHF
-    cost_per_100g: number;
-    selling_price: number; // 12 CHF
-    margin: number; // CHF
-    margin_percentage: number;
-    is_profitable: boolean;
-  };
   health_benefits: string[];
+  cost_breakdown: {
+    ingredient_costs: number;
+    labor_cost: number;
+    total_cost: number;
+    margin_percentage: number;
+  };
+  preparation_instructions: string[];
   scientific_rationale: string;
-  flavor_profile: string;
-  preparation_notes: string;
 }
 
-const MAX_SMOOTHIE_COST = 5.00; // CHF
-const SELLING_PRICE = 12.00; // CHF
-const SMOOTHIE_WEIGHT = 350; // grams (typical smoothie size)
-
-// Health goal mappings to ingredient properties
-const HEALTH_GOAL_MAPPINGS = {
-  'energy': ['energy_boost', 'iron', 'vitamin_c'],
-  'weight-loss': ['weight_management', 'fiber', 'protein'],
-  'muscle-gain': ['muscle_recovery', 'protein', 'calcium'],
-  'stress-relief': ['stress_relief', 'magnesium', 'vitamin_c'],
-  'immune-support': ['immune_support', 'vitamin_c', 'anti_inflammatory'],
-  'heart-health': ['heart_health', 'omega3', 'anti_inflammatory'],
-  'digestive-health': ['digestive_health', 'fiber', 'probiotics'],
-  'anti-aging': ['anti_inflammatory', 'vitamin_c', 'antioxidants']
-};
-
-export class SmoothieGenerator {
+class SmoothieGenerator {
   private ingredients: Ingredient[] = [];
+  private loaded = false;
 
   async loadIngredients(): Promise<void> {
-    const { data, error } = await supabase
-      .from('ingredients')
-      .select('*')
-      .order('cost_per_100g', { ascending: true });
+    if (this.loaded) return;
 
-    if (error) {
-      console.error('Error loading ingredients:', error);
-      throw error;
+    try {
+      const { data, error } = await supabase
+        .from('ingredients')
+        .select('*')
+        .eq('is_active', true);
+
+      if (error) {
+        console.error('Error loading ingredients:', error);
+        // Use fallback ingredients if database fails
+        this.ingredients = this.getFallbackIngredients();
+      } else {
+        this.ingredients = data || [];
+        console.log(`Loaded ${this.ingredients.length} ingredients from database`);
+      }
+
+      this.loaded = true;
+    } catch (error) {
+      console.error('Error in loadIngredients:', error);
+      this.ingredients = this.getFallbackIngredients();
+      this.loaded = true;
     }
-
-    this.ingredients = data || [];
   }
 
-  private filterIngredientsForProfile(profile: NutritionalProfile): Ingredient[] {
-    return this.ingredients.filter(ingredient => {
-      // Check dietary restrictions
-      if (profile.dietary_restrictions.includes('vegan') && 
-          !ingredient.dietary_tags.includes('vegan')) {
-        return false;
+  private getFallbackIngredients(): Ingredient[] {
+    return [
+      {
+        id: 'banana',
+        name: 'banana',
+        display_name: 'Banana',
+        cost_per_100g: 0.25,
+        category: 'fruit',
+        subcategory: 'tropical',
+        protein: 1.1,
+        carbs: 22.8,
+        fiber: 2.6,
+        fat: 0.3,
+        calories: 89,
+        iron: 0.26,
+        vitamin_c: 8.7,
+        calcium: 5,
+        magnesium: 27,
+        potassium: 358,
+        folate: 20,
+        omega3: 0,
+        zinc: 0.15,
+        vitamin_d: 0,
+        energy_boost: true,
+        muscle_recovery: true,
+        weight_loss: false,
+        immune_support: true,
+        heart_health: true,
+        digestive_health: true,
+        anti_aging: true,
+        stress_relief: false,
+        contains_gluten: false,
+        contains_dairy: false,
+        contains_nuts: false,
+        contains_soy: false,
+        is_vegan: true,
+        is_vegetarian: true,
+        description: 'Natural sweetness and potassium for energy'
+      },
+      {
+        id: 'strawberry',
+        name: 'strawberry',
+        display_name: 'Strawberry',
+        cost_per_100g: 1.20,
+        category: 'fruit',
+        subcategory: 'berry',
+        protein: 0.7,
+        carbs: 7.7,
+        fiber: 2.0,
+        fat: 0.3,
+        calories: 32,
+        iron: 0.41,
+        vitamin_c: 58.8,
+        calcium: 16,
+        magnesium: 13,
+        potassium: 153,
+        folate: 24,
+        omega3: 0,
+        zinc: 0.14,
+        vitamin_d: 0,
+        energy_boost: true,
+        muscle_recovery: false,
+        weight_loss: true,
+        immune_support: true,
+        heart_health: true,
+        digestive_health: true,
+        anti_aging: true,
+        stress_relief: false,
+        contains_gluten: false,
+        contains_dairy: false,
+        contains_nuts: false,
+        contains_soy: false,
+        is_vegan: true,
+        is_vegetarian: true,
+        description: 'Vitamin C powerhouse with antioxidants'
+      },
+      {
+        id: 'spinach',
+        name: 'spinach',
+        display_name: 'Spinach',
+        cost_per_100g: 0.80,
+        category: 'vegetable',
+        subcategory: 'leafy_green',
+        protein: 2.9,
+        carbs: 3.6,
+        fiber: 2.2,
+        fat: 0.4,
+        calories: 23,
+        iron: 2.71,
+        vitamin_c: 28.1,
+        calcium: 99,
+        magnesium: 79,
+        potassium: 558,
+        folate: 194,
+        omega3: 0,
+        zinc: 0.53,
+        vitamin_d: 0,
+        energy_boost: false,
+        muscle_recovery: false,
+        weight_loss: true,
+        immune_support: true,
+        heart_health: true,
+        digestive_health: true,
+        anti_aging: true,
+        stress_relief: false,
+        contains_gluten: false,
+        contains_dairy: false,
+        contains_nuts: false,
+        contains_soy: false,
+        is_vegan: true,
+        is_vegetarian: true,
+        description: 'Iron and folate powerhouse'
+      },
+      {
+        id: 'protein_powder_vanilla',
+        name: 'protein_powder_vanilla',
+        display_name: 'Vanilla Protein Powder',
+        cost_per_100g: 2.50,
+        category: 'protein',
+        subcategory: 'whey',
+        protein: 75.0,
+        carbs: 5.0,
+        fiber: 3.0,
+        fat: 2.0,
+        calories: 340,
+        iron: 5.0,
+        vitamin_c: 0,
+        calcium: 200,
+        magnesium: 100,
+        potassium: 300,
+        folate: 50,
+        omega3: 0,
+        zinc: 8.0,
+        vitamin_d: 5.0,
+        energy_boost: true,
+        muscle_recovery: true,
+        weight_loss: true,
+        immune_support: true,
+        heart_health: false,
+        digestive_health: true,
+        anti_aging: true,
+        stress_relief: false,
+        contains_gluten: false,
+        contains_dairy: false,
+        contains_nuts: false,
+        contains_soy: false,
+        is_vegan: false,
+        is_vegetarian: false,
+        description: 'High-quality whey protein isolate'
+      },
+      {
+        id: 'almond_milk',
+        name: 'almond_milk',
+        display_name: 'Almond Milk',
+        cost_per_100g: 0.15,
+        category: 'liquid',
+        subcategory: 'nut_milk',
+        protein: 0.6,
+        carbs: 1.5,
+        fiber: 0.4,
+        fat: 1.1,
+        calories: 17,
+        iron: 0.28,
+        vitamin_c: 0,
+        calcium: 188,
+        magnesium: 15,
+        potassium: 63,
+        folate: 1,
+        omega3: 0,
+        zinc: 0.20,
+        vitamin_d: 0,
+        energy_boost: false,
+        muscle_recovery: false,
+        weight_loss: true,
+        immune_support: false,
+        heart_health: true,
+        digestive_health: true,
+        anti_aging: false,
+        stress_relief: false,
+        contains_gluten: false,
+        contains_dairy: false,
+        contains_nuts: true,
+        contains_soy: false,
+        is_vegan: true,
+        is_vegetarian: true,
+        description: 'Low-calorie nut milk'
       }
-      if (profile.dietary_restrictions.includes('vegetarian') && 
-          !ingredient.dietary_tags.includes('vegetarian')) {
-        return false;
-      }
-
-      // Check allergens
-      for (const allergen of profile.allergens) {
-        if (ingredient.allergens.includes(allergen)) {
-          return false;
-        }
-      }
-
-      return true;
-    });
+    ];
   }
 
-  private calculateNutritionalTargets(profile: NutritionalProfile) {
-    // Base targets for a 350g smoothie
-    const baseTargets = {
-      calories: 250,
-      protein: 15,
-      carbs: 35,
-      fiber: 8,
-      fat: 8,
-      iron: 2,
-      vitamin_c: 60,
-      vitamin_a: 0.8,
-      calcium: 200,
-      magnesium: 80,
-      potassium: 400,
-      folate: 50,
-      omega3: 1
-    };
+  async generateSmoothieRecipes(profile: NutritionalProfile, count: number = 21): Promise<SmoothieRecipe[]> {
+    await this.loadIngredients();
 
-    // Adjust based on activity level
-    const activityMultipliers = {
-      'sedentary': 0.8,
-      'light': 0.9,
-      'moderate': 1.0,
-      'active': 1.2,
-      'very-active': 1.4
-    };
-
-    const multiplier = activityMultipliers[profile.activity_level] || 1.0;
-
-    // Adjust based on health goals
-    const goalAdjustments = {
-      'energy': { calories: 1.2, iron: 1.5, vitamin_c: 1.3 },
-      'weight-loss': { protein: 1.3, fiber: 1.4, calories: 0.8 },
-      'muscle-gain': { protein: 1.6, calories: 1.3, calcium: 1.2 },
-      'stress-relief': { magnesium: 1.5, vitamin_c: 1.2, omega3: 1.3 },
-      'immune-support': { vitamin_c: 2.0, vitamin_a: 1.5 },
-      'heart-health': { omega3: 2.0, fiber: 1.2, potassium: 1.3 },
-      'digestive-health': { fiber: 1.6, probiotics: 1.5 },
-      'anti-aging': { vitamin_c: 1.8, omega3: 1.4, antioxidants: 1.5 }
-    };
-
-    const adjustedTargets = { ...baseTargets };
-
-    for (const goal of profile.health_goals) {
-      const adjustments = goalAdjustments[goal];
-      if (adjustments) {
-        for (const [nutrient, factor] of Object.entries(adjustments)) {
-          if (adjustedTargets[nutrient] !== undefined) {
-            adjustedTargets[nutrient] *= factor;
-          }
-        }
+    const recipes: SmoothieRecipe[] = [];
+    const baseIngredients = this.getBaseIngredients(profile);
+    
+    for (let i = 0; i < count; i++) {
+      try {
+        const recipe = this.generateSingleRecipe(profile, baseIngredients, i);
+        recipes.push(recipe);
+      } catch (error) {
+        console.error(`Error generating recipe ${i}:`, error);
+        // Skip this recipe and continue
       }
     }
 
-    // Apply activity multiplier
-    for (const [nutrient, value] of Object.entries(adjustedTargets)) {
-      adjustedTargets[nutrient] = Math.round(value * multiplier);
-    }
-
-    return adjustedTargets;
+    return recipes;
   }
 
-  private selectIngredientsForSmoothie(
-    availableIngredients: Ingredient[],
-    targets: any,
-    healthGoals: string[]
-  ): Array<{ ingredient: Ingredient; amount: number; percentage: number }> {
-    const selected: Array<{ ingredient: Ingredient; amount: number; percentage: number }> = [];
-    let remainingWeight = SMOOTHIE_WEIGHT;
-    let totalCost = 0;
+  private getBaseIngredients(profile: NutritionalProfile): Ingredient[] {
+    let availableIngredients = [...this.ingredients];
 
-    // Priority 1: Base liquid (30-50%)
-    const liquids = availableIngredients.filter(i => i.category === 'liquid');
-    const baseLiquid = liquids.find(i => i.name === 'Almond Milk') || liquids[0];
-    if (baseLiquid) {
-      const liquidAmount = Math.floor(remainingWeight * 0.4);
-      selected.push({
-        ingredient: baseLiquid,
-        amount: liquidAmount,
-        percentage: (liquidAmount / SMOOTHIE_WEIGHT) * 100
-      });
-      remainingWeight -= liquidAmount;
-      totalCost += (liquidAmount / 100) * baseLiquid.cost_per_100g;
+    // Filter by dietary restrictions
+    if (profile.dietary_restrictions.includes('vegan')) {
+      availableIngredients = availableIngredients.filter(ing => ing.is_vegan);
+    }
+    if (profile.dietary_restrictions.includes('vegetarian')) {
+      availableIngredients = availableIngredients.filter(ing => ing.is_vegetarian);
+    }
+    if (profile.dietary_restrictions.includes('dairy-free')) {
+      availableIngredients = availableIngredients.filter(ing => !ing.contains_dairy);
+    }
+    if (profile.dietary_restrictions.includes('gluten-free')) {
+      availableIngredients = availableIngredients.filter(ing => !ing.contains_gluten);
     }
 
-    // Priority 2: Primary fruit (15-25%)
-    const fruits = availableIngredients.filter(i => i.category === 'fruit');
-    const primaryFruit = fruits[Math.floor(Math.random() * Math.min(3, fruits.length))];
-    if (primaryFruit && remainingWeight > 0) {
-      const fruitAmount = Math.floor(remainingWeight * 0.2);
-      selected.push({
-        ingredient: primaryFruit,
-        amount: fruitAmount,
-        percentage: (fruitAmount / SMOOTHIE_WEIGHT) * 100
-      });
-      remainingWeight -= fruitAmount;
-      totalCost += (fruitAmount / 100) * primaryFruit.cost_per_100g;
+    // Filter by allergens
+    for (const allergen of profile.allergens) {
+      switch (allergen) {
+        case 'nuts':
+          availableIngredients = availableIngredients.filter(ing => !ing.contains_nuts);
+          break;
+        case 'dairy':
+          availableIngredients = availableIngredients.filter(ing => !ing.contains_dairy);
+          break;
+        case 'soy':
+          availableIngredients = availableIngredients.filter(ing => !ing.contains_soy);
+          break;
+      }
     }
 
-    // Priority 3: Protein source (5-15%)
-    const proteins = availableIngredients.filter(i => 
-      i.category === 'protein' && i.muscle_recovery
-    );
-    if (proteins.length > 0 && remainingWeight > 0) {
-      const protein = proteins[0];
-      const proteinAmount = Math.floor(remainingWeight * 0.1);
+    return availableIngredients;
+  }
+
+  private generateSingleRecipe(profile: NutritionalProfile, availableIngredients: Ingredient[], index: number): SmoothieRecipe {
+    // Select ingredients based on health goals and nutritional targets
+    const selectedIngredients = this.selectIngredients(profile, availableIngredients, index);
+    
+    // Calculate nutritional breakdown
+    const nutritionalBreakdown = this.calculateNutritionalBreakdown(selectedIngredients);
+    
+    // Generate recipe name and description
+    const { name, flavorProfile } = this.generateRecipeName(selectedIngredients, profile);
+    
+    // Generate health benefits
+    const healthBenefits = this.generateHealthBenefits(selectedIngredients, profile);
+    
+    // Calculate costs
+    const costBreakdown = this.calculateCosts(selectedIngredients);
+    
+    // Generate preparation instructions
+    const instructions = this.generateInstructions(selectedIngredients);
+    
+    // Generate scientific rationale
+    const scientificRationale = this.generateScientificRationale(selectedIngredients, profile);
+
+    return {
+      id: `smoothie-${index + 1}`,
+      name,
+      flavor_profile: flavorProfile,
+      ingredients: selectedIngredients.map(ing => ({
+        ingredient: ing.ingredient,
+        amount_grams: ing.amount_grams,
+        cost: ing.cost
+      })),
+      nutritional_breakdown: nutritionalBreakdown,
+      health_benefits: healthBenefits,
+      cost_breakdown: costBreakdown,
+      preparation_instructions: instructions,
+      scientific_rationale: scientificRationale
+    };
+  }
+
+  private selectIngredients(profile: NutritionalProfile, availableIngredients: Ingredient[], index: number): Array<{ingredient: Ingredient, amount_grams: number, cost: number}> {
+    const selected: Array<{ingredient: Ingredient, amount_grams: number, cost: number}> = [];
+    
+    // Always include a base liquid
+    const liquids = availableIngredients.filter(ing => ing.category === 'liquid');
+    if (liquids.length > 0) {
+      const liquid = liquids[index % liquids.length];
       selected.push({
-        ingredient: protein,
-        amount: proteinAmount,
-        percentage: (proteinAmount / SMOOTHIE_WEIGHT) * 100
+        ingredient: liquid,
+        amount_grams: 200,
+        cost: (liquid.cost_per_100g * 200) / 100
       });
-      remainingWeight -= proteinAmount;
-      totalCost += (proteinAmount / 100) * protein.cost_per_100g;
     }
 
-    // Priority 4: Vegetables for micronutrients (5-15%)
-    const vegetables = availableIngredients.filter(i => 
-      i.category === 'vegetable' && 
-      (i.iron > 1 || i.vitamin_c > 20 || i.calcium > 50)
-    );
-    if (vegetables.length > 0 && remainingWeight > 0) {
-      const vegetable = vegetables[0];
-      const vegAmount = Math.floor(remainingWeight * 0.08);
+    // Add fruits based on health goals
+    const fruits = availableIngredients.filter(ing => ing.category === 'fruit');
+    const fruitCount = Math.min(2, fruits.length);
+    for (let i = 0; i < fruitCount; i++) {
+      const fruit = fruits[(index + i) % fruits.length];
+      const amount = 80 + (i * 20); // 80g, 100g
+      selected.push({
+        ingredient: fruit,
+        amount_grams: amount,
+        cost: (fruit.cost_per_100g * amount) / 100
+      });
+    }
+
+    // Add protein if muscle gain is a goal
+    if (profile.health_goals.includes('muscle-gain')) {
+      const proteins = availableIngredients.filter(ing => ing.category === 'protein');
+      if (proteins.length > 0) {
+        const protein = proteins[index % proteins.length];
+        selected.push({
+          ingredient: protein,
+          amount_grams: 30,
+          cost: (protein.cost_per_100g * 30) / 100
+        });
+      }
+    }
+
+    // Add vegetables for fiber and micronutrients
+    const vegetables = availableIngredients.filter(ing => ing.category === 'vegetable');
+    if (vegetables.length > 0) {
+      const vegetable = vegetables[index % vegetables.length];
       selected.push({
         ingredient: vegetable,
-        amount: vegAmount,
-        percentage: (vegAmount / SMOOTHIE_WEIGHT) * 100
+        amount_grams: 50,
+        cost: (vegetable.cost_per_100g * 50) / 100
       });
-      remainingWeight -= vegAmount;
-      totalCost += (vegAmount / 100) * vegetable.cost_per_100g;
-    }
-
-    // Priority 5: Supplements for specific goals (2-8%)
-    for (const goal of healthGoals) {
-      if (remainingWeight <= 10) break;
-
-      const supplements = availableIngredients.filter(i => 
-        i.category === 'supplement' && 
-        (i[HEALTH_GOAL_MAPPINGS[goal]?.[0]] || i[HEALTH_GOAL_MAPPINGS[goal]?.[1]])
-      );
-
-      if (supplements.length > 0) {
-        const supplement = supplements[0];
-        const suppAmount = Math.floor(remainingWeight * 0.05);
-        selected.push({
-          ingredient: supplement,
-          amount: suppAmount,
-          percentage: (suppAmount / SMOOTHIE_WEIGHT) * 100
-        });
-        remainingWeight -= suppAmount;
-        totalCost += (suppAmount / 100) * supplement.cost_per_100g;
-      }
-    }
-
-    // Fill remaining with secondary fruit or water
-    if (remainingWeight > 10) {
-      const secondaryFruit = fruits.find(f => f !== primaryFruit);
-      if (secondaryFruit) {
-        selected.push({
-          ingredient: secondaryFruit,
-          amount: remainingWeight,
-          percentage: (remainingWeight / SMOOTHIE_WEIGHT) * 100
-        });
-        totalCost += (remainingWeight / 100) * secondaryFruit.cost_per_100g;
-      }
     }
 
     return selected;
   }
 
-  private calculateNutritionalBreakdown(
-    selected: Array<{ ingredient: Ingredient; amount: number; percentage: number }>
-  ) {
-    const breakdown = {
+  private calculateNutritionalBreakdown(ingredients: Array<{ingredient: Ingredient, amount_grams: number}>): any {
+    let total = {
       calories: 0,
       protein: 0,
       carbs: 0,
@@ -321,266 +473,150 @@ export class SmoothieGenerator {
       fat: 0,
       iron: 0,
       vitamin_c: 0,
-      vitamin_a: 0,
       calcium: 0,
       magnesium: 0,
-      potassium: 0,
-      folate: 0,
       omega3: 0
     };
 
-    for (const item of selected) {
-      const ratio = item.amount / 100; // Convert to 100g basis
-      breakdown.calories += item.ingredient.calories * ratio;
-      breakdown.protein += item.ingredient.protein * ratio;
-      breakdown.carbs += item.ingredient.carbs * ratio;
-      breakdown.fiber += item.ingredient.fiber * ratio;
-      breakdown.fat += item.ingredient.fat * ratio;
-      breakdown.iron += item.ingredient.iron * ratio;
-      breakdown.vitamin_c += item.ingredient.vitamin_c * ratio;
-      breakdown.vitamin_a += item.ingredient.vitamin_a * ratio;
-      breakdown.calcium += item.ingredient.calcium * ratio;
-      breakdown.magnesium += item.ingredient.magnesium * ratio;
-      breakdown.potassium += item.ingredient.potassium * ratio;
-      breakdown.folate += item.ingredient.folate * ratio;
-      breakdown.omega3 += item.ingredient.omega3 * ratio;
+    for (const { ingredient, amount_grams } of ingredients) {
+      const multiplier = amount_grams / 100;
+      total.calories += ingredient.calories * multiplier;
+      total.protein += ingredient.protein * multiplier;
+      total.carbs += ingredient.carbs * multiplier;
+      total.fiber += ingredient.fiber * multiplier;
+      total.fat += ingredient.fat * multiplier;
+      total.iron += ingredient.iron * multiplier;
+      total.vitamin_c += ingredient.vitamin_c * multiplier;
+      total.calcium += ingredient.calcium * multiplier;
+      total.magnesium += ingredient.magnesium * multiplier;
+      total.omega3 += ingredient.omega3 * multiplier;
     }
 
     // Round to reasonable precision
-    for (const [key, value] of Object.entries(breakdown)) {
-      if (key === 'calories' || key === 'protein' || key === 'carbs' || key === 'fiber' || key === 'fat') {
-        breakdown[key] = Math.round(value);
-      } else {
-        breakdown[key] = Math.round(value * 10) / 10;
-      }
-    }
-
-    return breakdown;
-  }
-
-  private calculateCostBreakdown(
-    selected: Array<{ ingredient: Ingredient; amount: number; percentage: number }>
-  ) {
-    let totalCost = 0;
-    for (const item of selected) {
-      totalCost += (item.amount / 100) * item.ingredient.cost_per_100g;
-    }
-
-    const margin = SELLING_PRICE - totalCost;
-    const marginPercentage = (margin / SELLING_PRICE) * 100;
-    const isProfitable = totalCost <= MAX_SMOOTHIE_COST;
-
     return {
-      total_cost: Math.round(totalCost * 100) / 100,
-      cost_per_100g: Math.round((totalCost / SMOOTHIE_WEIGHT * 100) * 100) / 100,
-      selling_price: SELLING_PRICE,
-      margin: Math.round(margin * 100) / 100,
-      margin_percentage: Math.round(marginPercentage * 10) / 10,
-      is_profitable: isProfitable
+      calories: Math.round(total.calories),
+      protein: Math.round(total.protein * 10) / 10,
+      carbs: Math.round(total.carbs * 10) / 10,
+      fiber: Math.round(total.fiber * 10) / 10,
+      fat: Math.round(total.fat * 10) / 10,
+      iron: Math.round(total.iron * 100) / 100,
+      vitamin_c: Math.round(total.vitamin_c * 10) / 10,
+      calcium: Math.round(total.calcium * 10) / 10,
+      magnesium: Math.round(total.magnesium * 10) / 10,
+      omega3: Math.round(total.omega3 * 100) / 100
     };
   }
 
-  private generateHealthBenefits(selected: Array<{ ingredient: Ingredient; amount: number; percentage: number }>, healthGoals: string[]) {
-    const benefits = [];
+  private generateRecipeName(ingredients: Array<{ingredient: Ingredient}>, profile: NutritionalProfile): {name: string, flavorProfile: string} {
+    const primaryFruit = ingredients.find(ing => ing.ingredient.category === 'fruit');
+    const primaryGoal = profile.health_goals[0] || 'balanced';
     
-    for (const item of selected) {
-      if (item.ingredient.energy_boost) benefits.push('Sustained energy release');
-      if (item.ingredient.muscle_recovery) benefits.push('Enhanced muscle recovery');
-      if (item.ingredient.weight_management) benefits.push('Improved satiety and metabolism');
-      if (item.ingredient.stress_relief) benefits.push('Stress reduction and mood support');
-      if (item.ingredient.immune_support) benefits.push('Immune system strengthening');
-      if (item.ingredient.anti_inflammatory) benefits.push('Anti-inflammatory properties');
-      if (item.ingredient.digestive_health) benefits.push('Digestive health optimization');
-      if (item.ingredient.heart_health) benefits.push('Cardiovascular health support');
-    }
+    const goalNames = {
+      'energy': 'Energy',
+      'weight-loss': 'Slim',
+      'muscle-gain': 'Power',
+      'immune-support': 'Immunity',
+      'heart-health': 'Heart',
+      'stress-relief': 'Zen'
+    };
 
-    return [...new Set(benefits)]; // Remove duplicates
+    const goalName = goalNames[primaryGoal] || 'Balanced';
+    const fruitName = primaryFruit ? primaryFruit.ingredient.display_name : 'Berry';
+    
+    const names = [
+      `${goalName} ${fruitName} Boost`,
+      `${goalName} ${fruitName} Blend`,
+      `${goalName} ${fruitName} Power`,
+      `${goalName} ${fruitName} Fusion`,
+      `${goalName} ${fruitName} Elixir`
+    ];
+
+    return {
+      name: names[Math.floor(Math.random() * names.length)],
+      flavorProfile: primaryFruit ? 'Fruity & Sweet' : 'Creamy & Nutty'
+    };
   }
 
-  private generateScientificRationale(selected: Array<{ ingredient: Ingredient; amount: number; percentage: number }>, healthGoals: string[], breakdown: any) {
+  private generateHealthBenefits(ingredients: Array<{ingredient: Ingredient}>, profile: NutritionalProfile): string[] {
+    const benefits = new Set<string>();
+    
+    // Add benefits based on ingredients
+    for (const { ingredient } of ingredients) {
+      if (ingredient.energy_boost) benefits.add('Energy Boost');
+      if (ingredient.muscle_recovery) benefits.add('Muscle Recovery');
+      if (ingredient.weight_loss) benefits.add('Weight Management');
+      if (ingredient.immune_support) benefits.add('Immune Support');
+      if (ingredient.heart_health) benefits.add('Heart Health');
+      if (ingredient.digestive_health) benefits.add('Digestive Health');
+      if (ingredient.anti_aging) benefits.add('Anti-Aging');
+      if (ingredient.stress_relief) benefits.add('Stress Relief');
+    }
+
+    // Add benefits based on health goals
+    for (const goal of profile.health_goals) {
+      switch (goal) {
+        case 'energy':
+          benefits.add('Sustained Energy');
+          break;
+        case 'muscle-gain':
+          benefits.add('Muscle Building');
+          break;
+        case 'weight-loss':
+          benefits.add('Metabolism Boost');
+          break;
+        case 'immune-support':
+          benefits.add('Immune Defense');
+          break;
+        case 'heart-health':
+          benefits.add('Cardiovascular Health');
+          break;
+      }
+    }
+
+    return Array.from(benefits).slice(0, 4); // Limit to 4 benefits
+  }
+
+  private calculateCosts(ingredients: Array<{cost: number}>): any {
+    const ingredientCosts = ingredients.reduce((sum, ing) => sum + ing.cost, 0);
+    const laborCost = 2.0; // CHF 2 labor cost per smoothie
+    const totalCost = ingredientCosts + laborCost;
+    const marginPercentage = Math.round(((totalCost * 2.5) / totalCost - 1) * 100); // 150% margin
+
+    return {
+      ingredient_costs: Math.round(ingredientCosts * 100) / 100,
+      labor_cost: laborCost,
+      total_cost: Math.round((ingredientCosts + laborCost) * 100) / 100,
+      margin_percentage: marginPercentage
+    };
+  }
+
+  private generateInstructions(ingredients: Array<{ingredient: Ingredient, amount_grams: number}>): string[] {
+    return [
+      'Add liquid base to blender first',
+      'Add leafy greens and blend for 30 seconds',
+      'Add fruits and protein powder',
+      'Blend on high for 60 seconds until smooth',
+      'Add ice if desired and blend briefly',
+      'Pour and enjoy immediately'
+    ];
+  }
+
+  private generateScientificRationale(ingredients: Array<{ingredient: Ingredient}>, profile: NutritionalProfile): string {
     const rationales = [];
-
-    // High protein rationale
-    if (breakdown.protein > 20) {
-      rationales.push(`High protein content (${breakdown.protein}g) supports muscle synthesis and satiety.`);
-    }
-
-    // Iron rationale
-    if (breakdown.iron > 3) {
-      rationales.push(`Rich in iron (${breakdown.iron}mg) for optimal oxygen transport and energy metabolism.`);
-    }
-
-    // Vitamin C rationale
-    if (breakdown.vitamin_c > 80) {
-      rationales.push(`Excellent vitamin C source (${breakdown.vitamin_c}mg) for immune function and collagen synthesis.`);
-    }
-
-    // Fiber rationale
-    if (breakdown.fiber > 10) {
-      rationales.push(`High fiber content (${breakdown.fiber}g) promotes digestive health and sustained energy.`);
-    }
-
-    // Omega-3 rationale
-    if (breakdown.omega3 > 1.5) {
-      rationales.push(`Omega-3 fatty acids (${breakdown.omega3}g) support brain health and reduce inflammation.`);
-    }
-
-    // Goal-specific rationales
-    for (const goal of healthGoals) {
-      if (goal === 'energy' && breakdown.iron > 2 && breakdown.vitamin_c > 60) {
-        rationales.push('Optimized for energy production through iron and vitamin C synergy.');
-      }
-      if (goal === 'muscle-gain' && breakdown.protein > 15 && breakdown.calcium > 150) {
-        rationales.push('Designed for muscle growth with high protein and bone-supporting calcium.');
-      }
-      if (goal === 'stress-relief' && breakdown.magnesium > 100) {
-        rationales.push('Magnesium-rich formulation supports nervous system relaxation.');
-      }
-    }
-
-    return rationales.join(' ');
-  }
-
-  private generateSmoothieName(selected: Array<{ ingredient: Ingredient; amount: number; percentage: number }>, healthGoals: string[]): string {
-    const primaryFruit = selected.find(item => item.ingredient.category === 'fruit');
-    const hasGreens = selected.some(item => item.ingredient.category === 'vegetable');
-    const hasProtein = selected.some(item => item.ingredient.category === 'protein');
     
-    let name = '';
-    
-    if (primaryFruit) {
-      name += primaryFruit.ingredient.name;
+    if (profile.health_goals.includes('energy')) {
+      rationales.push('Optimized with potassium-rich fruits and B-vitamins for sustained energy release.');
     }
     
-    if (hasGreens) {
-      name += ' Green';
+    if (profile.health_goals.includes('muscle-gain')) {
+      rationales.push('High-quality protein supports muscle protein synthesis and recovery.');
     }
     
-    if (hasProtein) {
-      name += ' Power';
-    }
-    
-    // Add goal-based suffix
-    if (healthGoals.includes('energy')) {
-      name += ' Energizer';
-    } else if (healthGoals.includes('muscle-gain')) {
-      name += ' Builder';
-    } else if (healthGoals.includes('stress-relief')) {
-      name += ' Zen';
-    } else {
-      name += ' Boost';
-    }
-    
-    return name;
-  }
-
-  async generateSmoothieRecipes(profile: NutritionalProfile, count: number = 21): Promise<SmoothieRecipe[]> {
-    if (this.ingredients.length === 0) {
-      await this.loadIngredients();
+    if (profile.health_goals.includes('immune-support')) {
+      rationales.push('Vitamin C and antioxidants strengthen immune function and cellular protection.');
     }
 
-    const availableIngredients = this.filterIngredientsForProfile(profile);
-    const targets = this.calculateNutritionalTargets(profile);
-    const recipes: SmoothieRecipe[] = [];
-
-    // Generate multiple variations
-    for (let i = 0; i < count; i++) {
-      try {
-        const selected = this.selectIngredientsForSmoothie(
-          availableIngredients,
-          targets,
-          profile.health_goals
-        );
-
-        const breakdown = this.calculateNutritionalBreakdown(selected);
-        const costBreakdown = this.calculateCostBreakdown(selected);
-
-        // Skip if not profitable
-        if (!costBreakdown.is_profitable) {
-          continue;
-        }
-
-        const name = this.generateSmoothieName(selected, profile.health_goals);
-        const healthBenefits = this.generateHealthBenefits(selected, profile.health_goals);
-        const scientificRationale = this.generateScientificRationale(selected, profile.health_goals, breakdown);
-
-        const recipe: SmoothieRecipe = {
-          id: `recipe_${Date.now()}_${i}`,
-          name: name,
-          ingredients: selected.map(item => ({
-            name: item.ingredient.name,
-            amount: item.amount,
-            percentage: item.percentage
-          })),
-          nutritional_breakdown: breakdown,
-          cost_breakdown: costBreakdown,
-          health_benefits: healthBenefits,
-          scientific_rationale: scientificRationale,
-          flavor_profile: this.determineFlavorProfile(selected),
-          preparation_notes: this.generatePreparationNotes(selected)
-        };
-
-        recipes.push(recipe);
-      } catch (error) {
-        console.error(`Error generating recipe ${i}:`, error);
-        continue;
-      }
-    }
-
-    // Sort by profitability and nutritional completeness
-    return recipes.sort((a, b) => {
-      // Prioritize profitable recipes
-      if (a.cost_breakdown.is_profitable && !b.cost_breakdown.is_profitable) return -1;
-      if (!a.cost_breakdown.is_profitable && b.cost_breakdown.is_profitable) return 1;
-      
-      // Then by margin
-      return b.cost_breakdown.margin - a.cost_breakdown.margin;
-    }).slice(0, count);
-  }
-
-  private determineFlavorProfile(selected: Array<{ ingredient: Ingredient; amount: number; percentage: number }>): string {
-    const flavors = selected.map(item => item.ingredient.flavor_profile);
-    const sweetCount = flavors.filter(f => f === 'sweet').length;
-    const tartCount = flavors.filter(f => f === 'tart').length;
-    const creamyCount = flavors.filter(f => f === 'creamy').length;
-    const bitterCount = flavors.filter(f => f === 'bitter').length;
-
-    if (creamyCount > 1) return 'Creamy and smooth';
-    if (sweetCount > tartCount) return 'Sweet and refreshing';
-    if (tartCount > sweetCount) return 'Tart and tangy';
-    if (bitterCount > 0) return 'Rich and complex';
-    return 'Balanced and refreshing';
-  }
-
-  private generatePreparationNotes(selected: Array<{ ingredient: Ingredient; amount: number; percentage: number }>): string {
-    const notes = [];
-    
-    const hasFrozenFruit = selected.some(item => 
-      item.ingredient.category === 'fruit' && 
-      (item.ingredient.name.includes('frozen') || item.ingredient.name === 'Banana')
-    );
-    
-    if (hasFrozenFruit) {
-      notes.push('Use frozen fruit for creamier texture');
-    }
-    
-    const hasSeeds = selected.some(item => 
-      item.ingredient.name.toLowerCase().includes('seed')
-    );
-    
-    if (hasSeeds) {
-      notes.push('Blend seeds thoroughly for maximum nutrition');
-    }
-    
-    const hasGreens = selected.some(item => item.ingredient.category === 'vegetable');
-    
-    if (hasGreens) {
-      notes.push('Blend greens first for smooth consistency');
-    }
-    
-    notes.push('Blend for 60-90 seconds until smooth');
-    
-    return notes.join('. ') + '.';
+    return rationales.join(' ') || 'Carefully balanced nutrients support your health goals and lifestyle needs.';
   }
 }
 
