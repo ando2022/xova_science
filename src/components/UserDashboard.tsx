@@ -81,6 +81,7 @@ export function UserDashboard({ user, onLogout, onStartSmoothieSelection }: User
   };
 
   const handleProfileComplete = (profile: any) => {
+    console.log('Profile completed:', profile);
     setGeneratedProfile(profile);
     setShowQuestionnaire(false);
     setShowProfileDisplay(true);
@@ -95,8 +96,8 @@ export function UserDashboard({ user, onLogout, onStartSmoothieSelection }: User
 
   const handleContinueToSmoothies = () => {
     setShowProfileDisplay(false);
-    // TODO: Navigate to smoothie selection
-    console.log('Continue to smoothie selection');
+    // Navigate to smoothie selection
+    onStartSmoothieSelection(generatedProfile || mockNutritionalProfile);
   };
 
   // Check if user has completed questionnaire
@@ -125,6 +126,7 @@ export function UserDashboard({ user, onLogout, onStartSmoothieSelection }: User
 
   // Show profile display after questionnaire completion
   if (showProfileDisplay && generatedProfile) {
+    console.log('Showing profile display with profile:', generatedProfile);
     return (
       <NutritionalProfileDisplay 
         profile={generatedProfile}
@@ -133,6 +135,15 @@ export function UserDashboard({ user, onLogout, onStartSmoothieSelection }: User
       />
     );
   }
+
+  // Debug logging
+  console.log('Dashboard state:', {
+    showQuestionnaire,
+    showProfileDisplay,
+    generatedProfile: !!generatedProfile,
+    hasCompletedProfile,
+    userProfile: !!userProfile
+  });
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-xova-primary/3 via-xova-accent/3 to-white">
