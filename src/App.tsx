@@ -1,3 +1,4 @@
+// Force rebuild - Fixed Vercel output directory
 import { useState, useEffect } from 'react';
 import { AuthSystem } from './components/AuthSystem';
 import { UserDashboard } from './components/UserDashboard';
