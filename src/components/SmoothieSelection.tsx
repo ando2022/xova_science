@@ -16,7 +16,7 @@ interface SmoothieSelectionProps {
   onBack: () => void;
 }
 
-type FilterType = 'all' | 'energy' | 'recovery' | 'weight-management' | 'immune' | 'heart-health';
+type FilterType = 'all' | 'essential' | 'enhanced' | 'premium' | 'energy' | 'recovery' | 'weight-management' | 'immune' | 'heart-health';
 
 export function SmoothieSelection({ profile, onSelectionComplete, onBack }: SmoothieSelectionProps) {
   const [smoothies, setSmoothies] = useState<SmoothieRecipe[]>([]);
@@ -69,6 +69,12 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
       return true;
     }
     
+    // Filter by tier first
+    if (filter === 'essential' || filter === 'enhanced' || filter === 'premium') {
+      return smoothie.tier === filter;
+    }
+    
+    // Then filter by health benefits
     return smoothie.health_benefits.some(benefit => {
       switch (filter) {
         case 'energy':
@@ -90,6 +96,9 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
   const getFilterIcon = (filterType: FilterType) => {
     const icons = {
       'all': Filter,
+      'essential': Star,
+      'enhanced': Star,
+      'premium': Star,
       'energy': Zap,
       'recovery': Target,
       'weight-management': Target,
@@ -191,11 +200,45 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
           </div>
         )}
 
+        {/* Tier Explanation */}
+        <Card className="p-6 mb-6">
+          <h2 className="text-xl font-bold mb-4">Choose Your Smoothie Tier</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="text-center p-4 border border-green-200 rounded-lg bg-green-50">
+              <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Star className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="font-bold text-green-800 mb-2">Essential</h3>
+              <p className="text-sm text-green-700 mb-2">CHF 12/11 per smoothie</p>
+              <p className="text-xs text-green-600">Pure, natural ingredients with essential nutrition for daily wellness</p>
+            </div>
+            <div className="text-center p-4 border border-blue-200 rounded-lg bg-blue-50">
+              <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Star className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="font-bold text-blue-800 mb-2">Enhanced</h3>
+              <p className="text-sm text-blue-700 mb-2">CHF 15/14 per smoothie</p>
+              <p className="text-xs text-blue-600">Superfoods included for enhanced performance and recovery</p>
+            </div>
+            <div className="text-center p-4 border border-purple-200 rounded-lg bg-purple-50">
+              <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Star className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="font-bold text-purple-800 mb-2">Premium</h3>
+              <p className="text-sm text-purple-700 mb-2">CHF 18/17 per smoothie</p>
+              <p className="text-xs text-purple-600">Elite superfoods and luxury ingredients for maximum benefits</p>
+            </div>
+          </div>
+        </Card>
+
         {/* Filters */}
         <div className="mb-6">
           <div className="flex flex-wrap gap-2">
             {[
               { id: 'all', label: 'All Smoothies' },
+              { id: 'essential', label: 'Essential (CHF 12/11)' },
+              { id: 'enhanced', label: 'Enhanced (CHF 15/14)' },
+              { id: 'premium', label: 'Premium (CHF 18/17)' },
               { id: 'energy', label: 'Energy Boost' },
               { id: 'recovery', label: 'Recovery' },
               { id: 'weight-management', label: 'Weight Management' },
@@ -245,7 +288,20 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
 
                 {/* Smoothie Name & Flavor */}
                 <div className="mb-4">
-                  <h3 className="text-lg font-bold mb-1">{smoothie.name}</h3>
+                  <div className="flex items-center justify-between mb-1">
+                    <h3 className="text-lg font-bold">{smoothie.name}</h3>
+                    <Badge 
+                      className={`text-xs ${
+                        smoothie.tier === 'premium' 
+                          ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white' 
+                          : smoothie.tier === 'enhanced' 
+                          ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
+                          : 'bg-gradient-to-r from-green-500 to-emerald-500 text-white'
+                      }`}
+                    >
+                      {smoothie.tier === 'premium' ? 'Premium' : smoothie.tier === 'enhanced' ? 'Enhanced' : 'Essential'}
+                    </Badge>
+                  </div>
                   <Badge variant="outline" className="text-xs">
                     {smoothie.flavor_profile}
                   </Badge>
@@ -288,14 +344,14 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
                   </div>
                 </div>
 
-                {/* Cost */}
+                {/* Pricing */}
                 <div className="flex items-center justify-between text-sm">
                   <div>
-                    <span className="text-muted-foreground">Cost:</span>
-                    <span className="font-semibold ml-1">CHF {smoothie.cost_breakdown.total_cost}</span>
+                    <span className="text-muted-foreground">Price:</span>
+                    <span className="font-semibold ml-1">CHF {smoothie.price.seven_day}</span>
                   </div>
-                  <div className="text-green-600 font-semibold">
-                    {smoothie.cost_breakdown.margin_percentage}% margin
+                  <div className="text-muted-foreground text-xs">
+                    14-day: CHF {smoothie.price.fourteen_day}
                   </div>
                 </div>
 

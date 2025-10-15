@@ -69,10 +69,10 @@ export interface SmoothieRecipe {
   id: string;
   name: string;
   flavor_profile: string;
+  tier: 'essential' | 'enhanced' | 'premium';
   ingredients: {
     ingredient: Ingredient;
     amount_grams: number;
-    cost: number;
   }[];
   nutritional_breakdown: {
     calories: number;
@@ -87,11 +87,9 @@ export interface SmoothieRecipe {
     omega3: number;
   };
   health_benefits: string[];
-  cost_breakdown: {
-    ingredient_costs: number;
-    labor_cost: number;
-    total_cost: number;
-    margin_percentage: number;
+  price: {
+    seven_day: number;
+    fourteen_day: number;
   };
   preparation_instructions: string[];
   scientific_rationale: string;
@@ -323,13 +321,38 @@ class SmoothieGenerator {
     const recipes: SmoothieRecipe[] = [];
     const baseIngredients = this.getBaseIngredients(profile);
     
-    for (let i = 0; i < count; i++) {
+    // Generate mix of tiers: 50% essential, 35% enhanced, 15% premium
+    const essentialCount = Math.floor(count * 0.5);
+    const enhancedCount = Math.floor(count * 0.35);
+    const premiumCount = count - essentialCount - enhancedCount;
+    
+    // Generate Essential tier recipes (CHF 12/11)
+    for (let i = 0; i < essentialCount; i++) {
       try {
-        const recipe = this.generateSingleRecipe(profile, baseIngredients, i);
+        const recipe = this.generateSingleRecipe(profile, baseIngredients, i, 'essential');
         recipes.push(recipe);
       } catch (error) {
-        console.error(`Error generating recipe ${i}:`, error);
-        // Skip this recipe and continue
+        console.error(`Error generating essential recipe ${i}:`, error);
+      }
+    }
+    
+    // Generate Enhanced tier recipes (CHF 15/14)
+    for (let i = 0; i < enhancedCount; i++) {
+      try {
+        const recipe = this.generateSingleRecipe(profile, baseIngredients, essentialCount + i, 'enhanced');
+        recipes.push(recipe);
+      } catch (error) {
+        console.error(`Error generating enhanced recipe ${i}:`, error);
+      }
+    }
+    
+    // Generate Premium tier recipes (CHF 18/17)
+    for (let i = 0; i < premiumCount; i++) {
+      try {
+        const recipe = this.generateSingleRecipe(profile, baseIngredients, essentialCount + enhancedCount + i, 'premium');
+        recipes.push(recipe);
+      } catch (error) {
+        console.error(`Error generating premium recipe ${i}:`, error);
       }
     }
 
@@ -371,21 +394,21 @@ class SmoothieGenerator {
     return availableIngredients;
   }
 
-  private generateSingleRecipe(profile: NutritionalProfile, availableIngredients: Ingredient[], index: number): SmoothieRecipe {
-    // Select ingredients based on health goals and nutritional targets
-    const selectedIngredients = this.selectIngredients(profile, availableIngredients, index);
+  private generateSingleRecipe(profile: NutritionalProfile, availableIngredients: Ingredient[], index: number, tier: 'essential' | 'enhanced' | 'premium'): SmoothieRecipe {
+    // Select ingredients based on tier and health goals
+    const selectedIngredients = this.selectIngredientsByTier(profile, availableIngredients, index, tier);
     
     // Calculate nutritional breakdown
     const nutritionalBreakdown = this.calculateNutritionalBreakdown(selectedIngredients);
     
     // Generate recipe name and description
-    const { name, flavorProfile } = this.generateRecipeName(selectedIngredients, profile);
+    const { name, flavorProfile } = this.generateRecipeName(selectedIngredients, profile, tier);
     
     // Generate health benefits
-    const healthBenefits = this.generateHealthBenefits(selectedIngredients, profile);
+    const healthBenefits = this.generateHealthBenefits(selectedIngredients, profile, tier);
     
-    // Calculate costs
-    const costBreakdown = this.calculateCosts(selectedIngredients);
+    // Set pricing based on tier
+    const price = this.getTierPricing(tier);
     
     // Generate preparation instructions
     const instructions = this.generateInstructions(selectedIngredients);
@@ -394,71 +417,124 @@ class SmoothieGenerator {
     const scientificRationale = this.generateScientificRationale(selectedIngredients, profile);
 
     return {
-      id: `smoothie-${index + 1}`,
+      id: `smoothie-${tier}-${index + 1}`,
       name,
       flavor_profile: flavorProfile,
+      tier,
       ingredients: selectedIngredients.map(ing => ({
         ingredient: ing.ingredient,
-        amount_grams: ing.amount_grams,
-        cost: ing.cost
+        amount_grams: ing.amount_grams
       })),
       nutritional_breakdown: nutritionalBreakdown,
       health_benefits: healthBenefits,
-      cost_breakdown: costBreakdown,
+      price,
       preparation_instructions: instructions,
       scientific_rationale: scientificRationale
     };
   }
 
-  private selectIngredients(profile: NutritionalProfile, availableIngredients: Ingredient[], index: number): Array<{ingredient: Ingredient, amount_grams: number, cost: number}> {
-    const selected: Array<{ingredient: Ingredient, amount_grams: number, cost: number}> = [];
+  private getTierPricing(tier: 'essential' | 'enhanced' | 'premium'): {seven_day: number, fourteen_day: number} {
+    const pricing = {
+      essential: { seven_day: 12, fourteen_day: 11 },
+      enhanced: { seven_day: 15, fourteen_day: 14 },
+      premium: { seven_day: 18, fourteen_day: 17 }
+    };
+    return pricing[tier];
+  }
+
+  private getIngredientTier(ingredient: Ingredient): 'base' | 'premium' | 'luxury' {
+    // Define ingredient tiers based on cost and category
+    const premiumIngredients = ['spirulina', 'acai_berry', 'goji_berry', 'maca_powder', 'cacao_powder', 'turmeric'];
+    const luxuryIngredients = ['dragon_fruit', 'passion_fruit', 'hemp_seeds', 'chia_seeds'];
+    
+    if (luxuryIngredients.includes(ingredient.name)) return 'luxury';
+    if (premiumIngredients.includes(ingredient.name) || ingredient.cost_per_100g > 3.0) return 'premium';
+    return 'base';
+  }
+
+  private selectIngredientsByTier(profile: NutritionalProfile, availableIngredients: Ingredient[], index: number, tier: 'essential' | 'enhanced' | 'premium'): Array<{ingredient: Ingredient, amount_grams: number}> {
+    const selected: Array<{ingredient: Ingredient, amount_grams: number}> = [];
+    
+    // Filter ingredients by tier
+    let tierIngredients = availableIngredients;
+    if (tier === 'essential') {
+      // Only base ingredients (cost < 3.0 CHF per 100g)
+      tierIngredients = availableIngredients.filter(ing => ing.cost_per_100g < 3.0);
+    } else if (tier === 'enhanced') {
+      // Base + premium ingredients (cost < 8.0 CHF per 100g)
+      tierIngredients = availableIngredients.filter(ing => ing.cost_per_100g < 8.0);
+    }
+    // Premium tier can use all ingredients
     
     // Always include a base liquid
-    const liquids = availableIngredients.filter(ing => ing.category === 'liquid');
+    const liquids = tierIngredients.filter(ing => ing.category === 'liquid');
     if (liquids.length > 0) {
       const liquid = liquids[index % liquids.length];
       selected.push({
         ingredient: liquid,
-        amount_grams: 200,
-        cost: (liquid.cost_per_100g * 200) / 100
+        amount_grams: 200
       });
     }
 
-    // Add fruits based on health goals
-    const fruits = availableIngredients.filter(ing => ing.category === 'fruit');
-    const fruitCount = Math.min(2, fruits.length);
-    for (let i = 0; i < fruitCount; i++) {
+    // Add fruits based on tier
+    const fruits = tierIngredients.filter(ing => ing.category === 'fruit');
+    const fruitCount = tier === 'premium' ? 3 : 2;
+    for (let i = 0; i < Math.min(fruitCount, fruits.length); i++) {
       const fruit = fruits[(index + i) % fruits.length];
-      const amount = 80 + (i * 20); // 80g, 100g
+      const amount = 80 + (i * 20); // 80g, 100g, 120g
       selected.push({
         ingredient: fruit,
-        amount_grams: amount,
-        cost: (fruit.cost_per_100g * amount) / 100
+        amount_grams: amount
       });
     }
 
-    // Add protein if muscle gain is a goal
-    if (profile.health_goals.includes('muscle-gain')) {
-      const proteins = availableIngredients.filter(ing => ing.category === 'protein');
+    // Add protein based on goals and tier
+    if (profile.health_goals.includes('muscle-gain') || tier !== 'essential') {
+      const proteins = tierIngredients.filter(ing => ing.category === 'protein');
       if (proteins.length > 0) {
         const protein = proteins[index % proteins.length];
         selected.push({
           ingredient: protein,
-          amount_grams: 30,
-          cost: (protein.cost_per_100g * 30) / 100
+          amount_grams: tier === 'premium' ? 40 : 30
         });
       }
     }
 
-    // Add vegetables for fiber and micronutrients
-    const vegetables = availableIngredients.filter(ing => ing.category === 'vegetable');
+    // Add vegetables
+    const vegetables = tierIngredients.filter(ing => ing.category === 'vegetable');
     if (vegetables.length > 0) {
       const vegetable = vegetables[index % vegetables.length];
       selected.push({
         ingredient: vegetable,
-        amount_grams: 50,
-        cost: (vegetable.cost_per_100g * 50) / 100
+        amount_grams: tier === 'premium' ? 70 : 50
       });
+    }
+
+    // Add superfoods for enhanced and premium tiers
+    if (tier !== 'essential') {
+      const superfoods = tierIngredients.filter(ing => 
+        ing.category === 'supplement' || 
+        ing.name.includes('seed') || 
+        ing.name.includes('berry') && ing.cost_per_100g > 2.0
+      );
+      
+      if (superfoods.length > 0 && tier === 'enhanced') {
+        // Add 1 superfood for enhanced
+        const superfood = superfoods[index % superfoods.length];
+        selected.push({
+          ingredient: superfood,
+          amount_grams: 10
+        });
+      } else if (superfoods.length > 0 && tier === 'premium') {
+        // Add 2 superfoods for premium
+        for (let i = 0; i < Math.min(2, superfoods.length); i++) {
+          const superfood = superfoods[(index + i) % superfoods.length];
+          selected.push({
+            ingredient: superfood,
+            amount_grams: 15
+          });
+        }
+      }
     }
 
     return selected;
@@ -507,7 +583,7 @@ class SmoothieGenerator {
     };
   }
 
-  private generateRecipeName(ingredients: Array<{ingredient: Ingredient}>, profile: NutritionalProfile): {name: string, flavorProfile: string} {
+  private generateRecipeName(ingredients: Array<{ingredient: Ingredient}>, profile: NutritionalProfile, tier: 'essential' | 'enhanced' | 'premium'): {name: string, flavorProfile: string} {
     const primaryFruit = ingredients.find(ing => ing.ingredient.category === 'fruit');
     const primaryGoal = profile.health_goals[0] || 'balanced';
     
@@ -523,57 +599,111 @@ class SmoothieGenerator {
     const goalName = goalNames[primaryGoal] || 'Balanced';
     const fruitName = primaryFruit ? primaryFruit.ingredient.display_name : 'Berry';
     
-    const names = [
-      `${goalName} ${fruitName} Boost`,
-      `${goalName} ${fruitName} Blend`,
-      `${goalName} ${fruitName} Power`,
-      `${goalName} ${fruitName} Fusion`,
-      `${goalName} ${fruitName} Elixir`
-    ];
+    // Tier-specific naming
+    const tierSuffixes = {
+      essential: ['Classic', 'Essential', 'Pure', 'Natural'],
+      enhanced: ['Enhanced', 'Boosted', 'Super', 'Power'],
+      premium: ['Elite', 'Premium', 'Ultimate', 'Signature']
+    };
+
+    const tierPrefixes = {
+      essential: ['Essential'],
+      enhanced: ['Enhanced', 'Super'],
+      premium: ['Premium', 'Elite', 'Ultimate']
+    };
+
+    const suffix = tierSuffixes[tier][Math.floor(Math.random() * tierSuffixes[tier].length)];
+    const prefix = tier === 'essential' ? '' : tierPrefixes[tier][Math.floor(Math.random() * tierPrefixes[tier].length)];
+    
+    const name = tier === 'essential' 
+      ? `${goalName} ${fruitName} ${suffix}`
+      : `${prefix} ${goalName} ${fruitName}`;
 
     return {
-      name: names[Math.floor(Math.random() * names.length)],
-      flavorProfile: primaryFruit ? 'Fruity & Sweet' : 'Creamy & Nutty'
+      name,
+      flavorProfile: tier === 'premium' ? 'Gourmet & Complex' : tier === 'enhanced' ? 'Rich & Balanced' : 'Pure & Natural'
     };
   }
 
-  private generateHealthBenefits(ingredients: Array<{ingredient: Ingredient}>, profile: NutritionalProfile): string[] {
+  private generateHealthBenefits(ingredients: Array<{ingredient: Ingredient}>, profile: NutritionalProfile, tier: 'essential' | 'enhanced' | 'premium'): string[] {
     const benefits = new Set<string>();
+    
+    // Add tier-specific core benefits
+    if (tier === 'essential') {
+      benefits.add('Daily Nutrition');
+      benefits.add('Natural Energy');
+      benefits.add('Essential Vitamins');
+    } else if (tier === 'enhanced') {
+      benefits.add('Enhanced Performance');
+      benefits.add('Superfood Boost');
+      benefits.add('Advanced Recovery');
+    } else if (tier === 'premium') {
+      benefits.add('Elite Performance');
+      benefits.add('Premium Superfoods');
+      benefits.add('Maximum Benefits');
+      benefits.add('Gourmet Experience');
+    }
     
     // Add benefits based on ingredients
     for (const { ingredient } of ingredients) {
-      if (ingredient.energy_boost) benefits.add('Energy Boost');
-      if (ingredient.muscle_recovery) benefits.add('Muscle Recovery');
-      if (ingredient.weight_loss) benefits.add('Weight Management');
-      if (ingredient.immune_support) benefits.add('Immune Support');
-      if (ingredient.heart_health) benefits.add('Heart Health');
-      if (ingredient.digestive_health) benefits.add('Digestive Health');
-      if (ingredient.anti_aging) benefits.add('Anti-Aging');
-      if (ingredient.stress_relief) benefits.add('Stress Relief');
+      if (ingredient.energy_boost) {
+        if (tier === 'premium') benefits.add('Sustained Energy');
+        else if (tier === 'enhanced') benefits.add('Enhanced Energy');
+        else benefits.add('Natural Energy');
+      }
+      if (ingredient.muscle_recovery) {
+        if (tier === 'premium') benefits.add('Elite Recovery');
+        else if (tier === 'enhanced') benefits.add('Advanced Recovery');
+        else benefits.add('Muscle Support');
+      }
+      if (ingredient.immune_support) {
+        if (tier === 'premium') benefits.add('Maximum Immunity');
+        else if (tier === 'enhanced') benefits.add('Enhanced Immunity');
+        else benefits.add('Immune Support');
+      }
+      if (ingredient.anti_aging) {
+        if (tier === 'premium') benefits.add('Anti-Aging Power');
+        else if (tier === 'enhanced') benefits.add('Youthful Glow');
+      }
     }
 
-    // Add benefits based on health goals
+    // Add benefits based on health goals with tier enhancement
     for (const goal of profile.health_goals) {
       switch (goal) {
         case 'energy':
-          benefits.add('Sustained Energy');
+          if (tier === 'premium') benefits.add('Elite Energy');
+          else if (tier === 'enhanced') benefits.add('Supercharged Energy');
+          else benefits.add('Sustained Energy');
           break;
         case 'muscle-gain':
-          benefits.add('Muscle Building');
+          if (tier === 'premium') benefits.add('Elite Muscle Building');
+          else if (tier === 'enhanced') benefits.add('Advanced Muscle Support');
+          else benefits.add('Muscle Building');
           break;
         case 'weight-loss':
-          benefits.add('Metabolism Boost');
+          if (tier === 'premium') benefits.add('Ultimate Metabolism');
+          else if (tier === 'enhanced') benefits.add('Enhanced Metabolism');
+          else benefits.add('Weight Management');
           break;
         case 'immune-support':
-          benefits.add('Immune Defense');
+          if (tier === 'premium') benefits.add('Maximum Immune Defense');
+          else if (tier === 'enhanced') benefits.add('Supercharged Immunity');
+          else benefits.add('Immune Defense');
           break;
         case 'heart-health':
-          benefits.add('Cardiovascular Health');
+          if (tier === 'premium') benefits.add('Elite Heart Health');
+          else if (tier === 'enhanced') benefits.add('Advanced Heart Support');
+          else benefits.add('Cardiovascular Health');
+          break;
+        case 'stress-relief':
+          if (tier === 'premium') benefits.add('Ultimate Relaxation');
+          else if (tier === 'enhanced') benefits.add('Enhanced Calm');
+          else benefits.add('Stress Relief');
           break;
       }
     }
 
-    return Array.from(benefits).slice(0, 4); // Limit to 4 benefits
+    return Array.from(benefits).slice(0, tier === 'premium' ? 6 : tier === 'enhanced' ? 5 : 4);
   }
 
   private calculateCosts(ingredients: Array<{cost: number}>): any {
