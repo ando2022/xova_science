@@ -118,9 +118,23 @@ export function MVPDashboard({ onStartSmoothieSelection, onLogout }: MVPDashboar
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
             Welcome to XOVA
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
             Your personalized smoothie platform. Let's create your first order!
           </p>
+          
+          {/* IMPOSSIBLE TO MISS BUTTON */}
+          <div className="bg-green-600 p-6 rounded-lg inline-block mb-8">
+            <button 
+              onClick={handleStartOrder}
+              className="bg-white text-green-600 text-xl font-bold px-8 py-4 rounded-lg hover:bg-gray-100"
+              style={{ 
+                border: '3px solid white',
+                cursor: 'pointer'
+              }}
+            >
+              🥤 GENERATE SMOOTHIES NOW 🥤
+            </button>
+          </div>
         </div>
 
         {/* Quick Stats */}
@@ -156,29 +170,24 @@ export function MVPDashboard({ onStartSmoothieSelection, onLogout }: MVPDashboar
           </Card>
         </div>
 
-        {/* Main Action */}
-        <Card className="p-8 text-center bg-gradient-to-r from-purple-50 to-green-50 border-2 border-purple-200">
-          <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-            <ShoppingCart className="w-8 h-8 text-white" />
-          </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            Create Your First Smoothie Order
+        {/* Main Action - SUPER OBVIOUS */}
+        <div className="bg-red-500 p-8 text-center mb-8">
+          <h2 className="text-3xl font-bold text-white mb-6">
+            🥤 GENERATE YOUR SMOOTHIES NOW! 🥤
           </h2>
-          <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
-            We'll generate personalized smoothie options based on your preferences. 
-            Choose your favorite and complete your order!
-          </p>
-          <Button 
+          <button 
             onClick={handleStartOrder}
-            size="lg"
-            className="bg-gradient-to-r from-purple-600 to-green-600 hover:from-purple-700 hover:to-green-700 px-8 py-3 text-lg shadow-lg"
-            style={{ minHeight: '48px', fontSize: '16px' }}
+            className="bg-yellow-400 text-black text-2xl font-bold px-12 py-6 rounded-lg hover:bg-yellow-300 shadow-lg"
+            style={{ 
+              minHeight: '80px', 
+              fontSize: '24px',
+              border: '4px solid black',
+              cursor: 'pointer'
+            }}
           >
-            <ShoppingCart className="w-5 h-5 mr-2" />
-            Start Your Order
-            <ArrowRight className="w-5 h-5 ml-2" />
-          </Button>
-        </Card>
+            🚀 CLICK HERE TO START! 🚀
+          </button>
+        </div>
 
         {/* Simple Info */}
         <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
