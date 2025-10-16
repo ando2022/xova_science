@@ -31,7 +31,7 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
 
   // Radical simplification: select ONE recipe (with tier options)
   const MAX_SELECTION = 1;
-  const FIRST_ORDER_QUANTITY = 14;
+  const MINIMUM_ORDER_QUANTITY = 7; // Minimum order is 7 days
   const WEEKLY_QUANTITY = 7;
 
   useEffect(() => {
@@ -171,28 +171,21 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
   const getPlanPrice = () => {
     if (selectedSmoothies.length === 0) return 0;
     
-    // Simple pricing: 7-day plan vs 14+ day plan (1 CHF discount)
-    const basePrice = selectedSmoothies.reduce((sum, smoothie) => {
-      return sum + smoothie.price.seven_day;
-    }, 0);
+    // Simple pricing: just multiply unit price by quantity
+    const smoothie = selectedSmoothies[0]; // We only select 1 smoothie
+    const quantity = planType === 'first-order' ? 14 : 7;
     
-    const quantity = planType === 'first-order' ? 14 : 7; // 14 days or 7 days
-    const scaleFactor = quantity / selectedSmoothies.length;
-    const totalPrice = basePrice * scaleFactor;
+    // Use the appropriate price based on plan type
+    const unitPrice = planType === 'first-order' ? smoothie.price.fourteen_day : smoothie.price.seven_day;
     
-    // Apply 1 CHF discount per smoothie for 14+ day orders
-    if (planType === 'first-order') {
-      return totalPrice - (quantity * 1); // 1 CHF off each smoothie
-    }
-    
-    return totalPrice;
+    return unitPrice * quantity;
   };
 
   const getPlanDescription = () => {
     if (planType === 'first-order') {
-      return '14 smoothies over 2 weeks (minimum order)';
+      return '14 smoothies (CHF 11 each)';
     } else {
-      return '7 smoothies per week (minimum order)';
+      return '7 smoothies (CHF 12 each)';
     }
   };
 
@@ -575,7 +568,7 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
               <div>
                 <div className="font-semibold text-lg">Plan</div>
                 <div className="text-sm text-gray-600">
-                  {planType === 'first-order' ? 'First order · 14 smoothies (1 CHF off each)' : 'Weekly · 7 smoothies minimum'}
+                  {planType === 'first-order' ? '14 smoothies · CHF 11 each' : '7 smoothies · CHF 12 each'}
                 </div>
               </div>
               <div className="text-right">
@@ -591,7 +584,7 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
               <div>
                 <div className="font-semibold text-lg">Total Order</div>
                 <div className="text-sm text-gray-600">
-                  {planType === 'first-order' ? FIRST_ORDER_QUANTITY : WEEKLY_QUANTITY} smoothies
+                  {planType === 'first-order' ? '14 smoothies' : '7 smoothies'}
                 </div>
               </div>
               <div className="text-right">
@@ -632,7 +625,7 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
               ))}
               <div className="border-t pt-2 mt-2">
                 <div className="flex items-center justify-between font-semibold">
-                  <span>Total for {planType === 'first-order' ? FIRST_ORDER_QUANTITY : WEEKLY_QUANTITY} smoothies:</span>
+                  <span>Total for {planType === 'first-order' ? '14' : '7'} smoothies:</span>
                   <span>CHF {getPlanPrice()}</span>
                 </div>
               </div>
