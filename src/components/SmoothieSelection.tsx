@@ -201,11 +201,14 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
     try {
       // Create Stripe Checkout session and redirect (MVP)
       try {
+        const totalPrice = getPlanPrice();
+        console.log('Sending to Stripe:', { totalPrice, planType, selectedSmoothies: selectedSmoothies.length });
+        
         const response = await fetch('/api/create-checkout-session', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            totalAmountChf: getPlanPrice(),
+            totalAmountChf: totalPrice,
             planType,
             userEmail: undefined,
           }),

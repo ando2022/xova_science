@@ -18,9 +18,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     const { totalAmountChf, planType, userEmail } = req.body as {
       totalAmountChf: number;
-      planType: 'first-order' | 'weekly';
+      planType: '7-day' | '14-day';
       userEmail?: string;
     };
+
+    console.log('Stripe API received:', { totalAmountChf, planType, userEmail });
 
     if (!totalAmountChf || totalAmountChf <= 0) {
       return res.status(400).json({ error: 'Invalid amount' });
@@ -38,8 +40,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           price_data: {
             currency: 'chf',
             product_data: {
-              name: planType === 'first-order' ? 'XOVA 14-Day Plan' : 'XOVA Weekly Plan',
-              description: planType === 'first-order' ? '14 smoothies (1 CHF off each)' : '7 smoothies per week',
+              name: planType === '14-day' ? 'XOVA 14-Day Plan' : 'XOVA 7-Day Plan',
+              description: planType === '14-day' ? '14 smoothies (CHF 11 each)' : '7 smoothies (CHF 12 each)',
             },
             unit_amount: Math.round(totalAmountChf * 100),
           },
