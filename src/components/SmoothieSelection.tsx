@@ -565,59 +565,19 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
             </div>
           </div>
 
-          {/* Plan Selection */}
+          {/* Plan Summary (simplified) */}
           <div className="border-t pt-6">
-            <h3 className="font-semibold mb-4">Choose Your Delivery Plan:</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Card 
-                className={`p-4 cursor-pointer transition-all ${
-                  planType === 'first-order' 
-                    ? 'border-xova-primary bg-xova-primary/5' 
-                    : 'border-border hover:border-xova-primary/50'
-                }`}
-                onClick={() => setPlanType('first-order')}
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <h4 className="font-semibold">First Order (Recommended)</h4>
-                  {planType === 'first-order' && (
-                    <CheckCircle className="w-5 h-5 text-xova-primary" />
-                  )}
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="font-semibold text-lg">Plan</div>
+                <div className="text-sm text-gray-600">
+                  {planType === 'first-order' ? 'First order · 14 smoothies (1 CHF off each)' : 'Weekly · 7 smoothies minimum'}
                 </div>
-                <p className="text-sm text-muted-foreground mb-2">
-                  {getPlanDescription()}
-                </p>
-                <div className="text-2xl font-bold text-xova-primary">
-                  CHF {getPlanPrice()}
-                </div>
-                <p className="text-xs text-green-600 mt-1">
-                  Save CHF {selectedSmoothies.length > 0 ? 14 : 0} vs weekly (1 CHF off each smoothie)
-                </p>
-              </Card>
-
-              <Card 
-                className={`p-4 cursor-pointer transition-all ${
-                  planType === 'weekly' 
-                    ? 'border-xova-primary bg-xova-primary/5' 
-                    : 'border-border hover:border-xova-primary/50'
-                }`}
-                onClick={() => setPlanType('weekly')}
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <h4 className="font-semibold">Weekly Plan</h4>
-                  {planType === 'weekly' && (
-                    <CheckCircle className="w-5 h-5 text-xova-primary" />
-                  )}
-                </div>
-                <p className="text-sm text-muted-foreground mb-2">
-                  {getPlanDescription()}
-                </p>
-                <div className="text-2xl font-bold text-xova-primary">
-                  CHF {getPlanPrice()}
-                </div>
-                <p className="text-xs text-muted-foreground mt-1">
-                  Recurring weekly delivery
-                </p>
-              </Card>
+              </div>
+              <div className="text-right">
+                <div className="text-3xl font-bold text-xova-primary">CHF {getPlanPrice()}</div>
+                <div className="text-sm text-green-600">Free delivery</div>
+              </div>
             </div>
           </div>
 
