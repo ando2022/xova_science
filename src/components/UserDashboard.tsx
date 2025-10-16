@@ -56,31 +56,35 @@ export function UserDashboard({ user, onLogout, onStartSmoothieSelection }: User
         setUserProfile(profile);
       }
 
-      // Load orders (mock data for now)
-      setOrders([
-        {
-          id: 1,
-          date: '2024-10-12',
-          items: ['Energizing Berry Boost', 'Green Power Smoothie'],
-          total: 24,
-          status: 'delivered'
-        },
-        {
-          id: 2,
-          date: '2024-10-10',
-          items: ['Protein Recovery Blend'],
-          total: 12,
-          status: 'delivered'
-        }
-      ]);
+      // Load real orders from database
+      const { data: userOrders, error: ordersError } = await supabase
+        .from('orders')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('order_date', { ascending: false });
 
-      // Load subscription (mock data for now)
-      setSubscription({
-        type: 'weekly',
-        status: 'active',
-        nextDelivery: '2024-10-15',
-        price: 84
-      });
+      if (ordersError) {
+        console.error('Error loading orders:', ordersError);
+        setOrders([]);
+      } else {
+        console.log('Orders loaded:', userOrders);
+        setOrders(userOrders || []);
+      }
+
+      // Load real subscription status
+      const { data: userSubscription, error: subscriptionError } = await supabase
+        .from('subscriptions')
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('status', 'active')
+        .single();
+
+      if (subscriptionError && subscriptionError.code !== 'PGRST116') {
+        console.error('Error loading subscription:', subscriptionError);
+      }
+      
+      console.log('Subscription loaded:', userSubscription);
+      setSubscription(userSubscription || null);
 
     } catch (error) {
       console.error('Error loading user data:', error);
@@ -112,6 +116,24 @@ export function UserDashboard({ user, onLogout, onStartSmoothieSelection }: User
     setShowProfileDisplay(false);
     // Navigate to smoothie selection
     onStartSmoothieSelection(generatedProfile || mockNutritionalProfile);
+  };
+
+  const handleReorder = async (order: any) => {
+    console.log('Reorder clicked for order:', order);
+    // For now, just navigate to smoothie selection
+    // In the future, we could pre-populate the selection with the previous smoothies
+    if (hasCompletedProfile) {
+      onStartSmoothieSelection(generatedProfile || userProfile);
+    } else {
+      onStartSmoothieSelection(mockNutritionalProfile);
+    }
+  };
+
+  const handleViewProgress = () => {
+    console.log('View progress clicked');
+    // For now, just show an alert
+    // In the future, this could show a detailed progress dashboard
+    alert('Progress tracking coming soon! This will show your health metrics, smoothie consumption patterns, and goal progress.');
   };
 
   // Check if user has completed questionnaire
@@ -201,45 +223,48 @@ export function UserDashboard({ user, onLogout, onStartSmoothieSelection }: User
           </p>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        {/* Analytics Dashboard */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <Card className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Total Orders</p>
+                <p className="text-sm text-muted-foreground">Active Subscription</p>
+                <p className="text-lg font-bold">
+                  {subscription ? subscription.plan_type || 'Weekly Plan' : 'No Active Plan'}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {subscription ? `CHF ${subscription.price}/week` : 'Start your journey'}
+                </p>
+              </div>
+              <Calendar className="w-8 h-8 text-xova-primary" />
+            </div>
+          </Card>
+
+          <Card className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Past Orders</p>
                 <p className="text-2xl font-bold">{orders.length}</p>
+                <p className="text-xs text-muted-foreground">
+                  {orders.length > 0 ? 'Ready to reorder' : 'No orders yet'}
+                </p>
               </div>
-              <Package className="w-8 h-8 text-xova-primary" />
+              <Package className="w-8 h-8 text-xova-accent" />
             </div>
           </Card>
 
           <Card className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Total Spent</p>
-                <p className="text-2xl font-bold">CHF {orders.reduce((sum, order) => sum + order.total, 0)}</p>
-              </div>
-              <CreditCard className="w-8 h-8 text-xova-accent" />
-            </div>
-          </Card>
-
-          <Card className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Smoothies This Week</p>
-                <p className="text-2xl font-bold">7</p>
+                <p className="text-sm text-muted-foreground">Profile Status</p>
+                <p className="text-lg font-bold">
+                  {hasCompletedProfile ? 'Complete' : 'Incomplete'}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {hasCompletedProfile ? 'Ready for smoothies' : 'Complete your profile'}
+                </p>
               </div>
               <TrendingUp className="w-8 h-8 text-xova-success" />
-            </div>
-          </Card>
-
-          <Card className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Next Delivery</p>
-                <p className="text-2xl font-bold">Mon 15</p>
-              </div>
-              <Calendar className="w-8 h-8 text-xova-warning" />
             </div>
           </Card>
         </div>
@@ -305,73 +330,69 @@ export function UserDashboard({ user, onLogout, onStartSmoothieSelection }: User
           )}
         </Card>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Subscription Status */}
-          <Card className="p-6">
-            <h2 className="text-xl font-bold mb-4">Subscription Status</h2>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="font-medium">Plan</span>
-                <Badge className="bg-xova-primary/10 text-xova-primary">
-                  {subscription?.type} Plan
-                </Badge>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="font-medium">Status</span>
-                <Badge className="bg-green-100 text-green-800">
-                  {subscription?.status}
-                </Badge>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="font-medium">Next Delivery</span>
-                <span>{subscription?.nextDelivery}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="font-medium">Price</span>
-                <span className="font-bold">CHF {subscription?.price}/week</span>
-              </div>
-              <Button className="w-full bg-gradient-to-r from-xova-primary to-xova-accent">
-                Manage Subscription
-              </Button>
-            </div>
-          </Card>
+        <div className="grid grid-cols-1 gap-8">
 
-          {/* Recent Orders */}
+          {/* Past Smoothie Orders */}
           <Card className="p-6">
-            <h2 className="text-xl font-bold mb-4">Recent Orders</h2>
-            <div className="space-y-4">
-              {orders.map((order) => (
-                <div key={order.id} className="border-b border-border/50 pb-4 last:border-b-0">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="font-medium">Order #{order.id}</span>
-                    <Badge className="bg-green-100 text-green-800">
-                      {order.status}
-                    </Badge>
+            <h2 className="text-xl font-bold mb-4">Your Past Smoothies</h2>
+            {orders.length > 0 ? (
+              <div className="space-y-4">
+                {orders.map((order) => (
+                  <div key={order.id} className="border border-border/50 rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="font-medium">Order #{order.id}</span>
+                      <Badge className="bg-green-100 text-green-800">
+                        {order.status}
+                      </Badge>
+                    </div>
+                    <div className="text-sm text-muted-foreground mb-3">
+                      {new Date(order.order_date || order.date).toLocaleDateString()}
+                    </div>
+                    <div className="mb-3">
+                      <h3 className="font-medium mb-2">Smoothies:</h3>
+                      <div className="flex flex-wrap gap-2">
+                        {(order.smoothies || order.items || []).map((smoothie, index) => (
+                          <Badge key={index} variant="outline" className="text-xs">
+                            {typeof smoothie === 'string' ? smoothie : smoothie.name}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold">CHF {order.total_amount || order.total}</span>
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => handleReorder(order)}
+                        className="hover:bg-xova-primary/10"
+                      >
+                        Reorder These Smoothies
+                      </Button>
+                    </div>
                   </div>
-                  <div className="text-sm text-muted-foreground mb-2">
-                    {order.date}
-                  </div>
-                  <div className="text-sm mb-2">
-                    {order.items.join(', ')}
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="font-bold">CHF {order.total}</span>
-                    <Button variant="outline" size="sm">
-                      Reorder
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <Package className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                <p className="text-muted-foreground mb-4">No orders yet</p>
+                <Button 
+                  onClick={() => onStartSmoothieSelection(generatedProfile || userProfile)}
+                  className="bg-gradient-to-r from-xova-primary to-xova-accent"
+                >
+                  Place Your First Order
+                </Button>
+              </div>
+            )}
           </Card>
         </div>
 
         {/* Quick Actions */}
         <Card className="p-6 mt-8">
           <h2 className="text-xl font-bold mb-4">Quick Actions</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Button 
-              className="h-16 bg-gradient-to-r from-xova-primary to-xova-accent"
+              className="h-20 bg-gradient-to-r from-xova-primary to-xova-accent text-lg"
               onClick={() => {
                 if (hasCompletedProfile) {
                   onStartSmoothieSelection(generatedProfile || userProfile);
@@ -381,15 +402,15 @@ export function UserDashboard({ user, onLogout, onStartSmoothieSelection }: User
                 }
               }}
             >
-              <Package className="w-5 h-5 mr-2" />
-              Order New Smoothie
+              <Package className="w-6 h-6 mr-3" />
+              New Order
             </Button>
-            <Button variant="outline" className="h-16">
-              <Calendar className="w-5 h-5 mr-2" />
-              Schedule Delivery
-            </Button>
-            <Button variant="outline" className="h-16">
-              <TrendingUp className="w-5 h-5 mr-2" />
+            <Button 
+              variant="outline" 
+              className="h-20 text-lg border-xova-primary/30 hover:bg-xova-primary/10"
+              onClick={() => handleViewProgress()}
+            >
+              <TrendingUp className="w-6 h-6 mr-3" />
               View Progress
             </Button>
           </div>
