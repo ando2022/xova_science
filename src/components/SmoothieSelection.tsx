@@ -202,8 +202,30 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
 
       console.log('✅ Order created successfully:', orderResult.orderNumber);
 
-      // Call the completion handler
-      onSelectionComplete(selectedSmoothies, planType);
+      // Create Stripe Checkout session and redirect
+      try {
+        const response = await fetch('/api/create-checkout-session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            totalAmountChf: getPlanPrice(),
+            planType,
+            userEmail: user.email,
+          }),
+        });
+
+        const data = await response.json();
+        if (!response.ok || !data.url) {
+          throw new Error(data.error || 'Failed to start checkout');
+        }
+
+        window.location.href = data.url;
+        return; // stop here; browser will navigate
+      } catch (e: any) {
+        console.error('Stripe start error:', e);
+        // fall back to app checkout flow if serverless not configured yet
+        onSelectionComplete(selectedSmoothies, planType);
+      }
 
     } catch (error: any) {
       console.error('Checkout error:', error);
