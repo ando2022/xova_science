@@ -1,7 +1,7 @@
 // Force rebuild - Fixed Vercel output directory
 import { useState, useEffect } from 'react';
 import { AuthSystem } from './components/AuthSystem';
-import { UserDashboard } from './components/UserDashboard';
+import { MVPDashboard } from './components/MVPDashboard';
 import { PricingDisplay } from './components/PricingDisplay';
 import { CheckoutPage } from './components/CheckoutPage';
 import { CleanLandingPage } from './components/CleanLandingPage';
@@ -132,7 +132,7 @@ function App() {
 
   // User Dashboard
   if (currentState === 'dashboard' && user) {
-    return <UserDashboard user={user} onLogout={handleLogout} onStartSmoothieSelection={handleStartSmoothieSelection} />;
+    return <MVPDashboard onLogout={handleLogout} onStartSmoothieSelection={handleStartSmoothieSelection} />;
   }
 
   // Pricing Display
