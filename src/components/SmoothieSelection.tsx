@@ -6,7 +6,7 @@ import { createClient } from '@supabase/supabase-js';
 import { ArrowRight, ArrowLeft, CheckCircle, Star, Heart, Clock, Zap, Target, ShoppingCart, Filter, Eye } from 'lucide-react';
 import { smoothieGenerator, NutritionalProfile, SmoothieRecipe } from '../lib/smoothie-generator';
 import { SmoothieDetailModal } from './SmoothieDetailModal';
-import { DataService } from '../lib/data-service';
+// MVP: no analytics/db writes for selection flow
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -101,13 +101,8 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
         };
       };
 
-      const simplified = [
-        toVariant('essential', 'Essential'),
-        toVariant('enhanced', 'Enhanced'),
-        toVariant('premium', 'Premium'),
-      ];
-
-      setSmoothies(simplified);
+      // MVP: one option only (Essential)
+      setSmoothies([toVariant('essential', 'Essential')]);
     } catch (error: any) {
       console.error('Error generating smoothies:', error);
       setError('Failed to generate smoothies. Please try again.');
@@ -124,15 +119,7 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
       // Add to selection
       setSelectedSmoothies([...selectedSmoothies, smoothie]);
 
-      // Track smoothie selection
-      try {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (user) {
-          await DataService.trackSmoothieSelection(user.id, smoothie.id, smoothie.name, smoothie.tier);
-        }
-      } catch (error) {
-        console.error('Error tracking smoothie selection:', error);
-      }
+      // MVP: skip tracking
     }
   };
 
@@ -219,49 +206,7 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
     setError('');
 
     try {
-      // Get current user
-      const { data: { user }, error: authError } = await supabase.auth.getUser();
-      
-      if (authError || !user) {
-        throw new Error('Please log in to complete your order');
-      }
-
-      console.log('Starting checkout process...');
-      console.log('Selected smoothies:', selectedSmoothies);
-      console.log('Plan type:', planType);
-      console.log('Total price:', getPlanPrice());
-
-      // Save smoothie recipes to database
-      await DataService.saveSmoothieRecipes(user.id, smoothies);
-
-      // Track checkout started
-      await DataService.trackCheckoutStarted(
-        user.id, 
-        selectedSmoothies, 
-        planType, 
-        getPlanPrice()
-      );
-
-      // Create order in database
-      const orderResult = await DataService.createOrder({
-        user_id: user.id,
-        order_date: new Date().toISOString(),
-        delivery_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 days from now
-        plan_type: planType,
-        smoothie_ids: selectedSmoothies.map(s => s.id),
-        total_amount: getPlanPrice(),
-        status: 'pending',
-        payment_status: 'pending',
-        notes: `Order created with ${selectedSmoothies.length} selected smoothies`
-      });
-
-      if (!orderResult.success) {
-        throw new Error('Failed to create order');
-      }
-
-      console.log('✅ Order created successfully:', orderResult.orderNumber);
-
-      // Create Stripe Checkout session and redirect
+      // Create Stripe Checkout session and redirect (MVP)
       try {
         const response = await fetch('/api/create-checkout-session', {
           method: 'POST',
@@ -269,7 +214,7 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
           body: JSON.stringify({
             totalAmountChf: getPlanPrice(),
             planType,
-            userEmail: user.email,
+            userEmail: undefined,
           }),
         });
 
@@ -282,7 +227,7 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
         return; // stop here; browser will navigate
       } catch (e: any) {
         console.error('Stripe start error:', e);
-        // fall back to app checkout flow if serverless not configured yet
+        // fallback to app checkout if serverless not configured yet
         onSelectionComplete(selectedSmoothies, planType);
       }
 
@@ -342,9 +287,9 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
         <Card className="p-6 mb-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold mb-2">Choose Your Smoothie</h1>
+              <h1 className="text-2xl font-bold mb-2">Your Smoothie</h1>
               <p className="text-muted-foreground">
-                Select 1 recipe (Essential, Enhanced, or Premium). Your plan will include at least {planType === 'first-order' ? 14 : 7} smoothies total.
+                One essential recipe. Your plan will include at least {planType === 'first-order' ? 14 : 7} smoothies total.
               </p>
             </div>
             <div className="text-right">
