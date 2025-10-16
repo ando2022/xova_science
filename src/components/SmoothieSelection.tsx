@@ -125,24 +125,28 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
   const getPlanPrice = () => {
     if (selectedSmoothies.length === 0) return 0;
     
-    const quantity = planType === 'first-order' ? FIRST_ORDER_QUANTITY : WEEKLY_QUANTITY;
-    
-    // Calculate total based on selected smoothies' tier pricing
-    const totalPrice = selectedSmoothies.reduce((sum, smoothie) => {
-      const pricePerSmoothie = planType === 'first-order' ? smoothie.price.fourteen_day : smoothie.price.seven_day;
-      return sum + pricePerSmoothie;
+    // Simple pricing: 7-day plan vs 14+ day plan (1 CHF discount)
+    const basePrice = selectedSmoothies.reduce((sum, smoothie) => {
+      return sum + smoothie.price.seven_day;
     }, 0);
     
-    // Scale up to match the required quantity
+    const quantity = planType === 'first-order' ? 14 : 7; // 14 days or 7 days
     const scaleFactor = quantity / selectedSmoothies.length;
-    return Math.round(totalPrice * scaleFactor);
+    const totalPrice = basePrice * scaleFactor;
+    
+    // Apply 1 CHF discount per smoothie for 14+ day orders
+    if (planType === 'first-order') {
+      return totalPrice - (quantity * 1); // 1 CHF off each smoothie
+    }
+    
+    return totalPrice;
   };
 
   const getPlanDescription = () => {
     if (planType === 'first-order') {
-      return `${FIRST_ORDER_QUANTITY} smoothies over 2 weeks (minimum order)`;
+      return '14 smoothies over 2 weeks (minimum order)';
     } else {
-      return `${WEEKLY_QUANTITY} smoothies per week (minimum order)`;
+      return '7 smoothies per week (minimum order)';
     }
   };
 
@@ -463,6 +467,7 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
                     className="w-full"
                     onClick={async (e) => {
                       e.stopPropagation();
+                      console.log('View Details clicked for smoothie:', smoothie.name);
                       setSelectedSmoothie(smoothie);
                       
                       // Track smoothie view
@@ -563,7 +568,7 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
                   CHF {getPlanPrice()}
                 </div>
                 <p className="text-xs text-green-600 mt-1">
-                  Save CHF {selectedSmoothies.reduce((sum, s) => sum + (s.price.seven_day - s.price.fourteen_day), 0) * FIRST_ORDER_QUANTITY / selectedSmoothies.length} vs weekly
+                  Save CHF {selectedSmoothies.length > 0 ? 14 : 0} vs weekly (1 CHF off each smoothie)
                 </p>
               </Card>
 

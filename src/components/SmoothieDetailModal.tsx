@@ -14,7 +14,12 @@ interface SmoothieDetailModalProps {
 }
 
 export function SmoothieDetailModal({ smoothie, profile, onClose, onSelect, isSelected }: SmoothieDetailModalProps) {
-  if (!smoothie) return null;
+  console.log('SmoothieDetailModal render:', { smoothie: !!smoothie, profile: !!profile });
+  
+  if (!smoothie) {
+    console.log('No smoothie provided to modal');
+    return null;
+  }
 
   const getTierColor = (tier: string) => {
     switch (tier) {
