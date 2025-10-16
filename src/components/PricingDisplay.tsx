@@ -157,53 +157,6 @@ export function PricingDisplay({ onSelectPlan }: PricingDisplayProps) {
           </Card>
         </div>
 
-        {/* Cost Breakdown */}
-        <div className="mt-16">
-          <Card className="p-8">
-            <h3 className="text-2xl font-bold mb-6 text-center">Cost Breakdown</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div>
-                <h4 className="font-semibold mb-4">XOVA Pricing</h4>
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span>Raw ingredients (per smoothie)</span>
-                    <span className="font-medium">≤ CHF 5</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Preparation & packaging</span>
-                    <span className="font-medium">CHF 2</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Delivery & service</span>
-                    <span className="font-medium">CHF 5</span>
-                  </div>
-                  <div className="flex justify-between font-bold text-lg border-t pt-3">
-                    <span>Your price per smoothie</span>
-                    <span>CHF 12</span>
-                  </div>
-                </div>
-              </div>
-              
-              <div>
-                <h4 className="font-semibold mb-4">vs. Café Prices</h4>
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span>Average café smoothie</span>
-                    <span className="font-medium">CHF 16</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>XOVA smoothie</span>
-                    <span className="font-medium">CHF 12</span>
-                  </div>
-                  <div className="flex justify-between font-bold text-lg text-green-600 border-t pt-3">
-                    <span>Your savings</span>
-                    <span>CHF 4 (25%)</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Card>
-        </div>
       </div>
     </div>
   );

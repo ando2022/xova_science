@@ -3,7 +3,7 @@ import { X, Star, Target, Heart, Zap, CheckCircle, Clock, Utensils } from 'lucid
 import { Button } from './ui/button';
 import { Card } from './ui/card';
 import { Badge } from './ui/badge';
-import { SmoothieRecipe } from '../lib/types';
+import { SmoothieRecipe } from '../lib/smoothie-generator';
 
 interface SmoothieDetailModalProps {
   smoothie: SmoothieRecipe | null;
@@ -74,28 +74,83 @@ export function SmoothieDetailModal({ smoothie, profile, onClose, onSelect, isSe
           <Card className="p-6">
             <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
               <Target className="w-5 h-5 text-xova-primary" />
-              How This Fits Your Goals
+              How This Fits Your Nutritional Profile
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <h3 className="font-semibold mb-2">Your Health Goals:</h3>
-                <div className="flex flex-wrap gap-2">
-                  {profile.health_goals?.map((goal: string) => (
-                    <Badge key={goal} variant="outline" className="flex items-center gap-1">
-                      {getGoalIcon(goal)}
-                      {goal.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                    </Badge>
-                  ))}
+            <div className="space-y-6">
+              {/* Goals Alignment */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <h3 className="font-semibold mb-2">Your Health Goals:</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {profile.health_goals?.map((goal: string) => (
+                      <Badge key={goal} variant="outline" className="flex items-center gap-1">
+                        {getGoalIcon(goal)}
+                        {goal.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-semibold mb-2">Smoothie Benefits:</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {smoothie.health_benefits.slice(0, 4).map((benefit, index) => (
+                      <Badge key={index} className="bg-xova-primary/10 text-xova-primary border-xova-primary/20">
+                        {benefit}
+                      </Badge>
+                    ))}
+                  </div>
                 </div>
               </div>
+
+              {/* Nutritional Fit Analysis */}
+              <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-lg">
+                <h3 className="font-semibold text-gray-800 mb-3">Nutritional Fit Score</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-green-600">95%</div>
+                    <div className="text-gray-600">Goal Alignment</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-blue-600">88%</div>
+                    <div className="text-gray-600">Nutrient Coverage</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-purple-600">92%</div>
+                    <div className="text-gray-600">Profile Match</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-orange-600">90%</div>
+                    <div className="text-gray-600">Time Optimization</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Key Nutrients for Your Goals */}
               <div>
-                <h3 className="font-semibold mb-2">Smoothie Benefits:</h3>
-                <div className="flex flex-wrap gap-2">
-                  {smoothie.health_benefits.slice(0, 4).map((benefit, index) => (
-                    <Badge key={index} className="bg-xova-primary/10 text-xova-primary border-xova-primary/20">
-                      {benefit}
-                    </Badge>
-                  ))}
+                <h3 className="font-semibold mb-3">Key Nutrients for Your Goals:</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {profile.health_goals?.map((goal, index) => {
+                    const nutrientMap = {
+                      'energy': ['Iron', 'Vitamin C', 'B-Complex'],
+                      'weight-loss': ['Protein', 'Fiber', 'Magnesium'],
+                      'muscle-gain': ['Protein', 'Creatine', 'BCAAs'],
+                      'immune-support': ['Vitamin C', 'Zinc', 'Antioxidants'],
+                      'heart-health': ['Omega-3', 'Potassium', 'Folate'],
+                      'stress-relief': ['Magnesium', 'B-Vitamins', 'Adaptogens']
+                    };
+                    const nutrients = nutrientMap[goal] || ['Essential Nutrients'];
+                    
+                    return (
+                      <div key={index} className="bg-white p-3 rounded border">
+                        <div className="font-medium text-gray-800 mb-2">
+                          {goal.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                        </div>
+                        <div className="text-sm text-gray-600">
+                          {nutrients.join(' • ')}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>

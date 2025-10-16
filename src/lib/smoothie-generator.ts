@@ -320,6 +320,7 @@ class SmoothieGenerator {
     await this.loadIngredients();
 
     const recipes: SmoothieRecipe[] = [];
+    const usedCombinations = new Set<string>();
     const baseIngredients = this.getBaseIngredients(profile);
     
     // Generate mix of tiers: 50% essential, 35% enhanced, 15% premium
@@ -328,36 +329,73 @@ class SmoothieGenerator {
     const premiumCount = count - essentialCount - enhancedCount;
     
     // Generate Essential tier recipes (CHF 12/11)
-    for (let i = 0; i < essentialCount; i++) {
+    let essentialGenerated = 0;
+    let attempts = 0;
+    while (essentialGenerated < essentialCount && attempts < essentialCount * 3) {
       try {
-        const recipe = this.generateSingleRecipe(profile, baseIngredients, i, 'essential');
-        recipes.push(recipe);
+        const recipe = this.generateSingleRecipe(profile, baseIngredients, essentialGenerated, 'essential');
+        const combinationKey = this.createCombinationKey(recipe);
+        
+        if (!usedCombinations.has(combinationKey)) {
+          recipes.push(recipe);
+          usedCombinations.add(combinationKey);
+          essentialGenerated++;
+        }
       } catch (error) {
-        console.error(`Error generating essential recipe ${i}:`, error);
+        console.error(`Error generating essential recipe ${essentialGenerated}:`, error);
       }
+      attempts++;
     }
     
     // Generate Enhanced tier recipes (CHF 15/14)
-    for (let i = 0; i < enhancedCount; i++) {
+    let enhancedGenerated = 0;
+    attempts = 0;
+    while (enhancedGenerated < enhancedCount && attempts < enhancedCount * 3) {
       try {
-        const recipe = this.generateSingleRecipe(profile, baseIngredients, essentialCount + i, 'enhanced');
-        recipes.push(recipe);
+        const recipe = this.generateSingleRecipe(profile, baseIngredients, essentialGenerated + enhancedGenerated, 'enhanced');
+        const combinationKey = this.createCombinationKey(recipe);
+        
+        if (!usedCombinations.has(combinationKey)) {
+          recipes.push(recipe);
+          usedCombinations.add(combinationKey);
+          enhancedGenerated++;
+        }
       } catch (error) {
-        console.error(`Error generating enhanced recipe ${i}:`, error);
+        console.error(`Error generating enhanced recipe ${enhancedGenerated}:`, error);
       }
+      attempts++;
     }
     
     // Generate Premium tier recipes (CHF 18/17)
-    for (let i = 0; i < premiumCount; i++) {
+    let premiumGenerated = 0;
+    attempts = 0;
+    while (premiumGenerated < premiumCount && attempts < premiumCount * 3) {
       try {
-        const recipe = this.generateSingleRecipe(profile, baseIngredients, essentialCount + enhancedCount + i, 'premium');
-        recipes.push(recipe);
+        const recipe = this.generateSingleRecipe(profile, baseIngredients, essentialGenerated + enhancedGenerated + premiumGenerated, 'premium');
+        const combinationKey = this.createCombinationKey(recipe);
+        
+        if (!usedCombinations.has(combinationKey)) {
+          recipes.push(recipe);
+          usedCombinations.add(combinationKey);
+          premiumGenerated++;
+        }
       } catch (error) {
-        console.error(`Error generating premium recipe ${i}:`, error);
+        console.error(`Error generating premium recipe ${premiumGenerated}:`, error);
       }
+      attempts++;
     }
 
+    console.log(`Generated ${recipes.length} unique smoothie recipes (Essential: ${essentialGenerated}, Enhanced: ${enhancedGenerated}, Premium: ${premiumGenerated})`);
     return recipes;
+  }
+
+  private createCombinationKey(recipe: SmoothieRecipe): string {
+    // Create a unique key based on ingredient names and tier
+    const ingredientNames = recipe.ingredients
+      .map(ing => ing.ingredient.name)
+      .sort()
+      .join(',');
+    return `${recipe.tier}-${ingredientNames}`;
   }
 
   private getBaseIngredients(profile: NutritionalProfile): Ingredient[] {
