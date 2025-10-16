@@ -54,22 +54,52 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
         throw new Error('Failed to generate base smoothie');
       }
 
-      const toVariant = (tier: 'essential' | 'enhanced' | 'premium', nameSuffix: string): SmoothieRecipe => ({
-        ...base,
-        id: `${base.id}-${tier}`,
-        name: `${base.name} · ${nameSuffix}`,
-        tier,
-        price: tier === 'premium'
-          ? { seven_day: 18, fourteen_day: 17 }
-          : tier === 'enhanced'
-            ? { seven_day: 15, fourteen_day: 14 }
-            : { seven_day: 12, fourteen_day: 11 },
-        health_benefits: tier === 'premium'
-          ? [ 'Elite Performance', 'Premium Superfoods', ...base.health_benefits ]
-          : tier === 'enhanced'
-            ? [ 'Advanced Benefits', ...base.health_benefits ]
-            : base.health_benefits,
-      });
+      const toVariant = (tier: 'essential' | 'enhanced' | 'premium', nameSuffix: string): SmoothieRecipe => {
+        const multiplier = tier === 'premium' ? 1.3 : tier === 'enhanced' ? 1.15 : 1.0;
+        
+        return {
+          ...base,
+          id: `${base.id}-${tier}`,
+          name: `${base.name} · ${nameSuffix}`,
+          tier,
+          price: tier === 'premium'
+            ? { seven_day: 18, fourteen_day: 17 }
+            : tier === 'enhanced'
+              ? { seven_day: 15, fourteen_day: 14 }
+              : { seven_day: 12, fourteen_day: 11 },
+          // Scale nutrition based on tier
+          nutritional_breakdown: {
+            calories: Math.round(base.nutritional_breakdown.calories * multiplier),
+            protein: Math.round(base.nutritional_breakdown.protein * multiplier * 10) / 10,
+            carbs: Math.round(base.nutritional_breakdown.carbs * multiplier * 10) / 10,
+            fiber: Math.round(base.nutritional_breakdown.fiber * multiplier * 10) / 10,
+            iron: Math.round(base.nutritional_breakdown.iron * multiplier * 10) / 10,
+            vitamin_c: Math.round(base.nutritional_breakdown.vitamin_c * multiplier * 10) / 10,
+            calcium: Math.round(base.nutritional_breakdown.calcium * multiplier * 10) / 10,
+            magnesium: Math.round(base.nutritional_breakdown.magnesium * multiplier * 10) / 10,
+          },
+          // Add tier-specific ingredients
+          ingredients: tier === 'premium' 
+            ? [...base.ingredients, { 
+                ingredient: { name: 'Maca Powder', display_name: 'Maca Powder', category: 'Superfood' },
+                amount_grams: 15
+              }, {
+                ingredient: { name: 'Spirulina', display_name: 'Spirulina', category: 'Superfood' },
+                amount_grams: 10
+              }]
+            : tier === 'enhanced'
+              ? [...base.ingredients, {
+                  ingredient: { name: 'Chia Seeds', display_name: 'Chia Seeds', category: 'Superfood' },
+                  amount_grams: 15
+                }]
+              : base.ingredients,
+          health_benefits: tier === 'premium'
+            ? [ 'Elite Performance', 'Premium Superfoods', ...base.health_benefits ]
+            : tier === 'enhanced'
+              ? [ 'Advanced Benefits', ...base.health_benefits ]
+              : base.health_benefits,
+        };
+      };
 
       const simplified = [
         toVariant('essential', 'Essential'),
@@ -652,7 +682,7 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
               {selectedSmoothies.map((smoothie, index) => (
                 <div key={smoothie.id} className="flex items-center justify-between">
                   <span className="text-sm">{index + 1}. {smoothie.name}</span>
-                  <span className="text-sm font-semibold">CHF {smoothie.cost_breakdown.total_cost}</span>
+                  <span className="text-sm font-semibold">CHF {smoothie.price.seven_day}</span>
                 </div>
               ))}
               <div className="border-t pt-2 mt-2">

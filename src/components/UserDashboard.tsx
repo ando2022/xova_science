@@ -58,35 +58,45 @@ export function UserDashboard({ user, onLogout, onStartSmoothieSelection }: User
         setUserProfile(profile);
       }
 
-      // Load real orders from database
-      const { data: userOrders, error: ordersError } = await supabase
-        .from('orders')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('order_date', { ascending: false });
+      // Load real orders from database (with error handling)
+      try {
+        const { data: userOrders, error: ordersError } = await supabase
+          .from('orders')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('order_date', { ascending: false });
 
-      if (ordersError) {
-        console.error('Error loading orders:', ordersError);
+        if (ordersError) {
+          console.warn('Orders table may not exist yet:', ordersError.message);
+          setOrders([]);
+        } else {
+          console.log('Orders loaded:', userOrders);
+          setOrders(userOrders || []);
+        }
+      } catch (err) {
+        console.warn('Failed to load orders:', err);
         setOrders([]);
-      } else {
-        console.log('Orders loaded:', userOrders);
-        setOrders(userOrders || []);
       }
 
-      // Load real subscription status
-      const { data: userSubscription, error: subscriptionError } = await supabase
-        .from('subscriptions')
-        .select('*')
-        .eq('user_id', user.id)
-        .eq('status', 'active')
-        .single();
+      // Load real subscription status (with error handling)
+      try {
+        const { data: userSubscription, error: subscriptionError } = await supabase
+          .from('subscriptions')
+          .select('*')
+          .eq('user_id', user.id)
+          .eq('status', 'active')
+          .single();
 
-      if (subscriptionError && subscriptionError.code !== 'PGRST116') {
-        console.error('Error loading subscription:', subscriptionError);
+        if (subscriptionError && subscriptionError.code !== 'PGRST116') {
+          console.warn('Subscriptions table may not exist yet:', subscriptionError.message);
+        }
+        
+        console.log('Subscription loaded:', userSubscription);
+        setSubscription(userSubscription || null);
+      } catch (err) {
+        console.warn('Failed to load subscription:', err);
+        setSubscription(null);
       }
-      
-      console.log('Subscription loaded:', userSubscription);
-      setSubscription(userSubscription || null);
 
     } catch (error) {
       console.error('Error loading user data:', error);
