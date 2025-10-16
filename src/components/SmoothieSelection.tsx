@@ -24,7 +24,13 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
   const [smoothies, setSmoothies] = useState<SmoothieRecipe[]>([]);
   const [selectedSmoothies, setSelectedSmoothies] = useState<SmoothieRecipe[]>([]);
   const [loading, setLoading] = useState(true);
+  // RADICAL FIX: Force 7-day plan only
   const [planType, setPlanType] = useState<'7-day' | '14-day'>('7-day');
+  
+  // Override any plan type changes - FORCE 7-day minimum
+  useEffect(() => {
+    setPlanType('7-day');
+  }, []);
   const [filter, setFilter] = useState<FilterType>('all');
   const [selectedSmoothie, setSelectedSmoothie] = useState<SmoothieRecipe | null>(null);
   const [error, setError] = useState<string>('');
@@ -171,22 +177,19 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
   const getPlanPrice = () => {
     if (selectedSmoothies.length === 0) return 0;
     
-    // Simple pricing: just multiply unit price by quantity
+    // RADICAL FIX: Always 7-day plan (7 smoothies at CHF 12 each)
     const smoothie = selectedSmoothies[0]; // We only select 1 smoothie
-    const quantity = planType === '14-day' ? 14 : 7;
+    const quantity = 7; // FORCE 7 smoothies minimum
     
-    // Use the appropriate price based on plan type
-    const unitPrice = planType === '14-day' ? smoothie.price.fourteen_day : smoothie.price.seven_day;
+    // Always use 7-day price (CHF 12 each)
+    const unitPrice = smoothie.price.seven_day;
     
     return unitPrice * quantity;
   };
 
   const getPlanDescription = () => {
-    if (planType === '14-day') {
-      return '14 smoothies (CHF 11 each)';
-    } else {
-      return '7 smoothies (CHF 12 each)';
-    }
+    // RADICAL FIX: Always 7-day plan
+    return '7 smoothies (CHF 12 each)';
   };
 
   const handleContinue = async () => {
@@ -202,14 +205,14 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
       // Create Stripe Checkout session and redirect (MVP)
       try {
         const totalPrice = getPlanPrice();
-        console.log('Sending to Stripe:', { totalPrice, planType, selectedSmoothies: selectedSmoothies.length });
+        console.log('Sending to Stripe:', { totalPrice, planType: '7-day', selectedSmoothies: selectedSmoothies.length });
         
         const response = await fetch('/api/create-checkout-session', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             totalAmountChf: totalPrice,
-            planType,
+            planType: '7-day', // FORCE 7-day plan
             userEmail: undefined,
           }),
         });
@@ -285,7 +288,7 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
             <div>
               <h1 className="text-2xl font-bold mb-2">Your Smoothie</h1>
               <p className="text-muted-foreground">
-                One essential recipe. Your plan will include at least {planType === '14-day' ? 14 : 7} smoothies total.
+                One essential recipe. Your plan will include exactly 7 smoothies total.
               </p>
             </div>
             <div className="text-right">
@@ -556,7 +559,7 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
                   </div>
                   <div className="text-right">
                     <div className="font-semibold">
-                      CHF {planType === '14-day' ? smoothie.price.fourteen_day : smoothie.price.seven_day}
+                      CHF {smoothie.price.seven_day}
                     </div>
                     <div className="text-xs text-gray-500">per smoothie</div>
                   </div>
@@ -571,7 +574,7 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
               <div>
                 <div className="font-semibold text-lg">Plan</div>
                 <div className="text-sm text-gray-600">
-                  {planType === '14-day' ? '14 smoothies · CHF 11 each' : '7 smoothies · CHF 12 each'}
+                  7 smoothies · CHF 12 each
                 </div>
               </div>
               <div className="text-right">
@@ -587,7 +590,7 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
               <div>
                 <div className="font-semibold text-lg">Total Order</div>
                 <div className="text-sm text-gray-600">
-                  {planType === '14-day' ? '14 smoothies' : '7 smoothies'}
+                  7 smoothies
                 </div>
               </div>
               <div className="text-right">
@@ -628,7 +631,7 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
               ))}
               <div className="border-t pt-2 mt-2">
                 <div className="flex items-center justify-between font-semibold">
-                  <span>Total for {planType === '14-day' ? '14' : '7'} smoothies:</span>
+                  <span>Total for 7 smoothies:</span>
                   <span>CHF {getPlanPrice()}</span>
                 </div>
               </div>
