@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { X, Star, Target, Heart, Zap, CheckCircle, Clock, Utensils } from 'lucide-react';
 import { Button } from './ui/button';
 import { Card } from './ui/card';
@@ -47,8 +48,8 @@ export function SmoothieDetailModal({ smoothie, profile, onClose, onSelect, isSe
     }
   };
 
-  return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+  const modalContent = (
+    <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-[1000]">
       <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className={`bg-gradient-to-r ${getTierColor(smoothie.tier)} p-6 rounded-t-2xl text-white relative`}>
@@ -304,4 +305,8 @@ export function SmoothieDetailModal({ smoothie, profile, onClose, onSelect, isSe
       </div>
     </div>
   );
+
+  // Render in portal to avoid stacking/overflow issues
+  const portalRoot = document.body;
+  return ReactDOM.createPortal(modalContent, portalRoot);
 }

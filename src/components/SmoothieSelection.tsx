@@ -250,7 +250,7 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
         <div className="mb-8">
           <div className="flex items-center justify-between text-sm text-muted-foreground mb-2">
             <span>Step 2 of 3: Select Your Smoothies</span>
-            <span>Choose 3 from 21 options</span>
+            <span>Choose {MAX_SELECTION} from {smoothies.length} options</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
             <div className="bg-gradient-to-r from-xova-primary to-xova-secondary h-2 rounded-full transition-all duration-300" style={{ width: '66%' }} />
@@ -263,7 +263,7 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
             <div>
               <h1 className="text-2xl font-bold mb-2">Choose Your Perfect Smoothies</h1>
               <p className="text-muted-foreground">
-                Select {MAX_SELECTION} smoothies from {smoothies.length} personalized options
+                Select {MAX_SELECTION} smoothie types. Your plan will include at least {planType === 'first-order' ? 14 : 7} smoothies total.
               </p>
             </div>
             <div className="text-right">
