@@ -11,6 +11,12 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 interface QuestionnaireData {
+  // Basic Info
+  age: number;
+  weight: number;
+  height: number;
+  gender: 'male' | 'female' | 'other';
+  
   // Health Goals
   health_goals: string[];
   
@@ -99,6 +105,10 @@ export function HealthQuestionnaire({ onComplete, onSkip }: HealthQuestionnaireP
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<QuestionnaireData>({
+    age: 30,
+    weight: 70,
+    height: 170,
+    gender: 'other',
     health_goals: [],
     activity_level: 'moderate',
     dietary_restrictions: [],
@@ -109,7 +119,7 @@ export function HealthQuestionnaire({ onComplete, onSkip }: HealthQuestionnaireP
     stress_level: 'moderate'
   });
 
-  const totalSteps = 6;
+  const totalSteps = 7; // Added one step for basic info
 
   const handleGoalToggle = (goalId: string) => {
     setData(prev => ({
@@ -303,12 +313,13 @@ export function HealthQuestionnaire({ onComplete, onSkip }: HealthQuestionnaireP
 
   const canProceed = () => {
     switch (currentStep) {
-      case 1: return data.health_goals.length > 0;
-      case 2: return data.activity_level;
-      case 3: return true; // Dietary restrictions are optional
-      case 4: return true; // Allergens are optional
-      case 5: return true; // Preferences are optional
-      case 6: return true; // Lifestyle info is optional
+      case 1: return data.age > 0 && data.weight > 0 && data.height > 0 && data.gender;
+      case 2: return data.health_goals.length > 0;
+      case 3: return data.activity_level;
+      case 4: return true; // Dietary restrictions are optional
+      case 5: return true; // Allergens are optional
+      case 6: return true; // Preferences are optional
+      case 7: return true; // Lifestyle info is optional
       default: return false;
     }
   };
@@ -316,6 +327,73 @@ export function HealthQuestionnaire({ onComplete, onSkip }: HealthQuestionnaireP
   const renderStep = () => {
     switch (currentStep) {
       case 1:
+        return (
+          <div className="space-y-6">
+            <div className="text-center">
+              <Target className="w-12 h-12 text-xova-primary mx-auto mb-4" />
+              <h3 className="text-2xl font-bold mb-2">Tell us about yourself</h3>
+              <p className="text-muted-foreground">We need your basic info to calculate precise nutritional needs</p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Label htmlFor="age">Age</Label>
+                <Input
+                  id="age"
+                  type="number"
+                  value={data.age}
+                  onChange={(e) => setData(prev => ({ ...prev, age: parseInt(e.target.value) || 0 }))}
+                  placeholder="Enter your age"
+                  min="1"
+                  max="120"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="weight">Weight (kg)</Label>
+                <Input
+                  id="weight"
+                  type="number"
+                  value={data.weight}
+                  onChange={(e) => setData(prev => ({ ...prev, weight: parseFloat(e.target.value) || 0 }))}
+                  placeholder="Enter your weight"
+                  min="1"
+                  max="300"
+                  step="0.1"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="height">Height (cm)</Label>
+                <Input
+                  id="height"
+                  type="number"
+                  value={data.height}
+                  onChange={(e) => setData(prev => ({ ...prev, height: parseInt(e.target.value) || 0 }))}
+                  placeholder="Enter your height"
+                  min="100"
+                  max="250"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="gender">Gender</Label>
+                <select
+                  id="gender"
+                  value={data.gender}
+                  onChange={(e) => setData(prev => ({ ...prev, gender: e.target.value as 'male' | 'female' | 'other' }))}
+                  className="w-full px-3 py-2 border border-input rounded-md bg-background"
+                >
+                  <option value="other">Prefer not to say</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        );
+        
+      case 2:
         return (
           <div className="space-y-6">
             <div className="text-center">
@@ -348,7 +426,7 @@ export function HealthQuestionnaire({ onComplete, onSkip }: HealthQuestionnaireP
           </div>
         );
 
-      case 2:
+      case 3:
         return (
           <div className="space-y-6">
             <div className="text-center">
@@ -384,7 +462,7 @@ export function HealthQuestionnaire({ onComplete, onSkip }: HealthQuestionnaireP
           </div>
         );
 
-      case 3:
+      case 4:
         return (
           <div className="space-y-6">
             <div className="text-center">

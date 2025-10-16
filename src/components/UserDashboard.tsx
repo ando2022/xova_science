@@ -6,6 +6,7 @@ import { createClient } from '@supabase/supabase-js';
 import { User, Settings, LogOut, Package, Calendar, TrendingUp, CreditCard, Bell, Plus, Target } from 'lucide-react';
 import { HealthQuestionnaire } from './HealthQuestionnaire';
 import { NutritionalProfileDisplay } from './NutritionalProfileDisplay';
+import { PaymentTest } from './PaymentTest';
 import { mockNutritionalProfile } from '../lib/mock-profile';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
@@ -26,6 +27,7 @@ export function UserDashboard({ user, onLogout, onStartSmoothieSelection }: User
   const [showQuestionnaire, setShowQuestionnaire] = useState(false);
   const [showProfileDisplay, setShowProfileDisplay] = useState(false);
   const [generatedProfile, setGeneratedProfile] = useState<any>(null);
+  const [showPaymentTest, setShowPaymentTest] = useState(false);
 
   useEffect(() => {
     loadUserData();
@@ -390,7 +392,7 @@ export function UserDashboard({ user, onLogout, onStartSmoothieSelection }: User
         {/* Quick Actions */}
         <Card className="p-6 mt-8">
           <h2 className="text-xl font-bold mb-4">Quick Actions</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Button 
               className="h-20 bg-gradient-to-r from-xova-primary to-xova-accent text-lg"
               onClick={() => {
@@ -413,9 +415,22 @@ export function UserDashboard({ user, onLogout, onStartSmoothieSelection }: User
               <TrendingUp className="w-6 h-6 mr-3" />
               View Progress
             </Button>
+            <Button 
+              variant="outline" 
+              className="h-20 text-lg border-blue-500/30 hover:bg-blue-500/10"
+              onClick={() => setShowPaymentTest(true)}
+            >
+              <CreditCard className="w-6 h-6 mr-3" />
+              Test Payments
+            </Button>
           </div>
         </Card>
       </main>
+
+      {/* Payment Test Modal */}
+      {showPaymentTest && (
+        <PaymentTest onClose={() => setShowPaymentTest(false)} />
+      )}
     </div>
   );
 }
