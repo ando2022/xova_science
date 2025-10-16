@@ -29,7 +29,8 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
   const [selectedSmoothie, setSelectedSmoothie] = useState<SmoothieRecipe | null>(null);
   const [error, setError] = useState<string>('');
 
-  const MAX_SELECTION = 3;
+  // Radical simplification: select ONE recipe (with tier options)
+  const MAX_SELECTION = 1;
   const FIRST_ORDER_QUANTITY = 14;
   const WEEKLY_QUANTITY = 7;
 
@@ -45,10 +46,38 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
       // Load ingredients first
       await smoothieGenerator.loadIngredients();
       
-      // Generate 21 smoothie variations
-      const generatedSmoothies = await smoothieGenerator.generateSmoothieRecipes(profile, 21);
-      
-      setSmoothies(generatedSmoothies);
+      // Generate a single baseline recipe, then derive Enhanced/Premium variants
+      const baseList = await smoothieGenerator.generateSmoothieRecipes(profile, 1);
+      const base = baseList[0];
+
+      if (!base) {
+        throw new Error('Failed to generate base smoothie');
+      }
+
+      const toVariant = (tier: 'essential' | 'enhanced' | 'premium', nameSuffix: string): SmoothieRecipe => ({
+        ...base,
+        id: `${base.id}-${tier}`,
+        name: `${base.name} · ${nameSuffix}`,
+        tier,
+        price: tier === 'premium'
+          ? { seven_day: 18, fourteen_day: 17 }
+          : tier === 'enhanced'
+            ? { seven_day: 15, fourteen_day: 14 }
+            : { seven_day: 12, fourteen_day: 11 },
+        health_benefits: tier === 'premium'
+          ? [ 'Elite Performance', 'Premium Superfoods', ...base.health_benefits ]
+          : tier === 'enhanced'
+            ? [ 'Advanced Benefits', ...base.health_benefits ]
+            : base.health_benefits,
+      });
+
+      const simplified = [
+        toVariant('essential', 'Essential'),
+        toVariant('enhanced', 'Enhanced'),
+        toVariant('premium', 'Premium'),
+      ];
+
+      setSmoothies(simplified);
     } catch (error: any) {
       console.error('Error generating smoothies:', error);
       setError('Failed to generate smoothies. Please try again.');
@@ -283,9 +312,9 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
         <Card className="p-6 mb-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold mb-2">Choose Your Perfect Smoothies</h1>
+              <h1 className="text-2xl font-bold mb-2">Choose Your Smoothie</h1>
               <p className="text-muted-foreground">
-                Select {MAX_SELECTION} smoothie types. Your plan will include at least {planType === 'first-order' ? 14 : 7} smoothies total.
+                Select 1 recipe (Essential, Enhanced, or Premium). Your plan will include at least {planType === 'first-order' ? 14 : 7} smoothies total.
               </p>
             </div>
             <div className="text-right">
@@ -512,7 +541,7 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
                   ) : canSelect ? (
                     <div className="flex items-center text-gray-600">
                       <Star className="w-4 h-4 mr-2" />
-                      <span className="text-sm">Click to select</span>
+                      <span className="text-sm">Click to select this version</span>
                     </div>
                   ) : (
                     <div className="flex items-center text-gray-400">
