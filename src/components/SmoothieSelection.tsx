@@ -14,7 +14,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 interface SmoothieSelectionProps {
   profile: NutritionalProfile;
-  onSelectionComplete: (selectedSmoothies: SmoothieRecipe[], planType: 'first-order' | 'weekly') => void;
+  onSelectionComplete: (selectedSmoothies: SmoothieRecipe[], planType: '7-day' | '14-day') => void;
   onBack: () => void;
 }
 
@@ -24,7 +24,7 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
   const [smoothies, setSmoothies] = useState<SmoothieRecipe[]>([]);
   const [selectedSmoothies, setSelectedSmoothies] = useState<SmoothieRecipe[]>([]);
   const [loading, setLoading] = useState(true);
-  const [planType, setPlanType] = useState<'first-order' | 'weekly'>('first-order');
+  const [planType, setPlanType] = useState<'7-day' | '14-day'>('7-day');
   const [filter, setFilter] = useState<FilterType>('all');
   const [selectedSmoothie, setSelectedSmoothie] = useState<SmoothieRecipe | null>(null);
   const [error, setError] = useState<string>('');
@@ -173,16 +173,16 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
     
     // Simple pricing: just multiply unit price by quantity
     const smoothie = selectedSmoothies[0]; // We only select 1 smoothie
-    const quantity = planType === 'first-order' ? 14 : 7;
+    const quantity = planType === '14-day' ? 14 : 7;
     
     // Use the appropriate price based on plan type
-    const unitPrice = planType === 'first-order' ? smoothie.price.fourteen_day : smoothie.price.seven_day;
+    const unitPrice = planType === '14-day' ? smoothie.price.fourteen_day : smoothie.price.seven_day;
     
     return unitPrice * quantity;
   };
 
   const getPlanDescription = () => {
-    if (planType === 'first-order') {
+    if (planType === '14-day') {
       return '14 smoothies (CHF 11 each)';
     } else {
       return '7 smoothies (CHF 12 each)';
@@ -282,7 +282,7 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
             <div>
               <h1 className="text-2xl font-bold mb-2">Your Smoothie</h1>
               <p className="text-muted-foreground">
-                One essential recipe. Your plan will include at least {planType === 'first-order' ? 14 : 7} smoothies total.
+                One essential recipe. Your plan will include at least {planType === '14-day' ? 14 : 7} smoothies total.
               </p>
             </div>
             <div className="text-right">
@@ -553,7 +553,7 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
                   </div>
                   <div className="text-right">
                     <div className="font-semibold">
-                      CHF {planType === 'first-order' ? smoothie.price.fourteen_day : smoothie.price.seven_day}
+                      CHF {planType === '14-day' ? smoothie.price.fourteen_day : smoothie.price.seven_day}
                     </div>
                     <div className="text-xs text-gray-500">per smoothie</div>
                   </div>
@@ -568,7 +568,7 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
               <div>
                 <div className="font-semibold text-lg">Plan</div>
                 <div className="text-sm text-gray-600">
-                  {planType === 'first-order' ? '14 smoothies · CHF 11 each' : '7 smoothies · CHF 12 each'}
+                  {planType === '14-day' ? '14 smoothies · CHF 11 each' : '7 smoothies · CHF 12 each'}
                 </div>
               </div>
               <div className="text-right">
@@ -584,7 +584,7 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
               <div>
                 <div className="font-semibold text-lg">Total Order</div>
                 <div className="text-sm text-gray-600">
-                  {planType === 'first-order' ? '14 smoothies' : '7 smoothies'}
+                  {planType === '14-day' ? '14 smoothies' : '7 smoothies'}
                 </div>
               </div>
               <div className="text-right">
@@ -625,7 +625,7 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
               ))}
               <div className="border-t pt-2 mt-2">
                 <div className="flex items-center justify-between font-semibold">
-                  <span>Total for {planType === 'first-order' ? '14' : '7'} smoothies:</span>
+                  <span>Total for {planType === '14-day' ? '14' : '7'} smoothies:</span>
                   <span>CHF {getPlanPrice()}</span>
                 </div>
               </div>

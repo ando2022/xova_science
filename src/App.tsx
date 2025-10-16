@@ -70,15 +70,15 @@ function App() {
     setCurrentState('smoothie-selection');
   };
 
-  const handleSmoothieSelectionComplete = (selectedSmoothies: any[], planType: 'first-order' | 'weekly') => {
+  const handleSmoothieSelectionComplete = (selectedSmoothies: any[], planType: '7-day' | '14-day') => {
     console.log('Selected smoothies:', selectedSmoothies);
     console.log('Plan type:', planType);
     // Map to our product types
     const productMap: { [key: string]: 'weeklyPlan' | 'fortnightlyPlan' } = {
-      'weekly': 'weeklyPlan',
-      'first-order': 'fortnightlyPlan'
+      '7-day': 'weeklyPlan',
+      '14-day': 'fortnightlyPlan'
     };
-    setSelectedProduct(productMap[planType] || 'fortnightlyPlan');
+    setSelectedProduct(productMap[planType] || 'weeklyPlan');
     setCurrentState('checkout');
   };
 
