@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from './ui/button';
 import { Card } from './ui/card';
 import { Badge } from './ui/badge';
@@ -22,6 +22,31 @@ interface NewLandingPageProps {
 }
 
 export function NewLandingPage({ onNavigate }: NewLandingPageProps) {
+  const [showModal, setShowModal] = useState<null | 'essential' | 'calm' | 'brain'>(null);
+
+  const variants: Record<string, { title: string; subtitle: string; color: string; gradient: string; ingredients: string[] }>= {
+    essential: {
+      title: 'Essential Focus',
+      subtitle: 'Daily Superfood Mix',
+      color: 'from-emerald-600 to-blue-600',
+      gradient: 'from-emerald-50 via-white to-blue-50',
+      ingredients: ['Spirulina 2g', 'Maca 1g', "Chia 4g", 'Vitamin C 100mg']
+    },
+    calm: {
+      title: 'Calm & Energy',
+      subtitle: 'Daily Superfood Mix',
+      color: 'from-purple-600 to-pink-600',
+      gradient: 'from-purple-50 via-white to-emerald-50',
+      ingredients: ["Ashwagandha 500mg", 'Maca 1g', 'Cocoa 3g', 'Magnesium 150mg']
+    },
+    brain: {
+      title: 'Brain & Immune',
+      subtitle: 'Daily Superfood Mix',
+      color: 'from-blue-600 to-cyan-500',
+      gradient: 'from-blue-50 via-white to-emerald-50',
+      ingredients: ["Lion's Mane 1g", 'Omega-3 (ALA) 1g', 'Vitamin D 1000 IU', 'Zinc 10mg']
+    }
+  };
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-blue-50">
       {/* Header */}
@@ -90,42 +115,75 @@ export function NewLandingPage({ onNavigate }: NewLandingPageProps) {
         <div className="max-w-5xl mx-auto mb-16">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {/* Package 1 */}
-            <div className="relative overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-lg">
-              <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-white to-blue-50" />
+            <div className="relative overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-lg group hover:shadow-xl transition-shadow">
+              <div className={`absolute inset-0 bg-gradient-to-br ${variants.essential.gradient}`} />
               <div className="relative p-6 h-56 flex flex-col items-center justify-center">
-                <div className="w-28 h-36 rounded-2xl bg-gradient-to-br from-emerald-600 to-blue-600 shadow-2xl shadow-emerald-500/20" />
+                <div className={`w-28 h-36 rounded-2xl bg-gradient-to-br ${variants.essential.color} shadow-2xl shadow-emerald-500/20 scale-100 group-hover:scale-105 transition-transform`} />
                 <div className="mt-4 text-center">
-                  <p className="text-sm tracking-wider text-gray-500">Daily Superfood Mix</p>
-                  <p className="text-base font-semibold">Essential Focus</p>
+                  <p className="text-sm tracking-wider text-gray-500">{variants.essential.subtitle}</p>
+                  <p className="text-base font-semibold">{variants.essential.title}</p>
                 </div>
+                <button onClick={() => setShowModal('essential')} className="mt-3 text-sm font-medium text-emerald-700 hover:text-emerald-800 underline underline-offset-4">View ingredients</button>
               </div>
             </div>
 
             {/* Package 2 */}
-            <div className="relative overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-lg">
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-white to-emerald-50" />
+            <div className="relative overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-lg group hover:shadow-xl transition-shadow">
+              <div className={`absolute inset-0 bg-gradient-to-br ${variants.calm.gradient}`} />
               <div className="relative p-6 h-56 flex flex-col items-center justify-center">
-                <div className="w-28 h-36 rounded-2xl bg-gradient-to-br from-purple-600 to-pink-600 shadow-2xl shadow-purple-500/20" />
+                <div className={`w-28 h-36 rounded-2xl bg-gradient-to-br ${variants.calm.color} shadow-2xl shadow-purple-500/20 scale-100 group-hover:scale-105 transition-transform`} />
                 <div className="mt-4 text-center">
-                  <p className="text-sm tracking-wider text-gray-500">Daily Superfood Mix</p>
-                  <p className="text-base font-semibold">Calm & Energy</p>
+                  <p className="text-sm tracking-wider text-gray-500">{variants.calm.subtitle}</p>
+                  <p className="text-base font-semibold">{variants.calm.title}</p>
                 </div>
+                <button onClick={() => setShowModal('calm')} className="mt-3 text-sm font-medium text-purple-700 hover:text-purple-800 underline underline-offset-4">View ingredients</button>
               </div>
             </div>
 
             {/* Package 3 */}
-            <div className="relative overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-lg">
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-emerald-50" />
+            <div className="relative overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-lg group hover:shadow-xl transition-shadow">
+              <div className={`absolute inset-0 bg-gradient-to-br ${variants.brain.gradient}`} />
               <div className="relative p-6 h-56 flex flex-col items-center justify-center">
-                <div className="w-28 h-36 rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 shadow-2xl shadow-blue-500/20" />
+                <div className={`w-28 h-36 rounded-2xl bg-gradient-to-br ${variants.brain.color} shadow-2xl shadow-blue-500/20 scale-100 group-hover:scale-105 transition-transform`} />
                 <div className="mt-4 text-center">
-                  <p className="text-sm tracking-wider text-gray-500">Daily Superfood Mix</p>
-                  <p className="text-base font-semibold">Brain & Immune</p>
+                  <p className="text-sm tracking-wider text-gray-500">{variants.brain.subtitle}</p>
+                  <p className="text-base font-semibold">{variants.brain.title}</p>
                 </div>
+                <button onClick={() => setShowModal('brain')} className="mt-3 text-sm font-medium text-blue-700 hover:text-blue-800 underline underline-offset-4">View ingredients</button>
               </div>
             </div>
           </div>
         </div>
+
+        {/* Ingredients Modal */}
+        {showModal && (
+          <div className="fixed inset-0 z-[1000] bg-black/50 flex items-center justify-center p-4" onClick={() => setShowModal(null)}>
+            <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-xl font-bold">
+                  {variants[showModal].title}
+                </h3>
+                <button onClick={() => setShowModal(null)} className="p-2 hover:bg-gray-100 rounded-lg">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <p className="text-sm text-gray-600 mb-4">Example daily sachet ingredients (may vary based on your profile):</p>
+              <ul className="space-y-2 mb-6">
+                {variants[showModal].ingredients.map((item) => (
+                  <li key={item} className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-emerald-600" />
+                    <span className="text-gray-800 text-sm">{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="flex justify-end">
+                <Button onClick={() => setShowModal(null)}>
+                  Close
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Trust Indicators */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
@@ -229,7 +287,7 @@ export function NewLandingPage({ onNavigate }: NewLandingPageProps) {
         </div>
       </section>
 
-      {/* Superfood Mix Offer */}
+      {/* Superfood Mix Offer (mirrors hero cards) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-gray-900 mb-6">
@@ -281,6 +339,23 @@ export function NewLandingPage({ onNavigate }: NewLandingPageProps) {
               <div className="text-4xl font-bold text-emerald-600 mb-2">CHF 4</div>
               <div className="text-gray-600 mb-6">per day • minimum 7 days</div>
               
+              {/* Mirror of hero variants */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                {(['essential','calm','brain'] as const).map((key) => (
+                  <div key={key} className="relative overflow-hidden rounded-2xl border border-gray-200 bg-white shadow group">
+                    <div className={`absolute inset-0 bg-gradient-to-br ${variants[key].gradient}`} />
+                    <div className="relative p-4 h-44 flex flex-col items-center justify-center">
+                      <div className={`w-20 h-28 rounded-xl bg-gradient-to-br ${variants[key].color} shadow-lg scale-100 group-hover:scale-105 transition-transform`} />
+                      <div className="mt-3 text-center">
+                        <p className="text-xs tracking-wider text-gray-500">{variants[key].subtitle}</p>
+                        <p className="text-sm font-semibold">{variants[key].title}</p>
+                      </div>
+                      <button onClick={() => setShowModal(key)} className="mt-2 text-xs font-medium text-emerald-700 hover:text-emerald-800 underline underline-offset-4">View ingredients</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
               <div className="space-y-3 mb-8">
                 <div className="flex justify-between">
                   <span>7-day supply:</span>
