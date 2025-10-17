@@ -50,7 +50,7 @@ export function NewLandingPage({ onNavigate }: NewLandingPageProps) {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
         <div className="inline-block px-6 py-3 bg-gradient-to-r from-emerald-100 to-blue-100 border border-emerald-200 rounded-full mb-8">
           <span className="bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent font-semibold">
-            🧪 Science-Based Nutrition
+            🧪 Personalized. Transparent. Science-Backed.
           </span>
         </div>
         
@@ -60,8 +60,9 @@ export function NewLandingPage({ onNavigate }: NewLandingPageProps) {
         </h1>
         
         <p className="text-xl md:text-2xl text-gray-700 mb-12 max-w-4xl mx-auto leading-relaxed">
-          Get your <strong>free personalized smoothie recipe</strong> based on your health goals, 
-          then add our <strong>scientifically-proven superfood mix</strong> for maximum benefits.
+          We design your <strong>free personalized smoothie base</strong> first (fruit & vegetables),
+          fully adapted to your goals and restrictions. Then we offer an <strong>optional superfood mix</strong>
+          tailored to you — with clear scientific explanations and no hype.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
@@ -101,78 +102,40 @@ export function NewLandingPage({ onNavigate }: NewLandingPageProps) {
         </div>
       </section>
 
-      {/* Problem vs Solution */}
+      {/* Brand Pillars - No competitor mentions */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-gray-900 mb-6">
-            Why XOVA is Different
+            What You Get With XOVA
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            While others sell you mystery powders, we give you transparency, science, and control.
+            Personalized nutrition with full transparency and scientific clarity.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* The Problem */}
-          <Card className="p-8 border-red-200 bg-red-50">
-            <div className="flex items-center gap-3 mb-6">
-              <X className="w-8 h-8 text-red-600" />
-              <h3 className="text-2xl font-bold text-red-800">The Problem with Others</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <Card className="p-8 border-emerald-200 bg-emerald-50">
+            <div className="flex items-center gap-3 mb-4">
+              <Beaker className="w-6 h-6 text-emerald-600" />
+              <h3 className="text-xl font-bold text-emerald-800">Free Personalized Recipe</h3>
             </div>
-            <div className="space-y-4">
-              <div className="flex items-start gap-3">
-                <X className="w-5 h-5 text-red-600 mt-1 flex-shrink-0" />
-                <div>
-                  <h4 className="font-semibold text-red-800">Huel & Competitors</h4>
-                  <p className="text-red-700">Mystery ingredients, no personalization, one-size-fits-all approach</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <X className="w-5 h-5 text-red-600 mt-1 flex-shrink-0" />
-                <div>
-                  <h4 className="font-semibold text-red-800">Generic Supplements</h4>
-                  <p className="text-red-700">No scientific justification, marketing hype over evidence</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <X className="w-5 h-5 text-red-600 mt-1 flex-shrink-0" />
-                <div>
-                  <h4 className="font-semibold text-red-800">Guesswork</h4>
-                  <p className="text-red-700">You're left wondering what actually works for your specific needs</p>
-                </div>
-              </div>
-            </div>
+            <p className="text-emerald-700">We generate a smoothie base tailored to your goals, taste, and restrictions.</p>
           </Card>
 
-          {/* The Solution */}
-          <Card className="p-8 border-emerald-200 bg-emerald-50">
-            <div className="flex items-center gap-3 mb-6">
-              <CheckCircle className="w-8 h-8 text-emerald-600" />
-              <h3 className="text-2xl font-bold text-emerald-800">The XOVA Solution</h3>
+          <Card className="p-8 border-blue-200 bg-blue-50">
+            <div className="flex items-center gap-3 mb-4">
+              <Shield className="w-6 h-6 text-blue-600" />
+              <h3 className="text-xl font-bold text-blue-800">Scientific Transparency</h3>
             </div>
-            <div className="space-y-4">
-              <div className="flex items-start gap-3">
-                <CheckCircle className="w-5 h-5 text-emerald-600 mt-1 flex-shrink-0" />
-                <div>
-                  <h4 className="font-semibold text-emerald-800">Free Personalized Recipe</h4>
-                  <p className="text-emerald-700">Get your custom smoothie recipe based on your health goals and restrictions</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <CheckCircle className="w-5 h-5 text-emerald-600 mt-1 flex-shrink-0" />
-                <div>
-                  <h4 className="font-semibold text-emerald-800">Scientifically-Proven Superfoods</h4>
-                  <p className="text-emerald-700">Evidence-based ingredients with clear explanations of benefits</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <CheckCircle className="w-5 h-5 text-emerald-600 mt-1 flex-shrink-0" />
-                <div>
-                  <h4 className="font-semibold text-emerald-800">Complete Transparency</h4>
-                  <p className="text-emerald-700">Know exactly what you're taking and why it works for you</p>
-                </div>
-              </div>
+            <p className="text-blue-700">Every ingredient includes a plain-language explanation and the level of evidence behind it.</p>
+          </Card>
+
+          <Card className="p-8 border-purple-200 bg-purple-50">
+            <div className="flex items-center gap-3 mb-4">
+              <Leaf className="w-6 h-6 text-purple-600" />
+              <h3 className="text-xl font-bold text-purple-800">Tailored Superfood Mix</h3>
             </div>
+            <p className="text-purple-700">Optional daily mix, pre-measured for you. CHF 4/day • min 7 days.</p>
           </Card>
         </div>
       </section>
@@ -295,7 +258,7 @@ export function NewLandingPage({ onNavigate }: NewLandingPageProps) {
                 onClick={() => onNavigate('questionnaire')}
                 className="w-full bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700"
               >
-                Get Started Free
+                Get Free Recipe
               </Button>
             </div>
           </Card>
