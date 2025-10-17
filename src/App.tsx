@@ -4,7 +4,9 @@ import { AuthSystem } from './components/AuthSystem';
 import { MVPDashboard } from './components/MVPDashboard';
 import { PricingDisplay } from './components/PricingDisplay';
 import { CheckoutPage } from './components/CheckoutPage';
-import { CleanLandingPage } from './components/CleanLandingPage';
+import { NewLandingPage } from './components/NewLandingPage';
+import { NewQuestionnaire } from './components/NewQuestionnaire';
+import { RecipeAndOffer } from './components/RecipeAndOffer';
 import { DemoPage } from './components/DemoPage';
 import { SmoothieSelection } from './components/SmoothieSelection';
 import { Button } from './components/ui/button';
@@ -16,7 +18,7 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-type AppState = 'landing' | 'auth' | 'dashboard' | 'pricing' | 'checkout' | 'demo' | 'smoothie-selection';
+type AppState = 'landing' | 'auth' | 'dashboard' | 'pricing' | 'checkout' | 'demo' | 'smoothie-selection' | 'questionnaire' | 'recipe-offer';
 type AuthMode = 'login' | 'signup';
 
 function App() {
@@ -26,6 +28,7 @@ function App() {
   const [selectedProduct, setSelectedProduct] = useState<'weeklyPlan' | 'fortnightlyPlan'>('weeklyPlan');
   const [authMode, setAuthMode] = useState<AuthMode>('signup');
   const [userProfile, setUserProfile] = useState<any>(null);
+  const [questionnaireProfile, setQuestionnaireProfile] = useState<any>(null);
 
   useEffect(() => {
     // Check if user is already logged in
@@ -96,7 +99,7 @@ function App() {
   // Landing Page
   if (currentState === 'landing') {
     return (
-      <CleanLandingPage onNavigate={(page: string) => {
+      <NewLandingPage onNavigate={(page: string) => {
         if (page === 'pricing') {
           setCurrentState('pricing');
         } else if (page === 'signup') {
@@ -107,6 +110,8 @@ function App() {
           setCurrentState('auth');
         } else if (page === 'demo') {
           setCurrentState('demo');
+        } else if (page === 'questionnaire') {
+          setCurrentState('questionnaire');
         } else {
           // Default fallback - if unknown page, stay on landing
           console.log('Unknown navigation page:', page);
@@ -197,6 +202,34 @@ function App() {
         profile={userProfile}
         onSelectionComplete={handleSmoothieSelectionComplete}
         onBack={() => setCurrentState('dashboard')}
+      />
+    );
+  }
+
+  // Questionnaire
+  if (currentState === 'questionnaire') {
+    return (
+      <NewQuestionnaire
+        onComplete={(profile) => {
+          setQuestionnaireProfile(profile);
+          setCurrentState('recipe-offer');
+        }}
+        onBack={() => setCurrentState('landing')}
+      />
+    );
+  }
+
+  // Recipe and Offer
+  if (currentState === 'recipe-offer' && questionnaireProfile) {
+    return (
+      <RecipeAndOffer
+        profile={questionnaireProfile}
+        onBack={() => setCurrentState('questionnaire')}
+        onOrderSuperfoods={(order) => {
+          console.log('Superfood order:', order);
+          // For now, just show success - in real app, integrate with payment
+          alert(`Order placed! ${order.plan} superfood mix for CHF ${order.plan === '7-day' ? '28' : '56'}`);
+        }}
       />
     );
   }
