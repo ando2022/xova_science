@@ -186,7 +186,7 @@ export function NewLandingPage({ onNavigate }: NewLandingPageProps) {
         )}
 
         {/* Trust Indicators */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto mb-16">
           <div className="flex items-center justify-center gap-3">
             <CheckCircle className="w-6 h-6 text-emerald-600" />
             <span className="text-gray-700 font-medium">Free Recipe Generation</span>
@@ -198,6 +198,80 @@ export function NewLandingPage({ onNavigate }: NewLandingPageProps) {
           <div className="flex items-center justify-center gap-3">
             <Heart className="w-6 h-6 text-purple-600" />
             <span className="text-gray-700 font-medium">Personalized for You</span>
+          </div>
+        </div>
+
+        {/* How It Works - Visual Steps */}
+        <div className="max-w-6xl mx-auto">
+          <h3 className="text-2xl font-bold text-gray-900 text-center mb-12">How It Works</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-br from-emerald-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                <Target className="w-10 h-10 text-white" />
+              </div>
+              <h4 className="text-xl font-semibold text-gray-900 mb-3">1. Tell Us Your Goals</h4>
+              <p className="text-gray-600">Quick questionnaire about your health goals, dietary preferences, and lifestyle</p>
+            </div>
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                <Beaker className="w-10 h-10 text-white" />
+              </div>
+              <h4 className="text-xl font-semibold text-gray-900 mb-3">2. Get Your Recipe</h4>
+              <p className="text-gray-600">Receive your personalized smoothie base with scientific explanations</p>
+            </div>
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                <Leaf className="w-10 h-10 text-white" />
+              </div>
+              <h4 className="text-xl font-semibold text-gray-900 mb-3">3. Add Superfoods (Optional)</h4>
+              <p className="text-gray-600">Order your tailored superfood mix for maximum benefits</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Benefits Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 bg-gradient-to-r from-gray-50 to-blue-50">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold text-gray-900 mb-6">
+            Why Choose XOVA
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Science-backed nutrition without the guesswork
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="text-center">
+            <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+              <Zap className="w-8 h-8 text-white" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Stable Energy</h3>
+            <p className="text-gray-600 text-sm">No sugar crashes, sustained energy throughout the day</p>
+          </div>
+          
+          <div className="text-center">
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+              <Heart className="w-8 h-8 text-white" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Gut Comfort</h3>
+            <p className="text-gray-600 text-sm">Improved digestion and gut health in 2-4 weeks</p>
+          </div>
+          
+          <div className="text-center">
+            <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+              <Brain className="w-8 h-8 text-white" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Clear Focus</h3>
+            <p className="text-gray-600 text-sm">Enhanced mental clarity for busy days</p>
+          </div>
+          
+          <div className="text-center">
+            <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+              <Shield className="w-8 h-8 text-white" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Immune Support</h3>
+            <p className="text-gray-600 text-sm">Strengthened immune system with targeted nutrients</p>
           </div>
         </div>
       </section>
