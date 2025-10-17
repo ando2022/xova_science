@@ -65,7 +65,8 @@ export function NewLandingPage({ onNavigate }: NewLandingPageProps) {
           tailored to you — with clear scientific explanations and no hype.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+        {/* CTA Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-10">
           <Button 
             onClick={() => onNavigate('questionnaire')}
             size="lg"
@@ -83,6 +84,47 @@ export function NewLandingPage({ onNavigate }: NewLandingPageProps) {
           >
             See How It Works
           </Button>
+        </div>
+
+        {/* Product Showcase to avoid white space */}
+        <div className="max-w-5xl mx-auto mb-16">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {/* Package 1 */}
+            <div className="relative overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-lg">
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-white to-blue-50" />
+              <div className="relative p-6 h-56 flex flex-col items-center justify-center">
+                <div className="w-28 h-36 rounded-2xl bg-gradient-to-br from-emerald-600 to-blue-600 shadow-2xl shadow-emerald-500/20" />
+                <div className="mt-4 text-center">
+                  <p className="text-sm tracking-wider text-gray-500">Daily Superfood Mix</p>
+                  <p className="text-base font-semibold">Essential Focus</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Package 2 */}
+            <div className="relative overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-lg">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-white to-emerald-50" />
+              <div className="relative p-6 h-56 flex flex-col items-center justify-center">
+                <div className="w-28 h-36 rounded-2xl bg-gradient-to-br from-purple-600 to-pink-600 shadow-2xl shadow-purple-500/20" />
+                <div className="mt-4 text-center">
+                  <p className="text-sm tracking-wider text-gray-500">Daily Superfood Mix</p>
+                  <p className="text-base font-semibold">Calm & Energy</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Package 3 */}
+            <div className="relative overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-lg">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-emerald-50" />
+              <div className="relative p-6 h-56 flex flex-col items-center justify-center">
+                <div className="w-28 h-36 rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 shadow-2xl shadow-blue-500/20" />
+                <div className="mt-4 text-center">
+                  <p className="text-sm tracking-wider text-gray-500">Daily Superfood Mix</p>
+                  <p className="text-base font-semibold">Brain & Immune</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Trust Indicators */}
