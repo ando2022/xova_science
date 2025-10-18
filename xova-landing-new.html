@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XOVA - Personalized Superfood Science</title>
+    <title>XOVA - Personalized Nutrition That Actually Works</title>
     <style>
         * {
             margin: 0;
@@ -11,96 +11,249 @@
             box-sizing: border-box;
         }
         
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            line-height: 1.6;
-            color: #1a1a1a;
-            background: #ffffff;
+        :root {
+            --primary: #2c5530;
+            --primary-dark: #1a2f1d;
+            --accent: #6b8e23;
+            --accent-light: #8fbc8f;
+            --text-dark: #1a1a1a;
+            --text-gray: #666;
+            --bg-light: #fafafa;
+            --white: #ffffff;
+            --success: #4caf50;
+            --gradient-primary: linear-gradient(135deg, #2c5530 0%, #3d6941 100%);
+            --gradient-accent: linear-gradient(135deg, #6b8e23 0%, #8fbc8f 100%);
         }
         
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
         }
         
         /* Navigation */
         nav {
-            padding: 20px 0;
-            background: #fff;
-            border-bottom: 1px solid #eee;
-            position: sticky;
+            position: fixed;
             top: 0;
-            z-index: 100;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.97);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
         }
         
-        nav .container {
+        nav.scrolled {
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         
         .logo {
-            font-size: 24px;
-            font-weight: 700;
-            color: #2c5530;
+            font-size: 28px;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary);
         }
         
         .nav-cta {
-            background: #2c5530;
+            background: var(--gradient-accent);
             color: white;
-            padding: 10px 24px;
-            border-radius: 6px;
+            padding: 12px 28px;
+            border-radius: 25px;
             text-decoration: none;
             font-weight: 600;
-            transition: background 0.3s;
-            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
         }
         
         .nav-cta:hover {
-            background: #1e3a21;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(255, 152, 0, 0.4);
         }
         
         /* Hero Section */
         .hero {
-            padding: 80px 0;
-            background: linear-gradient(135deg, #f5f9f5 0%, #ffffff 100%);
-        }
-        
-        .hero h1 {
-            font-size: 48px;
-            line-height: 1.2;
-            margin-bottom: 20px;
-            color: #1a1a1a;
-            max-width: 800px;
-        }
-        
-        .hero .subheadline {
-            font-size: 22px;
-            color: #555;
-            margin-bottom: 30px;
-            max-width: 600px;
-        }
-        
-        .trust-badges {
+            min-height: 100vh;
             display: flex;
-            gap: 30px;
-            margin: 30px 0;
+            align-items: center;
+            padding: 120px 20px 80px;
+            background: linear-gradient(135deg, #f8fffe 0%, #fff8f0 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255, 152, 0, 0.1) 0%, transparent 70%);
+            top: -200px;
+            right: -200px;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(44, 85, 48, 0.08) 0%, transparent 70%);
+            bottom: -150px;
+            left: -150px;
+            animation: float 8s ease-in-out infinite;
+        }
+        
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-content h1 {
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+        }
+        
+        .hero-content h1 .gradient-text {
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero-subtitle {
+            font-size: 20px;
+            color: var(--text-gray);
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+        
+        .hero-cta-group {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        
+        .btn-primary {
+            display: inline-block;
+            padding: 16px 32px;
+            background: var(--gradient-accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 18px;
+            transition: all 0.3s;
+            box-shadow: 0 6px 20px rgba(255, 152, 0, 0.3);
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(255, 152, 0, 0.4);
+        }
+        
+        .btn-secondary {
+            display: inline-block;
+            padding: 16px 32px;
+            background: transparent;
+            color: var(--primary);
+            text-decoration: none;
+            border: 2px solid var(--primary);
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+        
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .trust-indicators {
+            display: flex;
+            gap: 24px;
             flex-wrap: wrap;
         }
         
-        .badge {
+        .trust-badge {
             display: flex;
             align-items: center;
             gap: 8px;
-            color: #555;
+            color: var(--text-gray);
             font-size: 14px;
         }
         
-        .badge-icon {
-            width: 20px;
-            height: 20px;
-            background: #2c5530;
+        .trust-badge-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--gradient-primary);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -109,353 +262,720 @@
             font-size: 12px;
         }
         
+        .hero-visual {
+            position: relative;
+        }
+        
+        .product-mockup {
+            width: 100%;
+            max-width: 400px;
+            height: 450px;
+            background: linear-gradient(145deg, #ffffff, #f5f5f5);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 
+                0 20px 40px rgba(0,0,0,0.1),
+                inset 0 -2px 10px rgba(0,0,0,0.05);
+            animation: float 4s ease-in-out infinite;
+            overflow: hidden;
+        }
+        
+        .product-mockup::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60%;
+            background: var(--gradient-primary);
+            opacity: 0.95;
+        }
+        
+        .product-label-mock {
+            position: relative;
+            z-index: 2;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .product-label-mock h3 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            letter-spacing: -2px;
+        }
+        
+        .product-label-mock p {
+            font-size: 14px;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .product-info-mock {
+            position: absolute;
+            bottom: 40px;
+            text-align: center;
+            color: var(--text-dark);
+        }
+        
+        .product-info-mock .weight {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .product-info-mock .servings {
+            font-size: 12px;
+            color: var(--text-gray);
+            margin-top: 5px;
+        }
+        
+        .product-badge {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            background: var(--gradient-accent);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 700;
+            box-shadow: 0 4px 20px rgba(255, 152, 0, 0.3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
         /* Problem Section */
-        .problem {
-            padding: 80px 0;
-            background: #fff;
+        .problem-section {
+            padding: 100px 20px;
+            background: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
         }
         
         .section-label {
-            color: #2c5530;
-            font-weight: 600;
+            color: var(--accent);
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 14px;
+            letter-spacing: 2px;
+            font-size: 12px;
             margin-bottom: 16px;
         }
         
-        .problem h2 {
-            font-size: 36px;
-            margin-bottom: 40px;
-            max-width: 700px;
+        .section-title {
+            font-size: clamp(32px, 4vw, 48px);
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+        
+        .section-subtitle {
+            font-size: 18px;
+            color: var(--text-gray);
+            max-width: 600px;
+            margin: 0 auto;
         }
         
         .problem-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
+            gap: 24px;
         }
         
         .problem-card {
-            padding: 24px;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
+            padding: 32px;
+            background: linear-gradient(135deg, #fff 0%, #fcfcfc 100%);
+            border: 1px solid #f0f0f0;
+            border-radius: 16px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
         }
         
-        .problem-card h3 {
-            color: #d32f2f;
-            margin-bottom: 12px;
-            font-size: 18px;
+        .problem-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff4444 0%, #ff6666 100%);
+            transform: scaleX(0);
+            transition: transform 0.3s;
         }
         
-        /* Solution Section */
-        .solution {
-            padding: 80px 0;
-            background: #f8f9f8;
-        }
-        
-        .solution h2 {
-            font-size: 36px;
-            margin-bottom: 20px;
-        }
-        
-        .solution-steps {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-top: 50px;
-        }
-        
-        .step {
-            text-align: center;
-        }
-        
-        .step-number {
-            width: 50px;
-            height: 50px;
-            background: #2c5530;
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            font-weight: 700;
-            font-size: 20px;
-        }
-        
-        .step h3 {
-            margin-bottom: 12px;
-            font-size: 20px;
-        }
-        
-        /* Products Section */
-        .products {
-            padding: 80px 0;
-            background: #fff;
-        }
-        
-        .products h2 {
-            font-size: 36px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        
-        .products-subtitle {
-            text-align: center;
-            color: #666;
-            font-size: 18px;
-            margin-bottom: 50px;
-        }
-        
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
-        }
-        
-        .product-card {
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            padding: 30px;
-            background: white;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .product-card:hover {
+        .problem-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
         
+        .problem-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .problem-icon {
+            font-size: 32px;
+            margin-bottom: 16px;
+        }
+        
+        .problem-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-dark);
+        }
+        
+        .problem-description {
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+        
+        /* Solution Strip */
+        .solution-strip {
+            padding: 80px 20px;
+            background: var(--gradient-primary);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .solution-strip::before {
+            content: '';
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 50%);
+            top: -400px;
+            right: -400px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.9;
+        }
+        
+        /* Products Section */
+        .products-section {
+            padding: 100px 20px;
+            background: var(--bg-light);
+        }
+        
+        .product-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 60px;
+        }
+        
+        .tab-button {
+            padding: 12px 28px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .tab-button.active {
+            background: var(--gradient-accent);
+            color: white;
+            border-color: var(--accent);
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 32px;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-accent);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+        }
+        
+        .product-card:hover::before {
+            transform: scaleX(1);
+        }
+        
         .product-label {
             display: inline-block;
-            background: #2c5530;
+            background: var(--gradient-primary);
             color: white;
-            padding: 4px 12px;
-            border-radius: 4px;
-            font-size: 12px;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+        
+        .product-name {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        
+        .product-description {
+            color: var(--text-gray);
+            margin-bottom: 24px;
+        }
+        
+        .ingredient-list {
+            background: var(--bg-light);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+        }
+        
+        .ingredient-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .ingredient-item:last-child {
+            border-bottom: none;
+        }
+        
+        .ingredient-name {
+            font-weight: 500;
+        }
+        
+        .ingredient-dose {
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .product-cta {
+            width: 100%;
+            padding: 16px;
+            background: var(--gradient-accent);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .product-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 152, 0, 0.3);
+        }
+        
+        /* Science Section */
+        .science-section {
+            padding: 100px 20px;
+            background: white;
+        }
+        
+        .science-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+        
+        .science-card {
+            text-align: center;
+            padding: 40px;
+            background: var(--bg-light);
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+        
+        .science-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .science-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            background: var(--gradient-accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            color: white;
+        }
+        
+        .science-title {
+            font-size: 24px;
             font-weight: 600;
             margin-bottom: 12px;
         }
         
-        .product-card h3 {
-            font-size: 24px;
-            margin-bottom: 8px;
-            color: #1a1a1a;
+        .science-description {
+            color: var(--text-gray);
+            line-height: 1.6;
         }
         
-        .product-tagline {
-            color: #666;
-            margin-bottom: 20px;
-            font-style: italic;
+        /* Process Section */
+        .process-section {
+            padding: 100px 20px;
+            background: linear-gradient(135deg, #2c5530 0%, #1a2f1d 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
         }
         
-        .benefits-list {
-            list-style: none;
-            margin: 20px 0;
+        .process-section::before {
+            content: '';
+            position: absolute;
+            width: 1000px;
+            height: 1000px;
+            background: radial-gradient(circle, rgba(255, 152, 0, 0.05) 0%, transparent 50%);
+            bottom: -500px;
+            left: -500px;
         }
         
-        .benefits-list li {
-            padding: 8px 0;
-            padding-left: 24px;
+        .process-timeline {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .process-step {
+            text-align: center;
             position: relative;
         }
         
-        .benefits-list li:before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: #2c5530;
-            font-weight: bold;
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 auto 20px;
+            box-shadow: 0 4px 20px rgba(255, 152, 0, 0.3);
         }
         
-        .ingredients-section {
-            background: #f8f9f8;
-            padding: 15px;
-            border-radius: 8px;
+        .step-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        
+        .step-description {
+            font-size: 14px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        /* Pricing Section */
+        .pricing-section {
+            padding: 100px 20px;
+            background: white;
+        }
+        
+        .pricing-card {
+            max-width: 500px;
+            margin: 60px auto 0;
+            padding: 48px;
+            background: linear-gradient(135deg, #fff 0%, #fafafa 100%);
+            border: 2px solid var(--accent);
+            border-radius: 24px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(255, 152, 0, 0.15);
+        }
+        
+        .pricing-badge {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gradient-accent);
+            color: white;
+            padding: 8px 24px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        
+        .price-amount {
+            font-size: 64px;
+            font-weight: 800;
+            color: var(--primary);
             margin: 20px 0;
         }
         
-        .ingredients-title {
-            font-weight: 600;
-            margin-bottom: 10px;
-            font-size: 14px;
-            text-transform: uppercase;
-            color: #555;
+        .price-currency {
+            font-size: 24px;
+            vertical-align: top;
         }
         
-        .ingredient {
-            display: flex;
-            justify-content: space-between;
-            padding: 5px 0;
-            font-size: 14px;
+        .price-original {
+            text-decoration: line-through;
+            color: var(--text-gray);
+            font-size: 24px;
+            margin-left: 16px;
         }
         
-        .dose {
-            font-weight: 600;
-            color: #2c5530;
+        .pricing-features {
+            list-style: none;
+            margin: 32px 0;
+            text-align: left;
         }
         
-        .evidence-grade {
+        .pricing-features li {
+            padding: 12px 0;
             display: flex;
             align-items: center;
-            gap: 5px;
-            margin: 15px 0;
+            gap: 12px;
         }
         
-        .evidence-label {
-            font-size: 14px;
-            color: #666;
-        }
-        
-        .grade-dots {
-            display: flex;
-            gap: 4px;
-        }
-        
-        .dot {
-            width: 12px;
-            height: 12px;
+        .feature-check {
+            width: 24px;
+            height: 24px;
+            background: var(--gradient-accent);
             border-radius: 50%;
-            background: #ddd;
-        }
-        
-        .dot.filled {
-            background: #2c5530;
-        }
-        
-        .timeline {
-            padding: 12px;
-            background: #fff3e0;
-            border-radius: 6px;
-            margin: 15px 0;
-            border-left: 4px solid #ff9800;
-        }
-        
-        .timeline-label {
-            font-weight: 600;
-            font-size: 14px;
-            color: #e65100;
-        }
-        
-        .vote-button {
-            width: 100%;
-            padding: 14px;
-            background: #2c5530;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        
-        .vote-button:hover {
-            background: #1e3a21;
+            flex-shrink: 0;
         }
         
         /* Founder Section */
-        .founder {
-            padding: 80px 0;
-            background: #f8f9f8;
+        .founder-section {
+            padding: 100px 20px;
+            background: var(--bg-light);
         }
         
         .founder-content {
             display: grid;
-            grid-template-columns: 1fr 2fr;
+            grid-template-columns: 300px 1fr;
             gap: 60px;
             align-items: center;
+            max-width: 1000px;
+            margin: 60px auto 0;
         }
         
         .founder-image {
             width: 250px;
             height: 250px;
+            background: var(--gradient-primary);
             border-radius: 50%;
-            object-fit: cover;
-            box-shadow: 0 20px 40px rgba(44, 85, 48, 0.2);
             margin: 0 auto;
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 72px;
+            box-shadow: 0 20px 40px rgba(44, 85, 48, 0.2);
         }
         
-        .founder h2 {
+        .founder-text h3 {
             font-size: 32px;
             margin-bottom: 20px;
         }
         
-        .founder-story {
+        .founder-text p {
             font-size: 18px;
             line-height: 1.8;
-            color: #333;
-        }
-        
-        .founder-highlight {
-            background: #fff3e0;
-            padding: 20px;
-            border-left: 4px solid #ff9800;
-            margin: 20px 0;
-            font-style: italic;
-        }
-        
-        /* CTA Section */
-        .final-cta {
-            padding: 100px 0;
-            background: linear-gradient(135deg, #2c5530 0%, #1e3a21 100%);
-            text-align: center;
-            color: white;
-        }
-        
-        .final-cta h2 {
-            font-size: 42px;
+            color: var(--text-gray);
             margin-bottom: 20px;
         }
         
-        .final-cta p {
+        .founder-quote {
+            padding: 24px;
+            background: white;
+            border-left: 4px solid var(--accent);
+            margin: 32px 0;
+            border-radius: 8px;
+            font-style: italic;
             font-size: 20px;
-            margin-bottom: 40px;
+            color: var(--text-dark);
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            padding: 120px 20px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2c5530 100%);
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            width: 1200px;
+            height: 1200px;
+            background: radial-gradient(circle, rgba(255, 152, 0, 0.08) 0%, transparent 50%);
+            top: -600px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .cta-title {
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 800;
+            margin-bottom: 24px;
+        }
+        
+        .cta-subtitle {
+            font-size: 20px;
             opacity: 0.9;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
         
         .email-form {
             max-width: 500px;
             margin: 0 auto;
             display: flex;
-            gap: 10px;
+            gap: 12px;
         }
         
         .email-input {
             flex: 1;
-            padding: 16px;
+            padding: 18px 24px;
             border: none;
-            border-radius: 6px;
+            border-radius: 30px;
             font-size: 16px;
+            background: rgba(255,255,255,0.95);
         }
         
-        .submit-button {
-            padding: 16px 32px;
-            background: #ff9800;
+        .email-submit {
+            padding: 18px 36px;
+            background: var(--gradient-accent);
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 30px;
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 6px 20px rgba(255, 152, 0, 0.3);
+        }
+        
+        .email-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 152, 0, 0.4);
+        }
+        
+        /* FAQ Styles */
+        details {
+            margin-bottom: 16px;
+            background: var(--bg-light);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        details:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        
+        summary {
+            cursor: pointer;
+            padding: 24px;
+            font-weight: 600;
+            font-size: 18px;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             transition: background 0.3s;
         }
         
-        .submit-button:hover {
-            background: #f57c00;
+        summary:hover {
+            background: rgba(255, 152, 0, 0.05);
         }
         
-        .guarantee {
-            margin-top: 30px;
-            font-size: 14px;
-            opacity: 0.8;
+        summary::marker {
+            display: none;
         }
         
-        /* Modal Styles */
+        details[open] summary .plus {
+            transform: rotate(45deg);
+        }
+        
+        .plus {
+            color: var(--accent);
+            font-size: 24px;
+            transition: transform 0.3s;
+        }
+        
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -463,10 +983,11 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.7);
-            z-index: 1000;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
             align-items: center;
             justify-content: center;
+            backdrop-filter: blur(5px);
         }
         
         .modal.active {
@@ -475,78 +996,78 @@
         
         .modal-content {
             background: white;
-            padding: 40px;
-            border-radius: 12px;
+            padding: 48px;
+            border-radius: 24px;
             max-width: 500px;
             width: 90%;
             position: relative;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+            animation: fadeInUp 0.4s ease-out;
         }
         
         .modal-close {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 24px;
+            top: 24px;
+            right: 24px;
+            font-size: 32px;
             cursor: pointer;
-            color: #666;
-        }
-        
-        .modal h3 {
-            margin-bottom: 20px;
-            font-size: 24px;
-            color: #2c5530;
-        }
-        
-        .modal-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .modal-input {
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 16px;
-        }
-        
-        .modal-submit {
-            padding: 14px;
-            background: #2c5530;
-            color: white;
+            color: #999;
+            transition: color 0.3s;
+            background: none;
             border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
         }
         
-        .modal-submit:hover {
-            background: #1e3a21;
+        .modal-close:hover {
+            color: var(--text-dark);
         }
         
         .success-message {
             display: none;
-            text-align: center;
             padding: 20px;
-            background: #4caf50;
+            background: var(--gradient-accent);
             color: white;
-            border-radius: 6px;
+            border-radius: 12px;
             margin: 20px 0;
+            font-weight: 600;
+            text-align: center;
         }
         
         .success-message.show {
             display: block;
         }
         
-        /* Mobile Responsive */
+        /* Responsive */
         @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 32px;
+            .nav-links {
+                display: none;
             }
             
-            .hero .subheadline {
-                font-size: 18px;
+            .hero-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .hero-visual {
+                display: none;
+            }
+            
+            .hero-cta-group {
+                flex-direction: column;
+            }
+            
+            .btn-primary,
+            .btn-secondary {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .stats-grid,
+            .process-timeline {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
             }
             
             .founder-content {
@@ -558,375 +1079,805 @@
                 flex-direction: column;
             }
             
-            .products-grid {
-                grid-template-columns: 1fr;
+            .email-submit {
+                width: 100%;
             }
         }
     </style>
 </head>
 <body>
     <!-- Navigation -->
-    <nav>
-        <div class="container">
+    <nav id="navbar">
+        <div class="nav-container">
             <div class="logo">XOVA</div>
-            <button class="nav-cta" onclick="openEmailModal()">Join Waitlist</button>
+            <div class="nav-links">
+                <a href="#evidence" class="nav-link">Research</a>
+                <a href="#products" class="nav-link">Products</a>
+                <a href="#faq" class="nav-link">FAQ</a>
+                <a href="#waitlist" class="nav-cta">Join Waitlist</a>
+            </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
     <section class="hero">
-        <div class="container">
-            <h1>Your Body Is Unique.<br>Your Nutrition Should Be Too.</h1>
-            <p class="subheadline">Stop wasting money on generic superfood blends with mystery doses. Get personalized, science-backed formulations designed for YOUR goals.</p>
-            
-            <div class="trust-badges">
-                <div class="badge">
-                    <div class="badge-icon">✓</div>
-                    <span>Research-Verified Doses</span>
+        <div class="hero-container">
+            <div class="hero-content fade-in-up">
+                <h1>Personalized Superfood Blends <span class="gradient-text">Made Just for You</span></h1>
+                <p class="hero-subtitle">
+                    Premium superfood powders with transparent ingredients. Add to smoothies, yogurt, or water for daily nutrition.
+                </p>
+                <div class="hero-cta-group">
+                    <a href="#waitlist" class="btn-primary">Join Waitlist</a>
+                    <a href="#products" class="btn-secondary">See Ingredients</a>
                 </div>
-                <div class="badge">
-                    <div class="badge-icon">✓</div>
-                    <span>No Proprietary Blend BS</span>
-                </div>
-                <div class="badge">
-                    <div class="badge-icon">✓</div>
-                    <span>Personalized to Your Body</span>
-                </div>
-                <div class="badge">
-                    <div class="badge-icon">✓</div>
-                    <span>30-60 Day Realistic Timeline</span>
+                <div class="trust-indicators">
+                    <div class="trust-badge">
+                        <div class="trust-badge-icon">✓</div>
+                        <span>100% Natural Superfoods</span>
+                    </div>
+                    <div class="trust-badge">
+                        <div class="trust-badge-icon">✓</div>
+                        <span>No Fillers or Additives</span>
+                    </div>
+                    <div class="trust-badge">
+                        <div class="trust-badge-icon">✓</div>
+                        <span>Small Batch Production</span>
+                    </div>
                 </div>
             </div>
-            
-            <button class="nav-cta" onclick="openEmailModal()" style="display: inline-block; margin-top: 20px; font-size: 18px; padding: 14px 32px;">Start Your Personalization Journey</button>
-        </div>
-    </section>
-
-    <!-- Problem Section -->
-    <section class="problem">
-        <div class="container">
-            <p class="section-label">The Problem</p>
-            <h2>Most Superfood Brands Are Failing You</h2>
-            
-            <div class="problem-grid">
-                <div class="problem-card">
-                    <h3>❌ "Proprietary Blends"</h3>
-                    <p>Hide tiny, ineffective doses behind fancy marketing. You're paying CHF 80/month for green-tinted fairy dust.</p>
-                </div>
-                <div class="problem-card">
-                    <h3>❌ One-Size-Fits-All</h3>
-                    <p>Your metabolism, genetics, and goals are unique. Why are you taking the same blend as everyone else?</p>
-                </div>
-                <div class="problem-card">
-                    <h3>❌ Instagram Science</h3>
-                    <p>Trending ingredients over proven ones. Influence over evidence. Hype over health.</p>
-                </div>
-                <div class="problem-card">
-                    <h3>❌ Instant Miracle Claims</h3>
-                    <p>"Feel amazing in 3 days!" Real changes take 30-60 days. Anyone saying otherwise is lying.</p>
+            <div class="hero-visual">
+                <div class="product-mockup">
+                    <div class="product-label-mock">
+                        <h3>XOVA</h3>
+                        <p>Pure Superfoods</p>
+                    </div>
+                    <div class="product-info-mock">
+                        <div class="weight">300g</div>
+                        <div class="servings">25 servings</div>
+                    </div>
+                    <div class="product-badge">Pre-Launch</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Solution Section -->
-    <section class="solution">
+    <!-- Problem Section - REMOVED - Content merged into other sections -->
+
+    <!-- Solution Strip -->
+    <section class="solution-strip">
         <div class="container">
-            <p class="section-label">Our Approach</p>
-            <h2>Personalized Nutrition Based on Real Science</h2>
-            <p style="font-size: 18px; color: #666; margin-top: 20px;">Not another influencer brand. Built by a researcher who got tired of the BS.</p>
+            <div class="section-header">
+                <h2 style="color: white;">Quality Superfood Nutrition</h2>
+                <p style="font-size: 20px; opacity: 0.9; max-width: 700px; margin: 20px auto;">
+                    We combine premium superfood ingredients in transparent, personalized blends.
+                </p>
+            </div>
             
-            <div class="solution-steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <h3>Quick Assessment</h3>
-                    <p>Tell us about your body, lifestyle, and goals in 2 minutes</p>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Natural Ingredients</div>
                 </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <h3>Custom Formula</h3>
-                    <p>Get YOUR personalized blend with research-backed doses</p>
+                <div class="stat-item">
+                    <div class="stat-number">Full</div>
+                    <div class="stat-label">Transparency</div>
                 </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <h3>Smoothie System</h3>
-                    <p>Receive 10 recipes optimized for your blend and goals</p>
+                <div class="stat-item">
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">Blend Options</div>
                 </div>
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <h3>Quarterly Evolution</h3>
-                    <p>Adjust your formula as your needs change</p>
+                <div class="stat-item">
+                    <div class="stat-number">Custom</div>
+                    <div class="stat-label">Ratios Available</div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Badges Section -->
+    <section class="trust-section" style="padding: 60px 20px; background: white; border-top: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0;">
+        <div class="container">
+            <div style="display: flex; justify-content: center; align-items: center; gap: 60px; flex-wrap: wrap;">
+                <div style="text-align: center;">
+                    <div style="width: 80px; height: 80px; margin: 0 auto 12px; background: linear-gradient(135deg, #2196f3, #1976d2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 36px;">📚</div>
+                    <p style="font-weight: 600; font-size: 14px;">Research-Based</p>
+                    <p style="font-size: 12px; color: var(--text-gray);">Ingredient Selection</p>
+                </div>
+                <div style="text-align: center;">
+                    <div style="width: 80px; height: 80px; margin: 0 auto 12px; background: linear-gradient(135deg, #4caf50, #45a049); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 36px;">🌱</div>
+                    <p style="font-weight: 600; font-size: 14px;">Organic Options</p>
+                    <p style="font-size: 12px; color: var(--text-gray);">Where Available</p>
+                </div>
+                <div style="text-align: center;">
+                    <div style="width: 80px; height: 80px; margin: 0 auto 12px; background: linear-gradient(135deg, #9c27b0, #7b1fa2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 36px;">🔬</div>
+                    <p style="font-weight: 600; font-size: 14px;">Evidence-Based</p>
+                    <p style="font-size: 12px; color: var(--text-gray);">Informed by Science</p>
+                </div>
+                <div style="text-align: center;">
+                    <div style="width: 80px; height: 80px; margin: 0 auto 12px; background: linear-gradient(135deg, #ff5722, #e64a19); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 36px;">✓</div>
+                    <p style="font-weight: 600; font-size: 14px;">Transparent</p>
+                    <p style="font-size: 12px; color: var(--text-gray);">All Ingredients Listed</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Evidence Levels Section -->
+    <section style="padding: 60px 20px; background: white;">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-label">Ingredient Selection</p>
+                <h2 class="section-title">Why These Superfoods?</h2>
+                <p class="section-subtitle">Traditional ingredients with interesting research</p>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 40px;">
+                
+                <div style="background: linear-gradient(135deg, #e8f5e9, #f1f8f2); padding: 28px; border-radius: 12px; border-left: 4px solid #4caf50;">
+                    <h3 style="color: #2e7d32; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                        🟢 Strong Evidence <small style="font-weight: normal; color: var(--text-gray);">(We use these)</small>
+                    </h3>
+                    <div style="line-height: 1.8; color: var(--text-gray);">
+                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Ashwagandha (KSM-66):</strong> Multiple RCTs showing stress reduction</p>
+                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Spirulina:</strong> 18+ studies on nutrition & antioxidants</p>
+                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Turmeric + Piperine:</strong> Proven 2000% absorption increase</p>
+                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Probiotics (specific strains):</strong> Extensive gut health research</p>
+                        <p style="color: var(--text-dark);"><strong>L-Theanine:</strong> Well-studied for focus with caffeine</p>
+                    </div>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #fff8e1, #fffaf0); padding: 28px; border-radius: 12px; border-left: 4px solid #ff9800;">
+                    <h3 style="color: #e65100; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                        🟡 Moderate Evidence <small style="font-weight: normal; color: var(--text-gray);">(We use carefully)</small>
+                    </h3>
+                    <div style="line-height: 1.8; color: var(--text-gray);">
+                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Lion's Mane:</strong> Promising but limited human studies</p>
+                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Rhodiola:</strong> Good for some, variable response</p>
+                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Bacopa:</strong> Takes 12 weeks, modest effects</p>
+                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Chlorella:</strong> Nutritious but benefits unclear</p>
+                        <p style="color: var(--text-dark);"><strong>Ginkgo:</strong> Mainly effective for 50+ age group</p>
+                    </div>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #ffebee, #fef5f5); padding: 28px; border-radius: 12px; border-left: 4px solid #f44336;">
+                    <h3 style="color: #c62828; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                        🔴 Weak Evidence <small style="font-weight: normal; color: var(--text-gray);">(We skip these)</small>
+                    </h3>
+                    <div style="line-height: 1.8; color: var(--text-gray);">
+                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Collagen powder:</strong> Just expensive protein</p>
+                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>"Detox" anything:</strong> Your liver works fine</p>
+                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Alkaline water/powder:</strong> Stomach acid neutralizes it</p>
+                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Proprietary blends:</strong> Usually hiding tiny doses</p>
+                        <p style="color: var(--text-dark);"><strong>Most "fat burners":</strong> Caffeine with fairy dust</p>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div style="background: var(--bg-light); padding: 24px; border-radius: 12px; margin-top: 32px;">
+                <p style="text-align: center; color: var(--text-gray); line-height: 1.8;">
+                    <strong>Our Promise:</strong> We only include ingredients with at least moderate evidence. 
+                    Strong evidence ingredients form the core, moderate evidence ingredients are included at conservative doses. 
+                    We never use ingredients with weak or no evidence just to make our label look impressive.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ingredient Science Section -->
+    <section style="padding: 60px 20px; background: var(--bg-light);">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-label">The Science</p>
+                <h2 class="section-title">Why These Specific Ingredients?</h2>
+                <p class="section-subtitle">Research-based selection and synergistic combinations</p>
+            </div>
+            
+            <div style="margin-top: 40px;">
+                <details style="margin-bottom: 16px; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                    <summary style="cursor: pointer; padding: 24px; font-weight: 600; font-size: 18px; list-style: none; display: flex; justify-content: space-between; align-items: center; background: white;">
+                        <span>🌱 Foundation Blend: Research & Synergies</span>
+                        <span class="plus" style="color: var(--accent); font-size: 24px;">+</span>
+                    </summary>
+                    <div style="padding: 0 24px 24px; line-height: 1.8; color: var(--text-gray);">
+                        <h4 style="color: var(--primary); margin-bottom: 16px;">Why This Combination Works:</h4>
+                        
+                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">Ashwagandha + Spirulina:</strong> 
+                        Studies suggest ashwagandha may help with stress management (Chandrasekhar et al., 2012 reported cortisol reduction). 
+                        Spirulina is nutrient-dense with B vitamins and iron. Combined, they may support both stress and energy, though individual results vary.</p>
+                        
+                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">Lion's Mane + Chlorella:</strong> 
+                        Lion's Mane supports nerve growth factor production (Lai et al., 2013), while chlorella provides chlorophyll and nutrients for cellular health (Panahi et al., 2016). 
+                        This combination targets both neural and cellular wellbeing.</p>
+                        
+                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">Turmeric + Black Pepper:</strong> 
+                        Critical pairing - piperine increases curcumin bioavailability by up to 2000% (Shoba et al., 1998). Without black pepper, turmeric absorption is minimal.</p>
+                        
+                        <h4 style="color: var(--primary); margin: 20px 0 12px;">Personalization Options:</h4>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin-bottom: 8px;">• <strong>High stress:</strong> Increase ashwagandha ratio</li>
+                            <li style="margin-bottom: 8px;">• <strong>Low energy:</strong> Boost spirulina content</li>
+                            <li style="margin-bottom: 8px;">• <strong>Inflammation focus:</strong> Enhanced turmeric blend</li>
+                            <li style="margin-bottom: 8px;">• <strong>Vegan needs:</strong> Extra B12 and iron sources</li>
+                        </ul>
+                    </div>
+                </details>
+                
+                <details style="margin-bottom: 16px; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                    <summary style="cursor: pointer; padding: 24px; font-weight: 600; font-size: 18px; list-style: none; display: flex; justify-content: space-between; align-items: center; background: white;">
+                        <span>🧠 Focus Blend: Research & Synergies</span>
+                        <span class="plus" style="color: var(--accent); font-size: 24px;">+</span>
+                    </summary>
+                    <div style="padding: 0 24px 24px; line-height: 1.8; color: var(--text-gray);">
+                        <h4 style="color: var(--primary); margin-bottom: 16px;">Why This Combination Works:</h4>
+                        
+                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">L-Theanine + Your Morning Coffee:</strong> 
+                        The 2:1 ratio of L-theanine to caffeine is optimal for focus without jitters (Haskell et al., 2008). 
+                        Since most people drink coffee, we provide the L-theanine to create this synergy with your existing routine.</p>
+                        
+                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">Bacopa + Lion's Mane:</strong> 
+                        Bacopa improved memory scores by 24% in 12-week studies (Stough et al., 2008), while Lion's Mane supports neuroplasticity (Mori et al., 2009). 
+                        Different mechanisms, complementary benefits.</p>
+                        
+                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">Rhodiola + Ginkgo:</strong> 
+                        Rhodiola reduces mental fatigue (Olsson et al., 2009), while ginkgo improves cerebral blood flow (Santos et al., 2003). 
+                        Energy + circulation for sustained mental performance.</p>
+                        
+                        <h4 style="color: var(--primary); margin: 20px 0 12px;">Personalization Options:</h4>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin-bottom: 8px;">• <strong>ADHD traits:</strong> Higher L-theanine ratio</li>
+                            <li style="margin-bottom: 8px;">• <strong>Memory focus:</strong> Increased Bacopa</li>
+                            <li style="margin-bottom: 8px;">• <strong>Age 50+:</strong> Enhanced ginkgo content</li>
+                            <li style="margin-bottom: 8px;">• <strong>Caffeine sensitive:</strong> Adjusted ratios</li>
+                        </ul>
+                    </div>
+                </details>
+                
+                <details style="margin-bottom: 16px; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                    <summary style="cursor: pointer; padding: 24px; font-weight: 600; font-size: 18px; list-style: none; display: flex; justify-content: space-between; align-items: center; background: white;">
+                        <span>🦠 Gut Harmony: Research & Synergies</span>
+                        <span class="plus" style="color: var(--accent); font-size: 24px;">+</span>
+                    </summary>
+                    <div style="padding: 0 24px 24px; line-height: 1.8; color: var(--text-gray);">
+                        <h4 style="color: var(--primary); margin-bottom: 16px;">Why This Combination Works:</h4>
+                        
+                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">Probiotics + Prebiotics:</strong> 
+                        Prebiotics feed probiotics, improving colonization by up to 10x (Roberfroid et al., 2010). 
+                        Without prebiotics, most probiotics don't survive stomach acid.</p>
+                        
+                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">L-Glutamine + Slippery Elm:</strong> 
+                        L-glutamine helps maintain gut barrier function (Zhou et al., 2003), while slippery elm provides soothing mucilage (Langmead et al., 2002). 
+                        Repair + protect approach.</p>
+                        
+                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">Ginger + Digestive Comfort:</strong> 
+                        Ginger reduces nausea and supports digestion (Hu et al., 2011). Combined with other ingredients, it helps the blend settle well.</p>
+                        
+                        <h4 style="color: var(--primary); margin: 20px 0 12px;">Personalization Options:</h4>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin-bottom: 8px;">• <strong>IBS-D:</strong> Lower fiber, specific strains</li>
+                            <li style="margin-bottom: 8px;">• <strong>IBS-C:</strong> Increased fiber content</li>
+                            <li style="margin-bottom: 8px;">• <strong>Post-antibiotic:</strong> Higher CFU count</li>
+                            <li style="margin-bottom: 8px;">• <strong>FODMAP sensitive:</strong> Adjusted ingredients</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+            
+            <div style="background: white; padding: 32px; border-radius: 12px; margin-top: 32px;">
+                <h3 style="text-align: center; color: var(--primary); margin-bottom: 20px;">About These Ingredients</h3>
+                <p style="color: var(--text-gray); line-height: 1.8; margin-bottom: 16px; font-size: 14px;">
+                    <strong>What we offer:</strong> Premium superfood powder blends made from ingredients like spirulina, ashwagandha, and lion's mane. 
+                    These are traditional foods and botanicals that have been consumed for centuries.
+                </p>
+                <p style="color: var(--text-gray); line-height: 1.8; font-size: 14px;">
+                    <strong>How to use:</strong> Add to your daily smoothies, yogurt, or beverages as a nutritious addition to your diet. 
+                    These are food products meant to complement a balanced diet, not replace meals or medical care.
+                </p>
             </div>
         </div>
     </section>
 
     <!-- Products Section -->
-    <section class="products">
+    <section id="products" class="products-section">
         <div class="container">
-            <h2>Help Us Choose: Vote for Your First Blend</h2>
-            <p class="products-subtitle">These are our first 3 formulations. We'll create 12+ based on YOUR needs.<br>Every ingredient at clinical doses. No fairy dust.</p>
+            <div class="section-header">
+                <p class="section-label">Choose Your Formula</p>
+                <h2 class="section-title">Three Starting Blends</h2>
+                <p class="section-subtitle">Select your base formula. We'll customize portions based on your needs.</p>
+            </div>
             
             <div class="products-grid">
                 <!-- Foundation Blend -->
                 <div class="product-card">
-                    <span class="product-label">MOST POPULAR</span>
-                    <h3>Foundation Blend</h3>
-                    <p class="product-tagline">Daily wellness and sustained energy</p>
+                    <span class="product-label">Most Popular</span>
+                    <h3 class="product-name">Foundation</h3>
+                    <p class="product-description">Daily wellness, energy & stress support</p>
                     
-                    <ul class="benefits-list">
-                        <li>Consistent all-day energy</li>
-                        <li>Immune system support</li>
-                        <li>Cellular health optimization</li>
-                    </ul>
-                    
-                    <div class="ingredients-section">
-                        <div class="ingredients-title">Key Ingredients (Per Serving)</div>
-                        <div class="ingredient">
-                            <span>Organic Spirulina</span>
-                            <span class="dose">3g</span>
+                    <div class="ingredient-list">
+                        <div style="font-weight: 600; margin-bottom: 12px; font-size: 13px; text-transform: uppercase; color: var(--text-gray);">Ingredients per serving*</div>
+                        <div class="ingredient-item">
+                            <span class="ingredient-name">Spirulina (Organic)</span>
+                            <span class="ingredient-dose">~3g</span>
                         </div>
-                        <div class="ingredient">
-                            <span>Lion's Mane Extract</span>
-                            <span class="dose">1000mg</span>
+                        <div class="ingredient-item">
+                            <span class="ingredient-name">Lion's Mane Extract</span>
+                            <span class="ingredient-dose">~1g</span>
                         </div>
-                        <div class="ingredient">
-                            <span>Ashwagandha KSM-66</span>
-                            <span class="dose">600mg</span>
+                        <div class="ingredient-item">
+                            <span class="ingredient-name">Ashwagandha Extract</span>
+                            <span class="ingredient-dose">~600mg</span>
                         </div>
-                        <div class="ingredient">
-                            <span>Chlorella</span>
-                            <span class="dose">2g</span>
+                        <div class="ingredient-item">
+                            <span class="ingredient-name">Chlorella</span>
+                            <span class="ingredient-dose">~2g</span>
                         </div>
-                        <div class="ingredient">
-                            <span>Turmeric + Black Pepper</span>
-                            <span class="dose">500mg + 5mg</span>
+                        <div class="ingredient-item">
+                            <span class="ingredient-name">Turmeric + Black Pepper</span>
+                            <span class="ingredient-dose">~500mg + 5mg</span>
                         </div>
                     </div>
+                    <p style="font-size: 11px; color: var(--text-gray); margin-top: 8px;">*Amounts are approximate and may vary based on personalization</p>
                     
-                    <div class="evidence-grade">
-                        <span class="evidence-label">Evidence Grade:</span>
-                        <div class="grade-dots">
-                            <div class="dot filled"></div>
-                            <div class="dot filled"></div>
-                            <div class="dot filled"></div>
-                            <div class="dot filled"></div>
-                            <div class="dot"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="timeline">
-                        <div class="timeline-label">Realistic Timeline: 30-45 days for noticeable results</div>
-                    </div>
-                    
-                    <button class="vote-button" onclick="openVoteModal('Foundation Blend')">Vote for Foundation Blend</button>
+                    <button class="product-cta" onclick="selectProduct('Foundation')">Choose Foundation →</button>
                 </div>
 
                 <!-- Focus Blend -->
                 <div class="product-card">
-                    <span class="product-label">PROFESSIONAL CHOICE</span>
-                    <h3>Focus Blend</h3>
-                    <p class="product-tagline">Mental clarity and cognitive performance</p>
+                    <span class="product-label">Mental Performance</span>
+                    <h3 class="product-name">Focus</h3>
+                    <p class="product-description">Cognitive support & mental clarity</p>
                     
-                    <ul class="benefits-list">
-                        <li>Enhanced mental clarity</li>
-                        <li>Improved memory recall</li>
-                        <li>Sustained focus without jitters</li>
-                    </ul>
-                    
-                    <div class="ingredients-section">
-                        <div class="ingredients-title">Key Ingredients (Per Serving)</div>
-                        <div class="ingredient">
-                            <span>Lion's Mane Extract</span>
-                            <span class="dose">1500mg</span>
+                    <div class="ingredient-list">
+                        <div style="font-weight: 600; margin-bottom: 12px; font-size: 13px; text-transform: uppercase; color: var(--text-gray);">Ingredients per serving*</div>
+                        <div class="ingredient-item">
+                            <span class="ingredient-name">Lion's Mane Extract</span>
+                            <span class="ingredient-dose">~1.5g</span>
                         </div>
-                        <div class="ingredient">
-                            <span>Bacopa Monnieri</span>
-                            <span class="dose">300mg</span>
+                        <div class="ingredient-item">
+                            <span class="ingredient-name">Bacopa Monnieri</span>
+                            <span class="ingredient-dose">~300mg</span>
                         </div>
-                        <div class="ingredient">
-                            <span>L-Theanine</span>
-                            <span class="dose">200mg</span>
+                        <div class="ingredient-item">
+                            <span class="ingredient-name">L-Theanine</span>
+                            <span class="ingredient-dose">~200mg</span>
                         </div>
-                        <div class="ingredient">
-                            <span>Rhodiola Rosea</span>
-                            <span class="dose">400mg</span>
+                        <div class="ingredient-item">
+                            <span class="ingredient-name">Rhodiola Extract</span>
+                            <span class="ingredient-dose">~400mg</span>
                         </div>
-                        <div class="ingredient">
-                            <span>Ginkgo Biloba</span>
-                            <span class="dose">120mg</span>
+                        <div class="ingredient-item">
+                            <span class="ingredient-name">Ginkgo Biloba</span>
+                            <span class="ingredient-dose">~120mg</span>
                         </div>
                     </div>
+                    <p style="font-size: 11px; color: var(--text-gray); margin-top: 8px;">*Amounts are approximate and may vary based on personalization</p>
                     
-                    <div class="evidence-grade">
-                        <span class="evidence-label">Evidence Grade:</span>
-                        <div class="grade-dots">
-                            <div class="dot filled"></div>
-                            <div class="dot filled"></div>
-                            <div class="dot filled"></div>
-                            <div class="dot filled"></div>
-                            <div class="dot filled"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="timeline">
-                        <div class="timeline-label">Realistic Timeline: 14-30 days for cognitive benefits</div>
-                    </div>
-                    
-                    <button class="vote-button" onclick="openVoteModal('Focus Blend')">Vote for Focus Blend</button>
+                    <button class="product-cta" onclick="selectProduct('Focus')">Choose Focus →</button>
                 </div>
 
                 <!-- Gut Harmony -->
                 <div class="product-card">
-                    <span class="product-label">DIGESTIVE HEALTH</span>
-                    <h3>Gut Harmony</h3>
-                    <p class="product-tagline">Digestive wellness and microbiome support</p>
+                    <span class="product-label">Digestive Health</span>
+                    <h3 class="product-name">Gut Harmony</h3>
+                    <p class="product-description">Digestive & microbiome support</p>
                     
-                    <ul class="benefits-list">
-                        <li>Reduced bloating</li>
-                        <li>Improved digestion</li>
-                        <li>Microbiome balance</li>
-                    </ul>
-                    
-                    <div class="ingredients-section">
-                        <div class="ingredients-title">Key Ingredients (Per Serving)</div>
-                        <div class="ingredient">
-                            <span>Probiotic Complex</span>
-                            <span class="dose">10B CFU</span>
+                    <div class="ingredient-list">
+                        <div style="font-weight: 600; margin-bottom: 12px; font-size: 13px; text-transform: uppercase; color: var(--text-gray);">Ingredients per serving*</div>
+                        <div class="ingredient-item">
+                            <span class="ingredient-name">Probiotic Blend</span>
+                            <span class="ingredient-dose">~5B CFU</span>
                         </div>
-                        <div class="ingredient">
-                            <span>Prebiotic Fiber</span>
-                            <span class="dose">5g</span>
+                        <div class="ingredient-item">
+                            <span class="ingredient-name">Prebiotic Fiber</span>
+                            <span class="ingredient-dose">~3g</span>
                         </div>
-                        <div class="ingredient">
-                            <span>L-Glutamine</span>
-                            <span class="dose">5g</span>
+                        <div class="ingredient-item">
+                            <span class="ingredient-name">L-Glutamine</span>
+                            <span class="ingredient-dose">~2g</span>
                         </div>
-                        <div class="ingredient">
-                            <span>Ginger Root</span>
-                            <span class="dose">1000mg</span>
+                        <div class="ingredient-item">
+                            <span class="ingredient-name">Ginger Root</span>
+                            <span class="ingredient-dose">~500mg</span>
                         </div>
-                        <div class="ingredient">
-                            <span>Slippery Elm</span>
-                            <span class="dose">400mg</span>
+                        <div class="ingredient-item">
+                            <span class="ingredient-name">Slippery Elm</span>
+                            <span class="ingredient-dose">~200mg</span>
                         </div>
                     </div>
+                    <p style="font-size: 11px; color: var(--text-gray); margin-top: 8px;">*Amounts are approximate and may vary based on personalization</p>
                     
-                    <div class="evidence-grade">
-                        <span class="evidence-label">Evidence Grade:</span>
-                        <div class="grade-dots">
-                            <div class="dot filled"></div>
-                            <div class="dot filled"></div>
-                            <div class="dot filled"></div>
-                            <div class="dot filled"></div>
-                            <div class="dot"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="timeline">
-                        <div class="timeline-label">Realistic Timeline: 21-45 days for gut health improvement</div>
-                    </div>
-                    
-                    <button class="vote-button" onclick="openVoteModal('Gut Harmony')">Vote for Gut Harmony</button>
+                    <button class="product-cta" onclick="selectProduct('Gut Harmony')">Choose Gut Harmony →</button>
+                </div>
+            </div>
+            
+            <p style="text-align: center; margin-top: 40px; color: var(--text-gray); max-width: 800px; margin-left: auto; margin-right: auto; font-size: 14px;">
+                <strong>Note:</strong> These concentrated superfood blends are designed to be added to your existing routine - mix into smoothies, yogurt, or oatmeal. 
+                Each serving is approximately 10-15g of concentrated nutrients. This is not a meal replacement. 
+                Not intended to diagnose, treat, cure, or prevent any disease.
+            </p>
+        </div>
+    </section>
+
+    <!-- Research Evidence Section -->
+    <section id="evidence" class="evidence-section" style="padding: 60px 20px; background: var(--bg-light);">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-label">Published Research</p>
+                <h2 class="section-title">What Studies Suggest</h2>
+                <p class="section-subtitle">Key findings from research on our ingredients</p>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 40px;">
+                <div style="background: white; padding: 28px; border-radius: 12px; border-left: 4px solid var(--accent);">
+                    <h4 style="color: var(--primary); margin-bottom: 8px;">Stress & Adaptogens</h4>
+                    <p style="font-style: italic; color: var(--text-gray); margin-bottom: 12px; line-height: 1.6;">
+                        "Ashwagandha supplementation was associated with reductions in stress and anxiety scores"
+                    </p>
+                    <p style="font-size: 13px; color: var(--text-gray);">
+                        Chandrasekhar et al., 2012 (64 participants)
+                    </p>
+                </div>
+                
+                <div style="background: white; padding: 28px; border-radius: 12px; border-left: 4px solid var(--accent);">
+                    <h4 style="color: var(--primary); margin-bottom: 8px;">Focus & Cognition</h4>
+                    <p style="font-style: italic; color: var(--text-gray); margin-bottom: 12px; line-height: 1.6;">
+                        "L-theanine and caffeine combination improved attention task performance"
+                    </p>
+                    <p style="font-size: 13px; color: var(--text-gray);">
+                        Haskell et al., 2008 (27 participants)
+                    </p>
+                </div>
+                
+                <div style="background: white; padding: 28px; border-radius: 12px; border-left: 4px solid var(--accent);">
+                    <h4 style="color: var(--primary); margin-bottom: 8px;">Nutrient Density</h4>
+                    <p style="font-style: italic; color: var(--text-gray); margin-bottom: 12px; line-height: 1.6;">
+                        "Spirulina showed benefits for lipid profiles and antioxidant status"
+                    </p>
+                    <p style="font-size: 13px; color: var(--text-gray);">
+                        Wu et al., 2016 (Review of multiple studies)
+                    </p>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Science Section - REMOVED - Redundant with evidence levels -->
+
+    <!-- Process Section -->
+    <section id="process" class="process-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 style="color: white;">Your Journey to Better Nutrition</h2>
+            </div>
+            
+            <div class="process-timeline">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Join Waitlist</h3>
+                    <p class="step-description">Reserve your spot at CHF 69 pre-launch price</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Personalize</h3>
+                    <p class="step-description">Quick questionnaire about your goals & preferences</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Receive</h3>
+                    <p class="step-description">Get your custom blend with recipes</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <h3 class="step-title">Thrive</h3>
+                    <p class="step-description">30-60 days to notice changes</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How to Use Section - SIMPLIFIED -->
+    <section style="padding: 60px 20px; background: white;">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-label">Simple Daily Routine</p>
+                <h2 class="section-title">Add One Scoop to Your Morning</h2>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 40px; text-align: center;">
+                <div>
+                    <div style="font-size: 48px; margin-bottom: 12px;">🥤</div>
+                    <h4 style="margin-bottom: 8px;">Smoothies</h4>
+                    <p style="color: var(--text-gray); font-size: 14px;">Blend with fruits & milk</p>
+                </div>
+                <div>
+                    <div style="font-size: 48px; margin-bottom: 12px;">🥣</div>
+                    <h4 style="margin-bottom: 8px;">Yogurt</h4>
+                    <p style="color: var(--text-gray); font-size: 14px;">Stir into Greek yogurt</p>
+                </div>
+                <div>
+                    <div style="font-size: 48px; margin-bottom: 12px;">💧</div>
+                    <h4 style="margin-bottom: 8px;">Water</h4>
+                    <p style="color: var(--text-gray); font-size: 14px;">Mix and drink quickly</p>
+                </div>
+            </div>
+            
+            <p style="text-align: center; margin-top: 32px; color: var(--text-gray);">
+                <strong>Coming Soon:</strong> Optional "Smoothie Boost" packs with organic seeds - CHF 45 for 10 packs
+            </p>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="faq-section" style="padding: 80px 20px; background: white;">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-label">Common Questions</p>
+                <h2 class="section-title">Frequently Asked Questions</h2>
+            </div>
+            
+            <div style="max-width: 800px; margin: 60px auto 0;">
+                <details style="margin-bottom: 16px; background: var(--bg-light); border-radius: 12px; overflow: hidden;">
+                    <summary style="cursor: pointer; padding: 24px; font-weight: 600; font-size: 18px; list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                        <span>How is XOVA different from other supplements?</span>
+                        <span class="plus" style="color: var(--accent); font-size: 24px;">+</span>
+                    </summary>
+                    <div style="padding: 0 24px 24px; color: var(--text-gray);">
+                        We focus on three key differences: Complete transparency (no proprietary blends), personalization based on your specific needs, and doses based on published research. We also use whole food ingredients like spirulina and chlorella rather than just isolated vitamins.
+                    </div>
+                </details>
+                
+                <details style="margin-bottom: 16px; background: var(--bg-light); border-radius: 12px; overflow: hidden;">
+                    <summary style="cursor: pointer; padding: 24px; font-weight: 600; font-size: 18px; list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                        <span>What can I expect from these superfoods?</span>
+                        <span class="plus" style="color: var(--accent); font-size: 24px;">+</span>
+                    </summary>
+                    <div style="padding: 0 24px 24px; color: var(--text-gray);">
+                        Our blends contain nutrient-dense superfoods like spirulina, chlorella, and adaptogenic herbs that have been used in traditional wellness practices. 
+                        <br><br>
+                        These are food products that add nutrition to your diet - think of them like a daily greens powder or protein powder. Some people enjoy the energy from B vitamins in spirulina, others like the ritual of a morning superfood smoothie. Everyone's experience is different.
+                        <br><br>
+                        We encourage you to view these as part of an overall healthy diet, not a magic solution. Good nutrition comes from whole foods, adequate sleep, exercise, and stress management - our blends are just one small part of that picture.
+                    </div>
+                </details>
+                
+                <details style="margin-bottom: 16px; background: var(--bg-light); border-radius: 12px; overflow: hidden;">
+                    <summary style="cursor: pointer; padding: 24px; font-weight: 600; font-size: 18px; list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                        <span>How does personalization work?</span>
+                        <span class="plus" style="color: var(--accent); font-size: 24px;">+</span>
+                    </summary>
+                    <div style="padding: 0 24px 24px; color: var(--text-gray);">
+                        <strong>Our personalization approach (currently in development):</strong>
+                        <br><br>
+                        You'll complete a 10-15 question form about:
+                        • Your main health goals (energy, focus, digestion)
+                        • Dietary restrictions (vegan, allergies)
+                        • Current lifestyle (stress level, exercise)
+                        • Any medications or supplements you take
+                        <br><br>
+                        <strong>Who adjusts the formulas:</strong>
+                        Currently, I (the founder) adjust ratios based on research literature about different needs. For example, studies suggest higher ashwagandha amounts for high stress, or different probiotic strains for different digestive issues. I'm not a medical professional - I'm using published research as a guide.
+                        <br><br>
+                        <strong>Important note:</strong> This is still in development. Initial personalization will be basic ratio adjustments. As we grow, we plan to work with nutrition professionals to improve the personalization system. We never add or remove ingredients without discussing it with you first.
+                    </div>
+                </details>
+                
+                <details style="margin-bottom: 16px; background: var(--bg-light); border-radius: 12px; overflow: hidden;">
+                    <summary style="cursor: pointer; padding: 24px; font-weight: 600; font-size: 18px; list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                        <span>What if I'm taking medications?</span>
+                        <span class="plus" style="color: var(--accent); font-size: 24px;">+</span>
+                    </summary>
+                    <div style="padding: 0 24px 24px; color: var(--text-gray);">
+                        Always consult your healthcare provider before starting any new supplement, especially if you take medications. Some ingredients can interact with certain drugs. Our questionnaire asks about medications, and we flag potential interactions, but professional medical advice is essential.
+                    </div>
+                </details>
+                
+                <details style="margin-bottom: 16px; background: var(--bg-light); border-radius: 12px; overflow: hidden;">
+                    <summary style="cursor: pointer; padding: 24px; font-weight: 600; font-size: 18px; list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                        <span>How do I use the product?</span>
+                        <span class="plus" style="color: var(--accent); font-size: 24px;">+</span>
+                    </summary>
+                    <div style="padding: 0 24px 24px; color: var(--text-gray);">
+                        Simply add one scoop (12-15g) of your personalized blend to your morning smoothie, yogurt, oatmeal, or shake with water/milk. The concentrated formula means no bulky servings - just pure nutrition. We'll provide recipes and tips to make it taste great. Most people find it easiest to blend with fruits or mix into flavored yogurt.
+                    </div>
+                </details>
+                
+                <details style="margin-bottom: 16px; background: var(--bg-light); border-radius: 12px; overflow: hidden;">
+                    <summary style="cursor: pointer; padding: 24px; font-weight: 600; font-size: 18px; list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Is there a subscription?</span>
+                        <span class="plus" style="color: var(--accent); font-size: 24px;">+</span>
+                    </summary>
+                    <div style="padding: 0 24px 24px; color: var(--text-gray);">
+                        We offer both one-time purchases and optional monthly subscriptions. Subscribers save 10% and can pause or cancel anytime. You can also adjust your formula every 3 months based on changing needs or seasons.
+                    </div>
+                </details>
+                
+                <details style="margin-bottom: 16px; background: var(--bg-light); border-radius: 12px; overflow: hidden;">
+                    <summary style="cursor: pointer; padding: 24px; font-weight: 600; font-size: 18px; list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Where do you ship?</span>
+                        <span class="plus" style="color: var(--accent); font-size: 24px;">+</span>
+                    </summary>
+                    <div style="padding: 0 24px 24px; color: var(--text-gray);">
+                        We're currently finalizing our shipping arrangements. We plan to start with local delivery and expand based on demand. Waitlist members will be notified about shipping availability for their area.
+                    </div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- Countdown Timer Section -->
+    <section style="padding: 40px 20px; background: linear-gradient(135deg, #fff8f0 0%, #fff 100%); text-align: center;">
+        <div class="container">
+            <p style="font-size: 18px; color: var(--text-gray); margin-bottom: 16px;">Pre-Launch Offer Ends In:</p>
+            <div id="countdown" style="display: flex; justify-content: center; gap: 24px; margin-bottom: 20px;">
+                <div style="text-align: center;">
+                    <div style="font-size: 36px; font-weight: 700; color: var(--primary);" id="days">14</div>
+                    <div style="font-size: 12px; text-transform: uppercase; color: var(--text-gray);">Days</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 36px; font-weight: 700; color: var(--primary);" id="hours">12</div>
+                    <div style="font-size: 12px; text-transform: uppercase; color: var(--text-gray);">Hours</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 36px; font-weight: 700; color: var(--primary);" id="minutes">34</div>
+                    <div style="font-size: 12px; text-transform: uppercase; color: var(--text-gray);">Minutes</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 36px; font-weight: 700; color: var(--primary);" id="seconds">56</div>
+                    <div style="font-size: 12px; text-transform: uppercase; color: var(--text-gray);">Seconds</div>
+                </div>
+            </div>
+            <button class="btn-primary" onclick="openModal()">Reserve Your Spot (CHF 69 at Launch)</button>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing-section">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-label">Pre-Launch Offer</p>
+                <h2 class="section-title">Join Our Waitlist</h2>
+                <p class="section-subtitle">Be among the first to try XOVA when we launch</p>
+            </div>
+            
+            <div class="pricing-card">
+                <div class="pricing-badge">Launch Price</div>
+                <div class="price-amount">
+                    <span class="price-currency">CHF</span>69
+                    <span class="price-original">CHF 89</span>
+                </div>
+                <p style="text-align: center; margin: 20px 0; color: var(--accent); font-weight: 600;">
+                    Price when we launch - no payment today
+                </p>
+                <ul class="pricing-features">
+                    <li>
+                        <div class="feature-check">✓</div>
+                        <span>300g concentrated superfood blend (25 servings)</span>
+                    </li>
+                    <li>
+                        <div class="feature-check">✓</div>
+                        <span>Personalization based on your health goals</span>
+                    </li>
+                    <li>
+                        <div class="feature-check">✓</div>
+                        <span>Recipe suggestions included</span>
+                    </li>
+                    <li>
+                        <div class="feature-check">✓</div>
+                        <span>Shopping list for complementary ingredients</span>
+                    </li>
+                    <li>
+                        <div class="feature-check">✓</div>
+                        <span>Usage guide with timing recommendations</span>
+                    </li>
+                    <li>
+                        <div class="feature-check">✓</div>
+                        <span>Email support for questions</span>
+                    </li>
+                </ul>
+                <button class="btn-primary" style="width: 100%;" onclick="openModal()">
+                    Join Free Waitlist
+                </button>
+                <p style="text-align: center; margin-top: 16px; color: var(--text-gray); font-size: 14px;">
+                    <strong>CHF 2.76 per serving</strong> at launch - less than a coffee<br>
+                    Cancel anytime before launch
+                </p>
+            </div>
+        </div>
+    </section>
+
     <!-- Founder Section -->
-    <section class="founder">
+    <section class="founder-section">
         <div class="container">
             <div class="founder-content">
                 <div>
-                    <img src="founder-photo.jpg" alt="XOVA Founder" class="founder-image">
-                </div>
-                <div>
-                    <h2>Why I'm Building This</h2>
-                    <div class="founder-story">
-                        <p>I'm not a wellness influencer. I'm a researcher who got frustrated.</p>
-                        
-                        <p>After years studying nutritional science, I watched the supplement industry sell expensive placebos wrapped in Instagram-worthy packaging. "Proprietary blends" hiding 50mg of ingredients that need 500mg to work. One-size-fits-all formulas ignoring basic biochemistry.</p>
-                        
-                        <div class="founder-highlight">
-                            "The gap between nutritional research and what people actually consume is massive. I'm building the bridge."
-                        </div>
-                        
-                        <p>Every formula I create includes:</p>
-                        <p>✓ Only ingredients with peer-reviewed evidence<br>
-                        ✓ Clinical doses (the amounts actually studied)<br>
-                        ✓ Full transparency (no proprietary blend BS)<br>
-                        ✓ Realistic timelines (30-60 days, not 3)</p>
-                        
-                        <p>This isn't about following trends. It's about following science.</p>
+                    <div class="founder-image" style="width: 250px; height: 250px; background: url('data:image/jpeg;base64,/9j/4AAQSkZJRg...') center/cover; border-radius: 50%; margin: 0 auto;">
+                        <!-- Fallback if image doesn't load -->
+                        <div style="width: 100%; height: 100%; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 72px;">👩‍🔬</div>
                     </div>
+                </div>
+                <div class="founder-text">
+                    <h3>Hi, I'm Building XOVA</h3>
+                    <p>
+                        I started this project because I was frustrated trying to find quality superfood blends. 
+                        Everything was either overpriced, full of fillers, or hiding behind "proprietary formulas."
+                    </p>
+                    <p>
+                        My background is in data analysis (PhD in economics), so naturally I went deep into research papers 
+                        about nutrition and superfoods. The more I learned, the more I realized how simple this could be: 
+                        quality ingredients, transparent amounts, fair prices.
+                    </p>
+                    <div class="founder-quote">
+                        "I'm starting small - making blends in small batches, testing with local customers, 
+                        learning what works. This isn't a big company yet. It's me, trying to make something better."
+                    </div>
+                    <p>
+                        If you're interested in personalized superfood nutrition without the BS, join the waitlist. 
+                        I'll keep you updated as I develop the products and would love your input on what you're looking for.
+                    </p>
+                    <p style="margin-top: 20px; font-style: italic; color: var(--text-gray);">
+                        P.S. - Yes, I read research papers for fun. Yes, my friends think I'm weird. 
+                        But hey, someone needs to care about what's actually in your smoothie.
+                    </p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Final CTA -->
-    <section class="final-cta" id="waitlist">
-        <div class="container">
-            <h2>Ready for Nutrition That Actually Works?</h2>
-            <p>Join 200+ people tired of generic supplements and Instagram science</p>
+    <section id="waitlist" class="cta-section">
+        <div class="cta-content">
+            <h2 class="cta-title">Join the XOVA Waitlist</h2>
+            <p class="cta-subtitle">Get updates and early access when we launch</p>
             
-            <form class="email-form" onsubmit="submitFooterEmail(event)">
+            <form class="email-form" onsubmit="handleEmailSubmit(event)">
                 <input type="email" class="email-input" id="footer-email" placeholder="Enter your email" required>
-                <button type="submit" class="submit-button">Join Waitlist</button>
+                <button type="submit" class="email-submit">Join Waitlist</button>
             </form>
             
-            <div id="footer-success" class="success-message" style="margin-top: 20px;">
-                ✓ You're on the waitlist! Check your email for next steps.
+            <div id="footer-success" class="success-message">
+                ✓ You're on the waitlist! We'll be in touch soon.
             </div>
             
-            <p class="guarantee">
-                ✓ Get early access at 30% off<br>
-                ✓ Vote on next formulations<br>
-                ✓ No spam, ever. Unsubscribe anytime.
+            <p style="margin-top: 30px; font-size: 14px; opacity: 0.8;">
+                ✓ Early bird pricing for waitlist members<br>
+                ✓ No spam - only important updates<br>
+                ✓ Unsubscribe anytime
             </p>
         </div>
     </section>
 
-    <!-- Email Modal -->
-    <div id="emailModal" class="modal">
+    <!-- Modal -->
+    <div id="modal" class="modal">
         <div class="modal-content">
-            <span class="modal-close" onclick="closeEmailModal()">&times;</span>
-            <h3>Join the Personalized Nutrition Revolution</h3>
-            <p style="margin-bottom: 20px; color: #666;">Be among the first to get your custom superfood blend.</p>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <h3 style="margin-bottom: 8px; color: var(--primary);">Join the XOVA Waitlist</h3>
+            <p style="margin-bottom: 24px; color: var(--text-gray);">Be first to know when we launch. Lock in CHF 69 price (regular CHF 89).</p>
             
-            <form class="modal-form" onsubmit="submitEmail(event)">
-                <input type="text" class="modal-input" id="modal-name" placeholder="First Name" required>
-                <input type="email" class="modal-input" id="modal-email" placeholder="Email Address" required>
-                <button type="submit" class="modal-submit">Get Early Access</button>
+            <form onsubmit="handleModalSubmit(event)" style="display: flex; flex-direction: column; gap: 16px;">
+                <input type="text" id="modal-name" placeholder="First Name" required style="padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px;">
+                <input type="email" id="modal-email" placeholder="Email Address" required style="padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px;">
+                <select id="modal-product" style="padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px;">
+                    <option value="">Select Your Formula (Optional)</option>
+                    <option value="foundation">Foundation - Daily Wellness</option>
+                    <option value="focus">Focus - Mental Performance</option>
+                    <option value="gut">Gut Harmony - Digestive Health</option>
+                </select>
+                <button type="submit" class="btn-primary" style="width: 100%; border: none;">
+                    Join Waitlist (Free)
+                </button>
+                <p style="text-align: center; margin: 0; font-size: 13px; color: var(--text-gray);">
+                    No payment required • You'll pay CHF 69 only when we launch
+                </p>
             </form>
             
-            <div id="email-success" class="success-message">
-                ✓ You're on the waitlist! Check your email for next steps.
+            <div id="modal-success" class="success-message">
+                ✓ You're on the waitlist! Check your email.
             </div>
         </div>
     </div>
 
-    <!-- Vote Modal -->
-    <div id="voteModal" class="modal">
-        <div class="modal-content">
-            <span class="modal-close" onclick="closeVoteModal()">&times;</span>
-            <h3 id="vote-title">Vote for [Blend Name]</h3>
-            <p style="margin-bottom: 20px; color: #666;">Help us prioritize which blend to perfect first!</p>
-            
-            <form class="modal-form" onsubmit="submitVote(event)">
-                <input type="email" class="modal-input" id="vote-email" placeholder="Email Address" required>
-                <textarea class="modal-input" id="vote-reason" placeholder="Why this blend? (optional)" rows="3" style="resize: vertical;"></textarea>
-                <input type="hidden" id="vote-blend" value="">
-                <button type="submit" class="modal-submit">Submit Vote</button>
-            </form>
-            
-            <div id="vote-success" class="success-message">
-                ✓ Vote recorded! We'll email you when this blend is ready.
-            </div>
-        </div>
-    </div>
-
-    <!-- Supabase Configuration & JavaScript -->
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         // Initialize Supabase
@@ -936,157 +1887,170 @@
         const { createClient } = supabase;
         const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // Modal Functions
-        function openEmailModal() {
-            document.getElementById('emailModal').classList.add('active');
-        }
-
-        function closeEmailModal() {
-            document.getElementById('emailModal').classList.remove('active');
-            document.getElementById('email-success').classList.remove('show');
-        }
-
-        function openVoteModal(blendName) {
-            document.getElementById('voteModal').classList.add('active');
-            document.getElementById('vote-title').innerText = `Vote for ${blendName}`;
-            document.getElementById('vote-blend').value = blendName;
-        }
-
-        function closeVoteModal() {
-            document.getElementById('voteModal').classList.remove('active');
-            document.getElementById('vote-success').classList.remove('show');
-        }
-
-        // Submit Email (Join Waitlist)
-        async function submitEmail(event) {
-            event.preventDefault();
+        // Countdown Timer
+        function startCountdown() {
+            // Set the date we're counting down to: October 24, 2025 at 21:00
+            const countDownDate = new Date('October 24, 2025 21:00:00').getTime();
             
-            const name = document.getElementById('modal-name').value;
-            const email = document.getElementById('modal-email').value;
-            
-            try {
-                const { data, error } = await supabaseClient
-                    .from('waitlist')
-                    .insert([
-                        { 
-                            email: email,
-                            name: name,
-                            source: 'personalization_journey',
-                            created_at: new Date().toISOString()
-                        }
-                    ]);
+            // Update the count down every 1 second
+            const x = setInterval(function() {
+                const now = new Date().getTime();
+                const distance = countDownDate - now;
+                
+                // Time calculations
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                // Display the result
+                if (document.getElementById("days")) {
+                    document.getElementById("days").innerHTML = days;
+                    document.getElementById("hours").innerHTML = hours;
+                    document.getElementById("minutes").innerHTML = minutes;
+                    document.getElementById("seconds").innerHTML = seconds;
+                }
+                
+                // If the count down is finished
+                if (distance < 0) {
+                    clearInterval(x);
+                    if (document.getElementById("countdown")) {
+                        document.getElementById("countdown").innerHTML = "OFFER EXPIRED";
+                    }
+                }
+            }, 1000);
+        }
+        
+        // Start countdown on page load
+        startCountdown();
 
-                if (error) throw error;
-                
-                // Show success message
-                document.getElementById('email-success').classList.add('show');
-                
-                // Clear form
-                document.getElementById('modal-name').value = '';
-                document.getElementById('modal-email').value = '';
-                
-                // Close modal after 2 seconds
-                setTimeout(() => {
-                    closeEmailModal();
-                }, 2000);
-                
-            } catch (error) {
-                console.error('Error details:', error);
-                alert('Error: ' + (error.message || 'Something went wrong. Please try again.'));
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
             }
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                if (this.getAttribute('href') === '#waitlist') {
+                    e.preventDefault();
+                    openModal();
+                } else if (this.getAttribute('href').startsWith('#')) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        });
+
+        // Modal functions
+        function openModal() {
+            document.getElementById('modal').classList.add('active');
         }
 
-        // Submit Footer Email
-        async function submitFooterEmail(event) {
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+            document.getElementById('modal-success').classList.remove('show');
+        }
+
+        function selectProduct(product) {
+            openModal();
+            document.getElementById('modal-product').value = product.toLowerCase();
+        }
+
+        // Form submissions
+        async function handleEmailSubmit(event) {
             event.preventDefault();
-            
             const email = document.getElementById('footer-email').value;
             
             try {
                 const { data, error } = await supabaseClient
                     .from('waitlist')
-                    .insert([
-                        { 
-                            email: email,
-                            source: 'footer_cta',
-                            created_at: new Date().toISOString()
-                        }
-                    ]);
+                    .insert([{
+                        email: email,
+                        source: 'footer_cta',
+                        created_at: new Date().toISOString()
+                    }]);
 
                 if (error) throw error;
                 
-                // Show success message
                 document.getElementById('footer-success').classList.add('show');
-                
-                // Clear form
                 document.getElementById('footer-email').value = '';
-                
             } catch (error) {
                 console.error('Error:', error);
                 alert('Something went wrong. Please try again.');
             }
         }
 
-        // Submit Vote
-        async function submitVote(event) {
+        async function handleModalSubmit(event) {
             event.preventDefault();
             
-            const email = document.getElementById('vote-email').value;
-            const reason = document.getElementById('vote-reason').value;
-            const blend = document.getElementById('vote-blend').value;
+            const name = document.getElementById('modal-name').value;
+            const email = document.getElementById('modal-email').value;
+            const product = document.getElementById('modal-product').value;
             
             try {
-                // Add to waitlist
-                const { data: waitlistData, error: waitlistError } = await supabaseClient
+                const { data, error } = await supabaseClient
                     .from('waitlist')
-                    .insert([
-                        { 
-                            email: email,
-                            source: `vote_${blend.toLowerCase().replace(' ', '_')}`,
-                            created_at: new Date().toISOString()
-                        }
-                    ]);
+                    .insert([{
+                        email: email,
+                        name: name,
+                        source: product ? `selected_${product}` : 'modal_signup',
+                        created_at: new Date().toISOString()
+                    }]);
 
-                if (waitlistError) throw waitlistError;
+                if (error) throw error;
                 
-                // Record vote
-                const { data: voteData, error: voteError } = await supabaseClient
-                    .from('votes')
-                    .insert([
-                        { 
-                            email: email,
-                            blend: blend,
-                            reason: reason || null,
-                            created_at: new Date().toISOString()
-                        }
-                    ]);
-
-                if (voteError) throw voteError;
+                document.getElementById('modal-success').classList.add('show');
+                document.getElementById('modal-name').value = '';
+                document.getElementById('modal-email').value = '';
+                document.getElementById('modal-product').value = '';
                 
-                // Show success message
-                document.getElementById('vote-success').classList.add('show');
-                
-                // Clear form
-                document.getElementById('vote-email').value = '';
-                document.getElementById('vote-reason').value = '';
-                
-                // Close modal after 2 seconds
                 setTimeout(() => {
-                    closeVoteModal();
+                    closeModal();
                 }, 2000);
-                
             } catch (error) {
                 console.error('Error:', error);
                 alert('Something went wrong. Please try again.');
             }
         }
 
-        // Close modals when clicking outside
+        // Close modal on outside click
         window.onclick = function(event) {
             if (event.target.classList.contains('modal')) {
                 event.target.classList.remove('active');
             }
         }
+
+        // Add intersection observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'all 0.6s ease-out';
+            observer.observe(section);
+        });
     </script>
 </body>
 </html>
