@@ -112,6 +112,8 @@ function App() {
           setCurrentState('demo');
         } else if (page === 'questionnaire') {
           setCurrentState('questionnaire');
+        } else if (page === 'smoothie-selection') {
+          setCurrentState('smoothie-selection');
         } else {
           // Default fallback - if unknown page, stay on landing
           console.log('Unknown navigation page:', page);
@@ -196,10 +198,24 @@ function App() {
   }
 
   // Smoothie Selection
-  if (currentState === 'smoothie-selection' && userProfile) {
+  if (currentState === 'smoothie-selection') {
+    // Create a test profile if none exists
+    const testProfile = userProfile || {
+      primaryGoal: 'energy',
+      timeOfDay: 'morning',
+      healthConditions: [],
+      caffeinePreference: 'medium',
+      dietaryRestrictions: [],
+      stressLevel: 5,
+      vegetableIntake: 'medium',
+      medications: '',
+      flavorPreference: 'fruity',
+      budgetTier: 'essential'
+    };
+    
     return (
       <SmoothieSelection
-        profile={userProfile}
+        profile={testProfile}
         onSelectionComplete={handleSmoothieSelectionComplete}
         onBack={() => setCurrentState('dashboard')}
       />
