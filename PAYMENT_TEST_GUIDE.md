@@ -72,3 +72,4 @@ If payment fails:
 3. Confirm Stripe keys are in test mode
 4. Check network tab for API calls
 5. Verify Supabase connection for order storage
+

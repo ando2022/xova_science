@@ -52,3 +52,4 @@
 - If payment fails: Check Stripe credentials
 - If smoothie generation fails: Check ingredients database
 - If redirect fails: Check Vercel API routes
+

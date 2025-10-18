@@ -79,10 +79,12 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
             protein: Math.round(base.nutritional_breakdown.protein * multiplier * 10) / 10,
             carbs: Math.round(base.nutritional_breakdown.carbs * multiplier * 10) / 10,
             fiber: Math.round(base.nutritional_breakdown.fiber * multiplier * 10) / 10,
+            fat: Math.round(base.nutritional_breakdown.fat * multiplier * 10) / 10,
             iron: Math.round(base.nutritional_breakdown.iron * multiplier * 10) / 10,
             vitamin_c: Math.round(base.nutritional_breakdown.vitamin_c * multiplier * 10) / 10,
             calcium: Math.round(base.nutritional_breakdown.calcium * multiplier * 10) / 10,
             magnesium: Math.round(base.nutritional_breakdown.magnesium * multiplier * 10) / 10,
+            omega3: Math.round(base.nutritional_breakdown.omega3 * multiplier * 10) / 10,
           },
           // Add tier-specific ingredients
           ingredients: tier === 'premium' 
@@ -251,394 +253,280 @@ export function SmoothieSelection({ profile, onSelectionComplete, onBack }: Smoo
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-xova-primary/3 via-xova-accent/3 to-white">
-      {/* Header */}
-      <header className="border-b border-border/50 bg-white/80 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-xova-primary to-xova-secondary rounded-2xl flex items-center justify-center shadow-lg shadow-xova-primary/20">
-              <Zap className="w-6 h-6 text-white" />
+    <div className="min-h-screen bg-gradient-to-br from-[#6366f1] via-[#8b5cf6] to-[#ec4899]">
+      {/* Hero Header with Strong Branding */}
+      <header className="bg-gradient-to-r from-[#1e1b4b] via-[#312e81] to-[#1e1b4b] shadow-2xl">
+        <div className="max-w-7xl mx-auto px-6 py-6">
+          <div className="flex items-center justify-between">
+            {/* Bold XOVA Branding */}
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-[#6366f1] to-[#ec4899] rounded-3xl flex items-center justify-center shadow-2xl transform hover:scale-105 transition-transform">
+                <Zap className="w-10 h-10 text-white" />
+              </div>
+              <div>
+                <h1 className="text-4xl font-black text-white tracking-tight">
+                  XOVA
+                </h1>
+                <p className="text-sm text-indigo-200 font-semibold">Personalized Nutrition</p>
+              </div>
             </div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-xova-primary via-xova-accent to-xova-secondary bg-clip-text text-transparent">
-              XOVA
-            </span>
+            <Button 
+              onClick={onBack}
+              className="bg-white/10 hover:bg-white/20 text-white border-2 border-white/30 font-bold px-6 py-3 rounded-xl shadow-lg backdrop-blur-sm"
+            >
+              <ArrowLeft className="w-5 h-5 mr-2" />
+              Back to Profile
+            </Button>
           </div>
-          <Button variant="outline" onClick={onBack}>
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Profile
-          </Button>
+          
+          {/* Progress Bar - Bold and Visible */}
+          <div className="mt-6">
+            <div className="flex items-center justify-between text-sm text-white font-semibold mb-3">
+              <span className="text-lg">Step 2 of 3: Select Your Smoothie</span>
+              <span className="text-lg">{selectedSmoothies.length}/{MAX_SELECTION} Selected</span>
+            </div>
+            <div className="w-full bg-white/20 rounded-full h-4 shadow-inner">
+              <div className="bg-gradient-to-r from-[#22c55e] to-[#10b981] h-4 rounded-full transition-all duration-500 shadow-lg" style={{ width: '66%' }} />
+            </div>
+          </div>
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Progress */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between text-sm text-muted-foreground mb-2">
-            <span>Step 2 of 3: Select Your Smoothies</span>
-            <span>Choose {MAX_SELECTION} from {smoothies.length} options</span>
-          </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
-            <div className="bg-gradient-to-r from-xova-primary to-xova-secondary h-2 rounded-full transition-all duration-300" style={{ width: '66%' }} />
-          </div>
-        </div>
-
-        {/* Selection Summary */}
-        <Card className="p-6 mb-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold mb-2">Your Smoothie</h1>
-              <p className="text-muted-foreground">
-                One essential recipe. Your plan will include exactly 7 smoothies total.
+      {/* Main Selection Hero Section */}
+      <section className="bg-gradient-to-br from-[#6366f1] to-[#8b5cf6] py-12">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-10 border-4 border-white/50">
+            <div className="text-center mb-8">
+              <h2 className="text-5xl font-black bg-gradient-to-r from-[#6366f1] via-[#8b5cf6] to-[#ec4899] bg-clip-text text-transparent mb-4">
+                Your Perfect Smoothie
+              </h2>
+              <p className="text-xl text-gray-700 font-semibold">
+                One essential recipe tailored to your goals · 7 smoothies per week
               </p>
             </div>
-            <div className="text-right">
-              <div className="text-2xl font-bold text-xova-primary">
-                {selectedSmoothies.length}/{MAX_SELECTION}
+
+            {error && (
+              <div className="mb-8 p-6 bg-gradient-to-r from-red-500 to-pink-500 rounded-2xl shadow-xl">
+                <p className="text-white text-lg font-bold text-center">{error}</p>
               </div>
-              <p className="text-sm text-muted-foreground">Selected</p>
-            </div>
-          </div>
-        </Card>
+            )}
 
-        {error && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-            <p className="text-red-800">{error}</p>
-          </div>
-        )}
-
-        {/* Tier Explanation */}
-        <Card className="p-6 mb-6">
-          <h2 className="text-xl font-bold mb-4">Choose Your Smoothie Tier</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="text-center p-4 border border-green-200 rounded-lg bg-green-50">
-              <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Star className="w-6 h-6 text-white" />
+            {/* Tier Options - Bold Color Blocks */}
+            <div className="mb-10">
+              <h3 className="text-3xl font-black text-gray-900 mb-6 text-center">Choose Your Tier</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="bg-gradient-to-br from-[#22c55e] to-[#10b981] rounded-3xl p-8 text-white shadow-2xl transform hover:scale-105 transition-all border-4 border-white">
+                  <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-xl">
+                    <Star className="w-12 h-12 text-[#22c55e]" />
+                  </div>
+                  <h4 className="font-black text-2xl mb-3 text-center">Essential</h4>
+                  <p className="text-xl font-bold mb-3 text-center">CHF 12 per smoothie</p>
+                  <p className="text-base font-semibold text-center text-green-50">Pure, natural ingredients with essential nutrition for daily wellness</p>
+                </div>
+                <div className="bg-gradient-to-br from-[#3b82f6] to-[#06b6d4] rounded-3xl p-8 text-white shadow-2xl transform hover:scale-105 transition-all border-4 border-white">
+                  <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-xl">
+                    <Star className="w-12 h-12 text-[#3b82f6]" />
+                  </div>
+                  <h4 className="font-black text-2xl mb-3 text-center">Enhanced</h4>
+                  <p className="text-xl font-bold mb-3 text-center">CHF 15 per smoothie</p>
+                  <p className="text-base font-semibold text-center text-blue-50">Superfoods included for enhanced performance and recovery</p>
+                </div>
+                <div className="bg-gradient-to-br from-[#a855f7] to-[#ec4899] rounded-3xl p-8 text-white shadow-2xl transform hover:scale-105 transition-all border-4 border-white">
+                  <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-xl">
+                    <Star className="w-12 h-12 text-[#a855f7]" />
+                  </div>
+                  <h4 className="font-black text-2xl mb-3 text-center">Premium</h4>
+                  <p className="text-xl font-bold mb-3 text-center">CHF 18 per smoothie</p>
+                  <p className="text-base font-semibold text-center text-purple-50">Elite superfoods and luxury ingredients for maximum benefits</p>
+                </div>
               </div>
-              <h3 className="font-bold text-green-800 mb-2">Essential</h3>
-              <p className="text-sm text-green-700 mb-2">CHF 12/11 per smoothie</p>
-              <p className="text-xs text-green-600">Pure, natural ingredients with essential nutrition for daily wellness</p>
             </div>
-            <div className="text-center p-4 border border-blue-200 rounded-lg bg-blue-50">
-              <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Star className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="font-bold text-blue-800 mb-2">Enhanced</h3>
-              <p className="text-sm text-blue-700 mb-2">CHF 15/14 per smoothie</p>
-              <p className="text-xs text-blue-600">Superfoods included for enhanced performance and recovery</p>
-            </div>
-            <div className="text-center p-4 border border-purple-200 rounded-lg bg-purple-50">
-              <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Star className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="font-bold text-purple-800 mb-2">Premium</h3>
-              <p className="text-sm text-purple-700 mb-2">CHF 18/17 per smoothie</p>
-              <p className="text-xs text-purple-600">Elite superfoods and luxury ingredients for maximum benefits</p>
-            </div>
-          </div>
-        </Card>
 
-        {/* Filters */}
-        <div className="mb-6">
-          <div className="flex flex-wrap gap-2">
-            {[
-              { id: 'all', label: 'All Smoothies' },
-              { id: 'essential', label: 'Essential (CHF 12/11)' },
-              { id: 'enhanced', label: 'Enhanced (CHF 15/14)' },
-              { id: 'premium', label: 'Premium (CHF 18/17)' },
-              { id: 'energy', label: 'Energy Boost' },
-              { id: 'recovery', label: 'Recovery' },
-              { id: 'weight-management', label: 'Weight Management' },
-              { id: 'immune', label: 'Immune Support' },
-              { id: 'heart-health', label: 'Heart Health' }
-            ].map((filterOption) => (
-              <Button
-                key={filterOption.id}
-                variant={filter === filterOption.id ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => setFilter(filterOption.id as FilterType)}
-                className={filter === filterOption.id ? 'bg-xova-primary' : ''}
-              >
-                {getFilterIcon(filterOption.id as FilterType)}
-                <span className="ml-2">{filterOption.label}</span>
-              </Button>
-            ))}
-          </div>
-        </div>
+            {/* Smoothie Cards - Large and Bold */}
+            <div className="space-y-6">
+              {filteredSmoothies.map((smoothie) => {
+                const isSelected = selectedSmoothies.includes(smoothie);
+                const canSelect = selectedSmoothies.length < MAX_SELECTION || isSelected;
 
-        {/* Smoothie Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          {filteredSmoothies.map((smoothie) => {
-            const isSelected = selectedSmoothies.includes(smoothie);
-            const canSelect = selectedSmoothies.length < MAX_SELECTION || isSelected;
-
-            return (
-              <Card 
-                key={smoothie.id}
-                className={`p-6 cursor-pointer transition-all hover:shadow-lg ${
-                  isSelected 
-                    ? 'border-xova-primary bg-xova-primary/5 shadow-lg' 
-                    : canSelect 
-                      ? 'border-border hover:border-xova-primary/50' 
-                      : 'border-gray-200 opacity-60 cursor-not-allowed'
-                }`}
-                onClick={() => canSelect && handleSmoothieSelect(smoothie)}
-              >
-                {/* Selection Indicator */}
-                {isSelected && (
-                  <div className="absolute top-4 right-4">
-                    <div className="w-8 h-8 bg-xova-primary rounded-full flex items-center justify-center">
-                      <CheckCircle className="w-5 h-5 text-white" />
-                    </div>
-                  </div>
-                )}
-
-                {/* Smoothie Name & Flavor */}
-                <div className="mb-4">
-                  <div className="flex items-center justify-between mb-1">
-                    <h3 className="text-lg font-bold">{smoothie.name}</h3>
-                    <Badge 
-                      className={`text-xs ${
-                        smoothie.tier === 'premium' 
-                          ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white' 
-                          : smoothie.tier === 'enhanced' 
-                          ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
-                          : 'bg-gradient-to-r from-green-500 to-emerald-500 text-white'
-                      }`}
-                    >
-                      {smoothie.tier === 'premium' ? 'Premium' : smoothie.tier === 'enhanced' ? 'Enhanced' : 'Essential'}
-                    </Badge>
-                  </div>
-                  <div className="space-y-1">
-                    <Badge variant="outline" className="text-xs">
-                      {smoothie.flavor_profile}
-                    </Badge>
-                    <div className="text-xs text-blue-600 font-medium">
-                      {smoothie.time_of_day}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Ingredients List */}
-                <div className="mb-4">
-                  <h4 className="text-sm font-semibold mb-2 text-gray-700">Ingredients:</h4>
-                  <div className="space-y-1">
-                    {smoothie.ingredients.slice(0, 6).map((ingredient, idx) => (
-                      <div key={idx} className="flex items-center justify-between text-xs">
-                        <span className="text-gray-700">{ingredient.ingredient.display_name}</span>
-                        <span className="text-gray-500 font-medium">{ingredient.amount_grams}g</span>
-                      </div>
-                    ))}
-                    {smoothie.ingredients.length > 6 && (
-                      <div className="text-xs text-gray-500 italic">
-                        +{smoothie.ingredients.length - 6} more ingredients
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Key Nutrients */}
-                <div className="grid grid-cols-2 gap-2 mb-4 text-xs">
-                  <div className="flex justify-between">
-                    <span>Calories:</span>
-                    <span className="font-semibold">{smoothie.nutritional_breakdown.calories}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Protein:</span>
-                    <span className="font-semibold">{smoothie.nutritional_breakdown.protein}g</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Fiber:</span>
-                    <span className="font-semibold">{smoothie.nutritional_breakdown.fiber}g</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Vitamin C:</span>
-                    <span className="font-semibold">{smoothie.nutritional_breakdown.vitamin_c}mg</span>
-                  </div>
-                </div>
-
-                {/* Health Benefits */}
-                <div className="mb-4">
-                  <p className="text-sm font-medium text-gray-700 mb-2">Key Benefits:</p>
-                  <div className="flex flex-wrap gap-1">
-                    {smoothie.health_benefits.slice(0, 2).map((benefit, index) => (
-                      <Badge key={index} variant="secondary" className="text-xs">
-                        {benefit}
-                      </Badge>
-                    ))}
-                    {smoothie.health_benefits.length > 2 && (
-                      <Badge variant="secondary" className="text-xs">
-                        +{smoothie.health_benefits.length - 2} more
-                      </Badge>
-                    )}
-                  </div>
-                </div>
-
-                {/* Pricing */}
-                <div className="flex items-center justify-between text-sm">
-                  <div>
-                    <span className="text-muted-foreground">Price:</span>
-                    <span className="font-semibold ml-1">CHF {smoothie.price.seven_day}</span>
-                  </div>
-                  <div className="text-muted-foreground text-xs">
-                    14-day: CHF {smoothie.price.fourteen_day}
-                  </div>
-                </div>
-
-                {/* Action Buttons */}
-                <div className="mt-4 pt-4 border-t space-y-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="w-full"
-                    onClick={async (e) => {
-                      e.stopPropagation();
-                      console.log('View Details clicked for smoothie:', smoothie.name);
-                      setSelectedSmoothie(smoothie);
-                      
-                      // Track smoothie view
-                      try {
-                        const { data: { user } } = await supabase.auth.getUser();
-                        await DataService.trackSmoothieView(user?.id || null, smoothie.id, smoothie.name);
-                      } catch (error) {
-                        console.error('Error tracking smoothie view:', error);
-                      }
-                    }}
+                return (
+                  <div 
+                    key={smoothie.id}
+                    className={`rounded-3xl p-8 cursor-pointer transition-all transform hover:scale-[1.02] shadow-2xl border-4 ${
+                      isSelected 
+                        ? 'bg-gradient-to-br from-[#22c55e] to-[#10b981] border-white scale-[1.02]' 
+                        : canSelect 
+                          ? 'bg-gradient-to-br from-white to-gray-50 border-gray-200 hover:border-[#6366f1]' 
+                          : 'bg-gray-200 border-gray-300 opacity-60 cursor-not-allowed'
+                    }`}
+                    onClick={() => canSelect && handleSmoothieSelect(smoothie)}
                   >
-                    <Eye className="w-4 h-4 mr-2" />
-                    View Details
-                  </Button>
-                  {isSelected ? (
-                    <div className="flex items-center text-xova-primary">
-                      <CheckCircle className="w-4 h-4 mr-2" />
-                      <span className="text-sm font-medium">Selected</span>
-                    </div>
-                  ) : canSelect ? (
-                    <div className="flex items-center text-gray-600">
-                      <Star className="w-4 h-4 mr-2" />
-                      <span className="text-sm">Click to select this version</span>
-                    </div>
-                  ) : (
-                    <div className="flex items-center text-gray-400">
-                      <span className="text-sm">Selection full</span>
-                    </div>
-                  )}
-                </div>
-              </Card>
-            );
-          })}
-        </div>
+                    <div className="flex flex-col lg:flex-row gap-8">
+                      {/* Left: Smoothie Info */}
+                      <div className="flex-1">
+                        <div className="flex items-start justify-between mb-6">
+                          <div>
+                            <h3 className={`text-4xl font-black mb-3 ${isSelected ? 'text-white' : 'text-gray-900'}`}>
+                              {smoothie.name}
+                            </h3>
+                            <div className="flex items-center gap-3 flex-wrap">
+                              <Badge 
+                                className={`text-base px-4 py-2 font-bold ${
+                                  smoothie.tier === 'premium' 
+                                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white' 
+                                    : smoothie.tier === 'enhanced' 
+                                    ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white'
+                                    : 'bg-gradient-to-r from-green-600 to-emerald-600 text-white'
+                                }`}
+                              >
+                                {smoothie.tier === 'premium' ? 'PREMIUM' : smoothie.tier === 'enhanced' ? 'ENHANCED' : 'ESSENTIAL'}
+                              </Badge>
+                              <Badge className={`text-base px-4 py-2 font-bold ${isSelected ? 'bg-white text-green-700' : 'bg-indigo-100 text-indigo-700'}`}>
+                                {smoothie.flavor_profile}
+                              </Badge>
+                              <Badge className={`text-base px-4 py-2 font-bold ${isSelected ? 'bg-white text-green-700' : 'bg-blue-100 text-blue-700'}`}>
+                                {smoothie.time_of_day}
+                              </Badge>
+                            </div>
+                          </div>
+                          {isSelected && (
+                            <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-xl">
+                              <CheckCircle className="w-10 h-10 text-green-600" />
+                            </div>
+                          )}
+                        </div>
 
-        {/* Basket & Plan Selection */}
-        <Card className="p-6 mb-8">
-          <h2 className="text-xl font-bold mb-4">Your Smoothie Basket</h2>
-          
-          {/* Selected Smoothies Summary */}
-          <div className="mb-6">
-            <h3 className="font-semibold mb-3">Selected Smoothies (3 of 3):</h3>
-            <div className="space-y-2">
-              {selectedSmoothies.map((smoothie, index) => (
-                <div key={smoothie.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-xova-primary text-white rounded-full flex items-center justify-center text-sm font-semibold">
-                      {index + 1}
-                    </div>
-                    <div>
-                      <div className="font-medium">{smoothie.name}</div>
-                      <Badge 
-                        className={`text-xs ${
-                          smoothie.tier === 'premium' 
-                            ? 'bg-purple-100 text-purple-700' 
-                            : smoothie.tier === 'enhanced' 
-                            ? 'bg-blue-100 text-blue-700'
-                            : 'bg-green-100 text-green-700'
-                        }`}
-                      >
-                        {smoothie.tier}
-                      </Badge>
+                        {/* Ingredients */}
+                        <div className="mb-6">
+                          <h4 className={`text-xl font-black mb-4 ${isSelected ? 'text-white' : 'text-gray-900'}`}>Ingredients:</h4>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            {smoothie.ingredients.slice(0, 6).map((ingredient, idx) => (
+                              <div key={idx} className={`flex items-center justify-between px-4 py-3 rounded-xl ${isSelected ? 'bg-white/20' : 'bg-gray-100'}`}>
+                                <span className={`font-bold ${isSelected ? 'text-white' : 'text-gray-800'}`}>{ingredient.ingredient.display_name}</span>
+                                <span className={`font-black ${isSelected ? 'text-white' : 'text-gray-600'}`}>{ingredient.amount_grams}g</span>
+                              </div>
+                            ))}
+                          </div>
+                          {smoothie.ingredients.length > 6 && (
+                            <p className={`text-base font-bold mt-3 ${isSelected ? 'text-white' : 'text-gray-600'}`}>
+                              +{smoothie.ingredients.length - 6} more ingredients
+                            </p>
+                          )}
+                        </div>
+
+                        {/* Nutrition */}
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+                          <div className={`text-center px-4 py-4 rounded-xl ${isSelected ? 'bg-white/20' : 'bg-orange-50'}`}>
+                            <p className={`text-3xl font-black ${isSelected ? 'text-white' : 'text-orange-600'}`}>{smoothie.nutritional_breakdown.calories}</p>
+                            <p className={`text-sm font-bold ${isSelected ? 'text-white' : 'text-orange-800'}`}>Calories</p>
+                          </div>
+                          <div className={`text-center px-4 py-4 rounded-xl ${isSelected ? 'bg-white/20' : 'bg-blue-50'}`}>
+                            <p className={`text-3xl font-black ${isSelected ? 'text-white' : 'text-blue-600'}`}>{smoothie.nutritional_breakdown.protein}g</p>
+                            <p className={`text-sm font-bold ${isSelected ? 'text-white' : 'text-blue-800'}`}>Protein</p>
+                          </div>
+                          <div className={`text-center px-4 py-4 rounded-xl ${isSelected ? 'bg-white/20' : 'bg-green-50'}`}>
+                            <p className={`text-3xl font-black ${isSelected ? 'text-white' : 'text-green-600'}`}>{smoothie.nutritional_breakdown.fiber}g</p>
+                            <p className={`text-sm font-bold ${isSelected ? 'text-white' : 'text-green-800'}`}>Fiber</p>
+                          </div>
+                          <div className={`text-center px-4 py-4 rounded-xl ${isSelected ? 'bg-white/20' : 'bg-purple-50'}`}>
+                            <p className={`text-3xl font-black ${isSelected ? 'text-white' : 'text-purple-600'}`}>{smoothie.nutritional_breakdown.vitamin_c}mg</p>
+                            <p className={`text-sm font-bold ${isSelected ? 'text-white' : 'text-purple-800'}`}>Vitamin C</p>
+                          </div>
+                        </div>
+
+                        {/* Health Benefits */}
+                        <div>
+                          <h4 className={`text-xl font-black mb-3 ${isSelected ? 'text-white' : 'text-gray-900'}`}>Key Benefits:</h4>
+                          <div className="flex flex-wrap gap-3">
+                            {smoothie.health_benefits.slice(0, 4).map((benefit, index) => (
+                              <Badge key={index} className={`text-base px-4 py-2 font-bold ${isSelected ? 'bg-white text-green-700' : 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white'}`}>
+                                {benefit}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Right: Pricing and Action */}
+                      <div className="lg:w-80 flex flex-col justify-between">
+                        <div className={`rounded-2xl p-8 mb-6 ${isSelected ? 'bg-white/20' : 'bg-gradient-to-br from-[#6366f1] to-[#8b5cf6]'}`}>
+                          <p className={`text-lg font-black mb-2 ${isSelected ? 'text-white' : 'text-white'}`}>Price per smoothie:</p>
+                          <p className={`text-5xl font-black mb-4 ${isSelected ? 'text-white' : 'text-white'}`}>CHF {smoothie.price.seven_day}</p>
+                          <p className={`text-base font-bold ${isSelected ? 'text-white' : 'text-indigo-100'}`}>7-day plan: CHF {smoothie.price.seven_day * 7}</p>
+                          <p className={`text-base font-bold ${isSelected ? 'text-white' : 'text-indigo-100'}`}>14-day plan: CHF {smoothie.price.fourteen_day * 14}</p>
+                        </div>
+
+                        <div className="space-y-4">
+                          <Button
+                            onClick={async (e) => {
+                              e.stopPropagation();
+                              setSelectedSmoothie(smoothie);
+                            }}
+                            className={`w-full text-lg font-black py-6 rounded-xl shadow-xl transform hover:scale-105 transition-all ${
+                              isSelected 
+                                ? 'bg-white text-green-700 hover:bg-gray-100' 
+                                : 'bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white hover:from-[#4f46e5] hover:to-[#7c3aed]'
+                            }`}
+                          >
+                            <Eye className="w-6 h-6 mr-3" />
+                            View Full Details
+                          </Button>
+                          
+                          {isSelected ? (
+                            <div className="flex items-center justify-center gap-3 py-4 bg-white rounded-xl shadow-lg">
+                              <CheckCircle className="w-8 h-8 text-green-600" />
+                              <span className="text-2xl font-black text-green-700">SELECTED</span>
+                            </div>
+                          ) : canSelect ? (
+                            <div className="flex items-center justify-center gap-3 py-4 bg-gray-100 rounded-xl">
+                              <Star className="w-6 h-6 text-gray-600" />
+                              <span className="text-lg font-bold text-gray-700">Click anywhere to select</span>
+                            </div>
+                          ) : null}
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <div className="font-semibold">
-                      CHF {smoothie.price.seven_day}
-                    </div>
-                    <div className="text-xs text-gray-500">per smoothie</div>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
-
-          {/* Plan Summary (simplified) */}
-          <div className="border-t pt-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="font-semibold text-lg">Plan</div>
-                <div className="text-sm text-gray-600">
-                  7 smoothies · CHF 12 each
-                </div>
-              </div>
-              <div className="text-right">
-                <div className="text-3xl font-bold text-xova-primary">CHF {getPlanPrice()}</div>
-                <div className="text-sm text-green-600">Free delivery</div>
-              </div>
-            </div>
-          </div>
-
-          {/* Order Summary */}
-          <div className="border-t pt-6 mt-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="font-semibold text-lg">Total Order</div>
-                <div className="text-sm text-gray-600">
-                  7 smoothies
-                </div>
-              </div>
-              <div className="text-right">
-                <div className="text-3xl font-bold text-xova-primary">
-                  CHF {getPlanPrice()}
-                </div>
-                <div className="text-sm text-green-600">
-                  Free delivery included
-                </div>
-              </div>
-            </div>
-          </div>
-        </Card>
-
-        {/* Continue Button */}
-        <div className="flex justify-center">
-          <Button
-            onClick={handleContinue}
-            disabled={selectedSmoothies.length !== MAX_SELECTION}
-            className="bg-gradient-to-r from-xova-primary to-xova-secondary px-8 py-3 text-lg"
-          >
-            <ShoppingCart className="w-5 h-5 mr-2" />
-            Continue to Checkout
-            <ArrowRight className="w-5 h-5 ml-2" />
-          </Button>
         </div>
+      </section>
 
-        {/* Selection Summary */}
-        {selectedSmoothies.length > 0 && (
-          <Card className="p-4 mt-8">
-            <h3 className="font-semibold mb-3">Your Selection Summary</h3>
-            <div className="space-y-2">
-              {selectedSmoothies.map((smoothie, index) => (
-                <div key={smoothie.id} className="flex items-center justify-between">
-                  <span className="text-sm">{index + 1}. {smoothie.name}</span>
-                  <span className="text-sm font-semibold">CHF {smoothie.price.seven_day}</span>
+      {/* Checkout Section - Bold Bottom Bar */}
+      {selectedSmoothies.length > 0 && (
+        <section className="bg-gradient-to-r from-[#1e1b4b] via-[#312e81] to-[#1e1b4b] py-8 sticky bottom-0 shadow-2xl border-t-4 border-white/30">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
+              {/* Order Summary */}
+              <div className="flex items-center gap-8">
+                <div className="text-white">
+                  <p className="text-lg font-bold text-indigo-200 mb-1">Your Plan</p>
+                  <p className="text-3xl font-black">{selectedSmoothies[0].name}</p>
+                  <p className="text-xl font-bold text-indigo-300">7 smoothies · CHF {selectedSmoothies[0].price.seven_day} each</p>
                 </div>
-              ))}
-              <div className="border-t pt-2 mt-2">
-                <div className="flex items-center justify-between font-semibold">
-                  <span>Total for 7 smoothies:</span>
-                  <span>CHF {getPlanPrice()}</span>
+                <div className="h-20 w-1 bg-white/30"></div>
+                <div className="text-white text-center">
+                  <p className="text-lg font-bold text-indigo-200 mb-1">Total</p>
+                  <p className="text-5xl font-black">CHF {getPlanPrice()}</p>
+                  <p className="text-base font-bold text-green-400">✓ Free Delivery</p>
                 </div>
               </div>
+
+              {/* Checkout Button */}
+              <Button
+                onClick={handleContinue}
+                disabled={selectedSmoothies.length !== MAX_SELECTION}
+                className="bg-gradient-to-r from-[#22c55e] to-[#10b981] hover:from-[#16a34a] hover:to-[#059669] text-white font-black text-2xl px-12 py-8 rounded-2xl shadow-2xl transform hover:scale-105 transition-all border-4 border-white/30 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <ShoppingCart className="w-8 h-8 mr-4" />
+                Proceed to Checkout
+                <ArrowRight className="w-8 h-8 ml-4" />
+              </Button>
             </div>
-          </Card>
-        )}
-      </div>
+          </div>
+        </section>
+      )}
 
       {/* Smoothie Detail Modal */}
       <SmoothieDetailModal
