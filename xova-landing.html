@@ -243,15 +243,15 @@
         /* Sphere animation */
         .sphere-container {
             position: relative;
-            width: 300px;
-            height: 300px;
+            width: 350px;
+            height: 350px;
             margin: 0 auto;
         }
         
         .sphere {
             position: absolute;
-            width: 70px;
-            height: 70px;
+            width: 65px;
+            height: 65px;
             border-radius: 50%;
             box-shadow: 
                 inset -10px -10px 20px rgba(0,0,0,0.2),
@@ -262,38 +262,60 @@
         
         .sphere:nth-child(1) {
             background: linear-gradient(135deg, #4caf50, #81c784);
-            top: 50px;
-            left: 50px;
+            top: 40px;
+            left: 40px;
             animation-delay: 0s;
         }
         
         .sphere:nth-child(2) {
             background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
-            top: 50px;
-            right: 50px;
-            animation-delay: 0.5s;
+            top: 40px;
+            right: 40px;
+            animation-delay: 0.3s;
         }
         
         .sphere:nth-child(3) {
             background: linear-gradient(135deg, #4fc3f7, #81d4fa);
             bottom: 100px;
-            left: 50px;
-            animation-delay: 1s;
+            left: 40px;
+            animation-delay: 0.6s;
         }
         
         .sphere:nth-child(4) {
             background: linear-gradient(135deg, #ffb74d, #ffcc80);
             bottom: 100px;
-            right: 50px;
-            animation-delay: 1.5s;
+            right: 40px;
+            animation-delay: 0.9s;
         }
         
         .sphere:nth-child(5) {
             background: linear-gradient(135deg, #ba68c8, #ce93d8);
-            top: 120px;
+            top: 40px;
             left: 50%;
             transform: translateX(-50%);
-            animation-delay: 2s;
+            animation-delay: 1.2s;
+        }
+        
+        .sphere:nth-child(6) {
+            background: linear-gradient(135deg, #66bb6a, #81c784);
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation-delay: 1.5s;
+        }
+        
+        .sphere:nth-child(7) {
+            background: linear-gradient(135deg, #ef5350, #e57373);
+            top: 140px;
+            left: 90px;
+            animation-delay: 1.8s;
+        }
+        
+        .sphere:nth-child(8) {
+            background: linear-gradient(135deg, #42a5f5, #64b5f6);
+            top: 140px;
+            right: 90px;
+            animation-delay: 2.1s;
         }
         
         .timer-badge {
@@ -978,28 +1000,29 @@
     <section class="hero">
         <div class="hero-container">
             <div class="hero-content fade-in-up">
-                <h1>The Smoothie, <span class="gradient-text">Reinvented</span></h1>
+                <h1>The Superfood Smoothie, <span class="gradient-text">Reinvented</span></h1>
                 <p class="hero-subtitle">
-                    Stop googling what superfoods to take. Stop guessing ratios. Stop buying 20 jars that expire.
-                    We researched it, balanced it, froze it in spheres. Just blend and go - your complete daily nutrition decided.
+                    No expired jars. No measuring. No bad taste. Complete smoothies with fruits, vegetables, 
+                    and research-backed superfoods. Frozen fresh in spheres, delivered weekly. 
+                    Just add liquid, blend 30 seconds, feel full until lunch.
                 </p>
                 <div class="hero-cta-group">
                     <a href="#waitlist" class="btn-primary">Pre-Order Smoothie Spheres - CHF 11</a>
-                    <a href="#why" class="btn-secondary">See Why Spheres Work Better</a>
+                    <a href="#products" class="btn-secondary">See Your Options</a>
                 </div>
                 
                 <div class="value-props">
                     <div class="value-prop">
-                        <div class="value-icon">🧠</div>
+                        <div class="value-icon">🥗</div>
                         <div class="value-text">
-                            <strong>No more deciding</strong>
-                            <span>We did the research</span>
+                            <strong>Daily nutrition covered</strong>
+                            <span>Fruits, vegetables, superfoods</span>
                         </div>
                     </div>
                     <div class="value-prop">
                         <div class="value-icon">🍽️</div>
                         <div class="value-text">
-                            <strong>Complete meal</strong>
+                            <strong>Actually fills you up</strong>
                             <span>400-450 calories</span>
                         </div>
                     </div>
@@ -1016,6 +1039,9 @@
             <div class="hero-visual">
                 <div class="smoothie-visual">
                     <div class="sphere-container">
+                        <div class="sphere"></div>
+                        <div class="sphere"></div>
+                        <div class="sphere"></div>
                         <div class="sphere"></div>
                         <div class="sphere"></div>
                         <div class="sphere"></div>
