@@ -240,87 +240,142 @@
             position: relative;
         }
         
-        /* Sphere animation */
-        .sphere-container {
+        /* Sphere and glass container */
+        .smoothie-visual {
+            width: 100%;
+            max-width: 500px;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             position: relative;
-            width: 350px;
-            height: 350px;
-            margin: 0 auto;
+        }
+        
+        .glass-container {
+            position: relative;
+            width: 200px;
+            height: 280px;
+            background: linear-gradient(135deg, 
+                rgba(255,255,255,0.1) 0%, 
+                rgba(255,255,255,0.05) 50%,
+                rgba(255,255,255,0.1) 100%);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 10px 10px 40% 40%;
+            box-shadow: 
+                inset 0 0 20px rgba(255,255,255,0.2),
+                0 10px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .glass-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 10px;
+            width: 30px;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                rgba(255,255,255,0) 0%,
+                rgba(255,255,255,0.4) 50%,
+                rgba(255,255,255,0) 100%);
+            transform: skewX(-20deg);
         }
         
         .sphere {
             position: absolute;
-            width: 65px;
-            height: 65px;
+            width: 55px;
+            height: 55px;
             border-radius: 50%;
             box-shadow: 
                 inset -10px -10px 20px rgba(0,0,0,0.2),
                 inset 10px 10px 20px rgba(255,255,255,0.3),
-                0 8px 25px rgba(0,0,0,0.3);
+                0 4px 15px rgba(0,0,0,0.2);
             animation: float 3s ease-in-out infinite;
         }
         
+        /* Stack spheres naturally in glass */
         .sphere:nth-child(1) {
             background: linear-gradient(135deg, #4caf50, #81c784);
-            top: 40px;
-            left: 40px;
+            bottom: 20px;
+            left: 30px;
             animation-delay: 0s;
         }
         
         .sphere:nth-child(2) {
             background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
-            top: 40px;
-            right: 40px;
-            animation-delay: 0.3s;
+            bottom: 20px;
+            right: 30px;
+            animation-delay: 0.4s;
         }
         
         .sphere:nth-child(3) {
             background: linear-gradient(135deg, #4fc3f7, #81d4fa);
-            bottom: 100px;
-            left: 40px;
-            animation-delay: 0.6s;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation-delay: 0.8s;
         }
         
         .sphere:nth-child(4) {
             background: linear-gradient(135deg, #ffb74d, #ffcc80);
-            bottom: 100px;
-            right: 40px;
-            animation-delay: 0.9s;
+            bottom: 60px;
+            left: 20px;
+            animation-delay: 1.2s;
         }
         
         .sphere:nth-child(5) {
             background: linear-gradient(135deg, #ba68c8, #ce93d8);
-            top: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            animation-delay: 1.2s;
+            bottom: 60px;
+            right: 20px;
+            animation-delay: 1.6s;
         }
         
         .sphere:nth-child(6) {
             background: linear-gradient(135deg, #66bb6a, #81c784);
-            bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%);
-            animation-delay: 1.5s;
+            bottom: 110px;
+            left: 35px;
+            animation-delay: 2.0s;
         }
         
         .sphere:nth-child(7) {
             background: linear-gradient(135deg, #ef5350, #e57373);
-            top: 140px;
-            left: 90px;
-            animation-delay: 1.8s;
+            bottom: 110px;
+            right: 35px;
+            animation-delay: 2.4s;
         }
         
         .sphere:nth-child(8) {
             background: linear-gradient(135deg, #42a5f5, #64b5f6);
-            top: 140px;
-            right: 90px;
-            animation-delay: 2.1s;
+            bottom: 150px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation-delay: 2.8s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(-50%); }
+            50% { transform: translateY(-5px) translateX(-50%); }
+        }
+        
+        /* Fix for spheres not centered */
+        .sphere:nth-child(1),
+        .sphere:nth-child(2),
+        .sphere:nth-child(4),
+        .sphere:nth-child(5),
+        .sphere:nth-child(6),
+        .sphere:nth-child(7) {
+            animation: floatSide 3s ease-in-out infinite;
+        }
+        
+        @keyframes floatSide {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
         }
         
         .timer-badge {
             position: absolute;
-            bottom: 20px;
+            bottom: -50px;
             left: 50%;
             transform: translateX(-50%);
             background: var(--gradient-accent);
@@ -1038,7 +1093,7 @@
             
             <div class="hero-visual">
                 <div class="smoothie-visual">
-                    <div class="sphere-container">
+                    <div class="glass-container">
                         <div class="sphere"></div>
                         <div class="sphere"></div>
                         <div class="sphere"></div>
@@ -1740,6 +1795,50 @@
         </div>
     </section>
 
+    <!-- Newsletter Section -->
+    <section style="padding: 80px 20px; background: linear-gradient(135deg, #2c5530 0%, #1a2f1d 100%); color: white;">
+        <div class="container">
+            <div style="max-width: 700px; margin: 0 auto; text-align: center;">
+                <p class="section-label" style="color: var(--accent-light);">Weekly Newsletter</p>
+                <h2 style="font-size: clamp(28px, 4vw, 42px); margin-bottom: 20px;">
+                    Superfoods: Hype vs Science
+                </h2>
+                <p style="font-size: 18px; line-height: 1.8; margin-bottom: 32px; opacity: 0.95;">
+                    Every week, I analyze trending ingredients and separate marketing BS from real research. 
+                    Learn what actually works, what's overhyped, and what the latest studies really say.
+                </p>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin-bottom: 40px;">
+                    <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 12px;">
+                        <h4 style="margin-bottom: 8px;">📊 Evidence Reviews</h4>
+                        <p style="font-size: 14px; opacity: 0.9;">Strong vs weak evidence for popular supplements</p>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 12px;">
+                        <h4 style="margin-bottom: 8px;">🔬 Latest Research</h4>
+                        <p style="font-size: 14px; opacity: 0.9;">New studies explained in plain English</p>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 12px;">
+                        <h4 style="margin-bottom: 8px;">💡 Myth Busting</h4>
+                        <p style="font-size: 14px; opacity: 0.9;">Why that viral health claim is probably wrong</p>
+                    </div>
+                </div>
+                
+                <form class="email-form" style="max-width: 500px; margin: 0 auto;" onsubmit="handleNewsletterSubmit(event)">
+                    <input type="email" class="email-input" id="newsletter-email" placeholder="Enter your email" required>
+                    <button type="submit" class="email-submit">Get Weekly Updates</button>
+                </form>
+                
+                <div id="newsletter-success" class="success-message">
+                    ✓ You're subscribed! First newsletter coming this Friday.
+                </div>
+                
+                <p style="margin-top: 20px; font-size: 14px; opacity: 0.7;">
+                    No spam. Just science. Unsubscribe anytime.
+                </p>
+            </div>
+        </div>
+    </section>
+
     <!-- About Me Section -->
     <section style="padding: 80px 20px; background: var(--bg-light);">
         <div class="container">
@@ -1960,6 +2059,30 @@
                 setTimeout(() => {
                     closeModal();
                 }, 2000);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Something went wrong. Please try again.');
+            }
+        }
+
+        // Newsletter form submission
+        async function handleNewsletterSubmit(event) {
+            event.preventDefault();
+            const email = document.getElementById('newsletter-email').value;
+            
+            try {
+                const { data, error } = await supabaseClient
+                    .from('waitlist')
+                    .insert([{
+                        email: email,
+                        source: 'newsletter_signup',
+                        created_at: new Date().toISOString()
+                    }]);
+
+                if (error) throw error;
+                
+                document.getElementById('newsletter-success').classList.add('show');
+                document.getElementById('newsletter-email').value = '';
             } catch (error) {
                 console.error('Error:', error);
                 alert('Something went wrong. Please try again.');
