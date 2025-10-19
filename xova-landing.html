@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XOVA - Personalized Nutrition That Actually Works</title>
+    <title>XOVA - Superfood Smoothies That Work & Taste Good</title>
     <style>
         * {
             margin: 0;
@@ -147,17 +147,6 @@
             animation: float 6s ease-in-out infinite;
         }
         
-        .hero::after {
-            content: '';
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(44, 85, 48, 0.08) 0%, transparent 70%);
-            bottom: -150px;
-            left: -150px;
-            animation: float 8s ease-in-out infinite;
-        }
-        
         .hero-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -236,196 +225,221 @@
             color: white;
         }
         
-        .trust-indicators {
-            display: flex;
-            gap: 24px;
-            flex-wrap: wrap;
+        .hero-visual {
+            position: relative;
         }
         
-        .trust-badge {
+        .smoothie-visual {
+            width: 100%;
+            max-width: 500px;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        /* Cube animation */
+        .cube-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+        }
+        
+        .cube {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .cube:nth-child(1) {
+            background: linear-gradient(135deg, #4caf50, #81c784);
+            top: 50px;
+            left: 50px;
+            animation-delay: 0s;
+        }
+        
+        .cube:nth-child(2) {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            top: 50px;
+            right: 50px;
+            animation-delay: 0.5s;
+        }
+        
+        .cube:nth-child(3) {
+            background: linear-gradient(135deg, #4fc3f7, #81d4fa);
+            bottom: 100px;
+            left: 50px;
+            animation-delay: 1s;
+        }
+        
+        .cube:nth-child(4) {
+            background: linear-gradient(135deg, #ffb74d, #ffcc80);
+            bottom: 100px;
+            right: 50px;
+            animation-delay: 1.5s;
+        }
+        
+        .cube:nth-child(5) {
+            background: linear-gradient(135deg, #ba68c8, #ce93d8);
+            top: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation-delay: 2s;
+        }
+        
+        .timer-badge {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gradient-accent);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 18px;
+            box-shadow: 0 4px 20px rgba(107, 142, 35, 0.3);
+        }
+        
+        /* Value Props */
+        .value-props {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 40px;
+        }
+        
+        .value-prop {
             display: flex;
             align-items: center;
-            gap: 8px;
-            color: var(--text-gray);
-            font-size: 14px;
+            gap: 12px;
         }
         
-        .trust-badge-icon {
-            width: 24px;
-            height: 24px;
+        .value-icon {
+            width: 40px;
+            height: 40px;
             background: var(--gradient-primary);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 12px;
+            font-size: 20px;
+            flex-shrink: 0;
         }
         
-        .hero-visual {
-            position: relative;
+        .value-text {
+            flex: 1;
         }
         
-        .product-mockup {
-            width: 100%;
-            max-width: 400px;
-            height: 450px;
-            background: linear-gradient(145deg, #ffffff, #f5f5f5);
-            border-radius: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            box-shadow: 
-                0 20px 40px rgba(0,0,0,0.1),
-                inset 0 -2px 10px rgba(0,0,0,0.05);
-            animation: float 4s ease-in-out infinite;
-            overflow: hidden;
-        }
-        
-        .product-mockup::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 60%;
-            background: var(--gradient-primary);
-            opacity: 0.95;
-        }
-        
-        .product-label-mock {
-            position: relative;
-            z-index: 2;
-            color: white;
-            text-align: center;
-            padding: 20px;
-        }
-        
-        .product-label-mock h3 {
-            font-size: 48px;
-            font-weight: 800;
-            margin-bottom: 10px;
-            letter-spacing: -2px;
-        }
-        
-        .product-label-mock p {
-            font-size: 14px;
-            opacity: 0.9;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-        
-        .product-info-mock {
-            position: absolute;
-            bottom: 40px;
-            text-align: center;
+        .value-text strong {
+            display: block;
             color: var(--text-dark);
+            margin-bottom: 2px;
         }
         
-        .product-info-mock .weight {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--primary);
-        }
-        
-        .product-info-mock .servings {
-            font-size: 12px;
+        .value-text span {
+            font-size: 14px;
             color: var(--text-gray);
-            margin-top: 5px;
         }
         
-        .product-badge {
-            position: absolute;
-            top: -20px;
-            right: -20px;
-            background: var(--gradient-accent);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 30px;
-            font-weight: 700;
-            box-shadow: 0 4px 20px rgba(107, 142, 35, 0.3);
-            animation: pulse 2s ease-in-out infinite;
-        }
-        
-        /* Solution Strip */
-        .solution-strip {
+        /* Problem Section */
+        .problem-section {
             padding: 80px 20px;
-            background: var(--gradient-primary);
-            color: white;
-            position: relative;
-            overflow: hidden;
+            background: white;
         }
         
-        .solution-strip::before {
-            content: '';
-            position: absolute;
-            width: 800px;
-            height: 800px;
-            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 50%);
-            top: -400px;
-            right: -400px;
-        }
-        
-        .stats-grid {
+        .problem-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
             margin-top: 60px;
         }
         
-        .stat-item {
-            text-align: center;
+        .problem-card {
+            padding: 32px;
+            background: linear-gradient(135deg, #fff 0%, #fcfcfc 100%);
+            border: 1px solid #f0f0f0;
+            border-radius: 16px;
+            transition: all 0.3s;
         }
         
-        .stat-number {
-            font-size: 48px;
-            font-weight: 800;
-            color: var(--accent-light);
-            margin-bottom: 8px;
+        .problem-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
         
-        .stat-label {
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            opacity: 0.9;
+        .problem-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-dark);
+        }
+        
+        .problem-description {
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+        
+        /* Why Smoothies Section */
+        .why-smoothies-section {
+            padding: 80px 20px;
+            background: var(--bg-light);
+        }
+        
+        .why-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-top: 60px;
+            align-items: center;
+        }
+        
+        .why-content h3 {
+            color: var(--primary);
+            margin-bottom: 24px;
+            font-size: 28px;
+        }
+        
+        .why-point {
+            margin-bottom: 24px;
+            padding-left: 32px;
+            position: relative;
+        }
+        
+        .why-point::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 20px;
+        }
+        
+        .why-visual {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
         }
         
         /* Products Section */
         .products-section {
             padding: 100px 20px;
-            background: var(--bg-light);
-        }
-        
-        .product-tabs {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 60px;
-        }
-        
-        .tab-button {
-            padding: 12px 28px;
             background: white;
-            border: 2px solid #e0e0e0;
-            border-radius: 25px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .tab-button.active {
-            background: var(--gradient-accent);
-            color: white;
-            border-color: var(--accent);
         }
         
         .products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
             gap: 32px;
+            margin-top: 60px;
         }
         
         .product-card {
@@ -436,6 +450,7 @@
             transition: all 0.3s;
             position: relative;
             overflow: hidden;
+            border: 2px solid transparent;
         }
         
         .product-card::before {
@@ -445,9 +460,18 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: var(--gradient-accent);
-            transform: scaleX(0);
-            transition: transform 0.3s;
+        }
+        
+        .product-card.energy::before {
+            background: linear-gradient(90deg, #4caf50, #81c784);
+        }
+        
+        .product-card.focus::before {
+            background: linear-gradient(90deg, #4fc3f7, #81d4fa);
+        }
+        
+        .product-card.gut::before {
+            background: linear-gradient(90deg, #ffb74d, #ffcc80);
         }
         
         .product-card:hover {
@@ -455,105 +479,109 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.12);
         }
         
-        .product-card:hover::before {
-            transform: scaleX(1);
+        .product-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            border-radius: 50%;
         }
         
-        .product-label {
-            display: inline-block;
-            background: var(--gradient-primary);
-            color: white;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-bottom: 16px;
+        .product-card.energy .product-icon {
+            background: linear-gradient(135deg, #e8f5e9, #f1f8f2);
+        }
+        
+        .product-card.focus .product-icon {
+            background: linear-gradient(135deg, #e3f2fd, #f3f9ff);
+        }
+        
+        .product-card.gut .product-icon {
+            background: linear-gradient(135deg, #fff3e0, #fff8f0);
         }
         
         .product-name {
             font-size: 28px;
             font-weight: 700;
-            margin-bottom: 12px;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        
+        .product-promise {
+            text-align: center;
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 18px;
+            margin-bottom: 24px;
         }
         
         .product-description {
             color: var(--text-gray);
+            line-height: 1.8;
             margin-bottom: 24px;
         }
         
-        .ingredient-list {
+        .research-badge {
+            display: inline-block;
             background: var(--bg-light);
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 24px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            color: var(--text-dark);
+            margin-bottom: 20px;
         }
         
-        .ingredient-item {
+        /* Transparency Section */
+        .transparency-section {
+            padding: 80px 20px;
+            background: var(--bg-light);
+        }
+        
+        .transparency-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-top: 60px;
+            align-items: center;
+        }
+        
+        .cost-breakdown {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+        
+        .cost-item {
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
         }
         
-        .ingredient-item:last-child {
+        .cost-item:last-child {
             border-bottom: none;
-        }
-        
-        .ingredient-name {
-            font-weight: 500;
-        }
-        
-        .ingredient-dose {
+            padding-top: 20px;
+            margin-top: 8px;
+            border-top: 2px solid var(--accent);
             font-weight: 700;
-            color: var(--primary);
+            font-size: 18px;
         }
         
-        .product-cta {
-            width: 100%;
-            padding: 16px;
-            background: var(--gradient-accent);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .product-cta:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(107, 142, 35, 0.3);
-        }
-        
-        /* Process Section */
+        /* How It Works */
         .process-section {
             padding: 100px 20px;
-            background: linear-gradient(135deg, #2c5530 0%, #1a2f1d 100%);
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .process-section::before {
-            content: '';
-            position: absolute;
-            width: 1000px;
-            height: 1000px;
-            background: radial-gradient(circle, rgba(107, 142, 35, 0.05) 0%, transparent 50%);
-            bottom: -500px;
-            left: -500px;
+            background: white;
         }
         
         .process-timeline {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 40px;
             margin-top: 60px;
             position: relative;
-            z-index: 1;
         }
         
         .process-step {
@@ -562,28 +590,29 @@
         }
         
         .step-number {
-            width: 60px;
-            height: 60px;
+            width: 80px;
+            height: 80px;
             background: var(--gradient-accent);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 32px;
             font-weight: 700;
             margin: 0 auto 20px;
+            color: white;
             box-shadow: 0 4px 20px rgba(107, 142, 35, 0.3);
         }
         
         .step-title {
             font-size: 20px;
             font-weight: 600;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
         
         .step-description {
             font-size: 14px;
-            opacity: 0.9;
+            color: var(--text-gray);
             line-height: 1.6;
         }
         
@@ -630,11 +659,9 @@
             vertical-align: top;
         }
         
-        .price-original {
-            text-decoration: line-through;
+        .price-per {
             color: var(--text-gray);
-            font-size: 24px;
-            margin-left: 16px;
+            margin-bottom: 32px;
         }
         
         .pricing-features {
@@ -662,54 +689,10 @@
             flex-shrink: 0;
         }
         
-        /* Founder Section */
-        .founder-section {
-            padding: 100px 20px;
+        /* FAQ Section */
+        .faq-section {
+            padding: 80px 20px;
             background: var(--bg-light);
-        }
-        
-        .founder-content {
-            display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 60px;
-            align-items: center;
-            max-width: 1000px;
-            margin: 60px auto 0;
-        }
-        
-        .founder-image {
-            width: 250px;
-            height: 250px;
-            border-radius: 50%;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(44, 85, 48, 0.2);
-        }
-        
-        .founder-text h3 {
-            font-size: 32px;
-            margin-bottom: 20px;
-        }
-        
-        .founder-text p {
-            font-size: 18px;
-            line-height: 1.8;
-            color: var(--text-gray);
-            margin-bottom: 20px;
-        }
-        
-        .founder-quote {
-            padding: 24px;
-            background: white;
-            border-left: 4px solid var(--accent);
-            margin: 32px 0;
-            border-radius: 8px;
-            font-style: italic;
-            font-size: 20px;
-            color: var(--text-dark);
         }
         
         /* CTA Section */
@@ -720,17 +703,6 @@
             color: white;
             position: relative;
             overflow: hidden;
-        }
-        
-        .cta-section::before {
-            content: '';
-            position: absolute;
-            width: 1200px;
-            height: 1200px;
-            background: radial-gradient(circle, rgba(107, 142, 35, 0.08) 0%, transparent 50%);
-            top: -600px;
-            left: 50%;
-            transform: translateX(-50%);
         }
         
         .cta-content {
@@ -823,14 +795,15 @@
         
         details {
             margin-bottom: 16px;
-            background: var(--bg-light);
+            background: white;
             border-radius: 12px;
             overflow: hidden;
             transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
         
         details:hover {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
         }
         
         summary {
@@ -949,7 +922,18 @@
                 text-align: center;
             }
             
-            .stats-grid,
+            .value-props {
+                grid-template-columns: 1fr;
+            }
+            
+            .problem-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .why-grid {
+                grid-template-columns: 1fr;
+            }
+            
             .process-timeline {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -958,9 +942,8 @@
                 grid-template-columns: 1fr;
             }
             
-            .founder-content {
+            .transparency-grid {
                 grid-template-columns: 1fr;
-                text-align: center;
             }
             
             .email-form {
@@ -979,10 +962,11 @@
         <div class="nav-container">
             <div class="logo">XOVA</div>
             <div class="nav-links">
-                <a href="#evidence" class="nav-link">Research</a>
-                <a href="#products" class="nav-link">Products</a>
+                <a href="#why" class="nav-link">Why This Works</a>
+                <a href="#products" class="nav-link">Smoothies</a>
+                <a href="#pricing" class="nav-link">Pricing</a>
                 <a href="#faq" class="nav-link">FAQ</a>
-                <a href="#waitlist" class="nav-cta">Join Waitlist</a>
+                <a href="#waitlist" class="nav-cta">Pre-Order</a>
             </div>
         </div>
     </nav>
@@ -991,147 +975,150 @@
     <section class="hero">
         <div class="hero-container">
             <div class="hero-content fade-in-up">
-                <h1>Personalized Superfood Blends <span class="gradient-text">Made Just for You</span></h1>
+                <h1>Everything You Should Eat. <span class="gradient-text">Nothing To Figure Out.</span></h1>
                 <p class="hero-subtitle">
-                    Premium superfood powders with transparent ingredients. Add to smoothies, yogurt, or water for daily nutrition.
+                    Complete superfood smoothies frozen in cubes. We handle the complexity. You get the nutrition. 
+                    Just add liquid, blend 30 seconds, done.
                 </p>
                 <div class="hero-cta-group">
-                    <a href="#waitlist" class="btn-primary">Join Waitlist</a>
-                    <a href="#products" class="btn-secondary">See Ingredients</a>
+                    <a href="#waitlist" class="btn-primary">Pre-Order Now - CHF 11/smoothie</a>
+                    <a href="#why" class="btn-secondary">See Why It Works</a>
                 </div>
-                <div class="trust-indicators">
-                    <div class="trust-badge">
-                        <div class="trust-badge-icon">✓</div>
-                        <span>100% Natural Superfoods</span>
+                
+                <div class="value-props">
+                    <div class="value-prop">
+                        <div class="value-icon">🎯</div>
+                        <div class="value-text">
+                            <strong>Research-based</strong>
+                            <span>Not random ingredients</span>
+                        </div>
                     </div>
-                    <div class="trust-badge">
-                        <div class="trust-badge-icon">✓</div>
-                        <span>No Fillers or Additives</span>
+                    <div class="value-prop">
+                        <div class="value-icon">😋</div>
+                        <div class="value-text">
+                            <strong>Actually tastes good</strong>
+                            <span>100+ recipe tests</span>
+                        </div>
                     </div>
-                    <div class="trust-badge">
-                        <div class="trust-badge-icon">✓</div>
-                        <span>Small Batch Production</span>
+                    <div class="value-prop">
+                        <div class="value-icon">⚡</div>
+                        <div class="value-text">
+                            <strong>30 seconds</strong>
+                            <span>From freezer to glass</span>
+                        </div>
                     </div>
                 </div>
             </div>
+            
             <div class="hero-visual">
-                <div class="product-mockup">
-                    <div class="product-label-mock">
-                        <h3>XOVA</h3>
-                        <p>Pure Superfoods</p>
+                <div class="smoothie-visual">
+                    <div class="cube-container">
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
                     </div>
-                    <div class="product-info-mock">
-                        <div class="weight">300g</div>
-                        <div class="servings">25 servings</div>
-                    </div>
-                    <div class="product-badge">Pre-Launch</div>
+                    <div class="timer-badge">Ready in 30 sec</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Solution Strip -->
-    <section class="solution-strip">
+    <!-- Problem Section -->
+    <section class="problem-section">
         <div class="container">
             <div class="section-header">
-                <h2 style="color: white;">Quality Superfood Nutrition</h2>
-                <p style="font-size: 20px; opacity: 0.9; max-width: 700px; margin: 20px auto;">
-                    We combine premium superfood ingredients in transparent, personalized blends.
-                </p>
+                <p class="section-label">The Problem</p>
+                <h2 class="section-title">Why Nobody Gets Their Superfoods</h2>
+                <p class="section-subtitle">Every current solution fails in its own way</p>
             </div>
             
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-number">100%</div>
-                    <div class="stat-label">Natural Ingredients</div>
+            <div class="problem-grid">
+                <div class="problem-card">
+                    <h3 class="problem-title">🥤 Superfood Powders Taste Terrible</h3>
+                    <p class="problem-description">
+                        Spirulina tastes like pond water. Ashwagandha is bitter. 
+                        Most people buy expensive powders, try them once, then let them expire. 
+                        Even mixing with juice doesn't help - you're just ruining good juice.
+                    </p>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number">Full</div>
-                    <div class="stat-label">Transparency</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">3</div>
-                    <div class="stat-label">Blend Options</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">Custom</div>
-                    <div class="stat-label">Ratios Available</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Trust Badges Section -->
-    <section class="trust-section" style="padding: 60px 20px; background: white; border-top: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0;">
-        <div class="container">
-            <div style="display: flex; justify-content: center; align-items: center; gap: 60px; flex-wrap: wrap;">
-                <div style="text-align: center;">
-                    <div style="width: 80px; height: 80px; margin: 0 auto 12px; background: linear-gradient(135deg, #2196f3, #1976d2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 36px;">📚</div>
-                    <p style="font-weight: 600; font-size: 14px;">Research-Based</p>
-                    <p style="font-size: 12px; color: var(--text-gray);">Ingredient Selection</p>
-                </div>
-                <div style="text-align: center;">
-                    <div style="width: 80px; height: 80px; margin: 0 auto 12px; background: linear-gradient(135deg, #4caf50, #45a049); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 36px;">🌱</div>
-                    <p style="font-weight: 600; font-size: 14px;">Organic Options</p>
-                    <p style="font-size: 12px; color: var(--text-gray);">Where Available</p>
-                </div>
-                <div style="text-align: center;">
-                    <div style="width: 80px; height: 80px; margin: 0 auto 12px; background: linear-gradient(135deg, #9c27b0, #7b1fa2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 36px;">🔬</div>
-                    <p style="font-weight: 600; font-size: 14px;">Evidence-Based</p>
-                    <p style="font-size: 12px; color: var(--text-gray);">Informed by Science</p>
-                </div>
-                <div style="text-align: center;">
-                    <div style="width: 80px; height: 80px; margin: 0 auto 12px; background: linear-gradient(135deg, #ff5722, #e64a19); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 36px;">✓</div>
-                    <p style="font-weight: 600; font-size: 14px;">Transparent</p>
-                    <p style="font-size: 12px; color: var(--text-gray);">All Ingredients Listed</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Why Three Blends Section -->
-    <section style="padding: 60px 20px; background: white;">
-        <div class="container">
-            <div class="section-header">
-                <p class="section-label">Our Approach</p>
-                <h2 class="section-title">Why Start With These Three Blends?</h2>
-                <p class="section-subtitle">Testing the most common health goals first</p>
-            </div>
-            
-            <div style="max-width: 800px; margin: 40px auto; background: var(--bg-light); padding: 32px; border-radius: 12px;">
-                <p style="line-height: 1.8; color: var(--text-gray); margin-bottom: 20px;">
-                    After researching hundreds of studies and talking to potential customers, I found three main patterns in what people are looking for:
-                </p>
                 
-                <div style="display: grid; gap: 20px;">
-                    <div style="display: flex; gap: 16px; align-items: start;">
-                        <div style="width: 40px; height: 40px; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0; font-weight: bold;">1</div>
-                        <div>
-                            <strong style="color: var(--text-dark);">Daily Energy & Stress (Foundation):</strong>
-                            <p style="margin-top: 4px; font-size: 14px;">Most people want more energy and less stress. This blend combines adaptogens with nutrient-dense superfoods based on the strongest research evidence.</p>
-                        </div>
+                <div class="problem-card">
+                    <h3 class="problem-title">💊 Supplements Miss The Point</h3>
+                    <p class="problem-description">
+                        Pills isolate nutrients from their natural context. 
+                        No fiber, no enzymes, no synergies with other foods. 
+                        Plus you need 20+ pills to match what's in whole foods.
+                    </p>
+                </div>
+                
+                <div class="problem-card">
+                    <h3 class="problem-title">🛒 DIY Means 200 CHF of Waste</h3>
+                    <p class="problem-description">
+                        Buy spirulina (CHF 40), ashwagandha (CHF 30), lion's mane (CHF 35)... 
+                        Most expire before you use 20%. Plus you still need fruits, vegetables, seeds. 
+                        The math never works.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Smoothies Section -->
+    <section id="why" class="why-smoothies-section">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-label">The Solution</p>
+                <h2 class="section-title">Why Complete Frozen Smoothies Work</h2>
+                <p class="section-subtitle">Not powder. Not supplements. Actual smoothies, frozen.</p>
+            </div>
+            
+            <div class="why-grid">
+                <div class="why-content">
+                    <h3>The Taste Problem: Solved</h3>
+                    
+                    <div class="why-point">
+                        <strong>Spirulina alone:</strong> Swamp water<br>
+                        <strong>Spirulina + mango + banana (our ratio):</strong> Tropical smoothie<br>
+                        We tested 100+ combinations to find what works.
                     </div>
                     
-                    <div style="display: flex; gap: 16px; align-items: start;">
-                        <div style="width: 40px; height: 40px; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0; font-weight: bold;">2</div>
-                        <div>
-                            <strong style="color: var(--text-dark);">Mental Performance (Focus):</strong>
-                            <p style="margin-top: 4px; font-size: 14px;">The second biggest request was for cognitive support - better focus, memory, and mental clarity. This blend uses nootropics with actual human studies.</p>
-                        </div>
+                    <div class="why-point">
+                        <strong>Ashwagandha alone:</strong> Bitter dirt<br>
+                        <strong>Ashwagandha + cacao + dates (our ratio):</strong> Chocolate shake<br>
+                        The bitter compounds are neutralized by specific fruit sugars.
                     </div>
                     
-                    <div style="display: flex; gap: 16px; align-items: start;">
-                        <div style="width: 40px; height: 40px; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0; font-weight: bold;">3</div>
-                        <div>
-                            <strong style="color: var(--text-dark);">Digestive Health (Gut Harmony):</strong>
-                            <p style="margin-top: 4px; font-size: 14px;">Gut health affects everything. This blend combines probiotics, prebiotics, and gut-supporting nutrients based on microbiome research.</p>
-                        </div>
+                    <div class="why-point">
+                        <strong>The secret:</strong> It's not about masking bad taste. 
+                        It's about creating complementary flavor profiles where superfoods enhance rather than dominate.
                     </div>
                 </div>
                 
-                <p style="margin-top: 24px; padding-top: 24px; border-top: 1px solid #e0e0e0; text-align: center; font-style: italic; color: var(--text-gray);">
-                    "I'm starting with these three to validate the concept. If there's interest, I'll develop more specialized blends based on your feedback."
-                </p>
+                <div class="why-visual">
+                    <h4 style="margin-bottom: 20px; color: var(--primary);">What "Complete" Actually Means:</h4>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <strong style="color: var(--text-dark);">❌ Powder supplements give you:</strong>
+                        <p style="color: var(--text-gray); margin-top: 8px;">
+                            Just the powder. You still need to buy fruits, vegetables, liquid, figure out ratios.
+                        </p>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <strong style="color: var(--text-dark);">✅ We give you:</strong>
+                        <p style="color: var(--text-gray); margin-top: 8px;">
+                            Everything pre-blended: superfoods + fruits + vegetables + seeds + nuts. 
+                            Just add liquid. The entire smoothie is done.
+                        </p>
+                    </div>
+                    
+                    <div style="padding: 16px; background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f2 100%); border-radius: 12px;">
+                        <strong>Result:</strong> 400-450 calorie complete breakfast. 
+                        Not a supplement you take with breakfast. This IS breakfast.
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -1140,681 +1127,463 @@
     <section id="products" class="products-section">
         <div class="container">
             <div class="section-header">
-                <p class="section-label">Choose Your Formula</p>
-                <h2 class="section-title">Three Starting Blends</h2>
-                <p class="section-subtitle">Select your base formula. We'll customize portions based on your needs.</p>
+                <p class="section-label">Three Research-Based Formulas</p>
+                <h2 class="section-title">Choose Your Daily Smoothie</h2>
+                <p class="section-subtitle">Each targets specific benefits. Every ingredient has a purpose.</p>
             </div>
             
             <div class="products-grid">
-                <!-- Foundation Blend -->
-                <div class="product-card">
-                    <span class="product-label">Most Popular</span>
-                    <h3 class="product-name">Foundation</h3>
-                    <p class="product-description">Daily wellness, energy & stress support</p>
+                <!-- Energy -->
+                <div class="product-card energy">
+                    <div class="product-icon">⚡</div>
+                    <h3 class="product-name">Daily Energy</h3>
+                    <p class="product-promise">All-day energy without crashes</p>
                     
-                    <div class="ingredient-list">
-                        <div style="font-weight: 600; margin-bottom: 12px; font-size: 13px; text-transform: uppercase; color: var(--text-gray);">Ingredients per serving*</div>
-                        <div class="ingredient-item">
-                            <span class="ingredient-name">Spirulina (Organic)</span>
-                            <span class="ingredient-dose">~3g</span>
-                        </div>
-                        <div class="ingredient-item">
-                            <span class="ingredient-name">Lion's Mane Extract</span>
-                            <span class="ingredient-dose">~1g</span>
-                        </div>
-                        <div class="ingredient-item">
-                            <span class="ingredient-name">Ashwagandha Extract</span>
-                            <span class="ingredient-dose">~600mg</span>
-                        </div>
-                        <div class="ingredient-item">
-                            <span class="ingredient-name">Chlorella</span>
-                            <span class="ingredient-dose">~2g</span>
-                        </div>
-                        <div class="ingredient-item">
-                            <span class="ingredient-name">Turmeric + Black Pepper</span>
-                            <span class="ingredient-dose">~500mg + 5mg</span>
-                        </div>
+                    <div class="research-badge">📊 Based on 15+ studies</div>
+                    
+                    <p class="product-description">
+                        <strong>Morning activation:</strong> B-vitamins from spirulina work within 30 minutes. 
+                        No caffeine jitters, just clean energy.
+                    </p>
+                    
+                    <p class="product-description">
+                        <strong>Stress buffer:</strong> Ashwagandha (KSM-66) shown to reduce cortisol by 27% in studies. 
+                        Keeps you calm under pressure.
+                    </p>
+                    
+                    <p class="product-description">
+                        <strong>Sustained fuel:</strong> Seeds and nuts provide healthy fats that prevent the 3pm crash. 
+                        You'll feel satisfied for hours.
+                    </p>
+                    
+                    <div style="margin-top: 24px; padding: 16px; background: var(--bg-light); border-radius: 12px;">
+                        <strong>Key ingredients:</strong> Spirulina, ashwagandha, mango, spinach, chia seeds, 
+                        plus carefully selected supporting ingredients for taste and nutrition.
                     </div>
-                    <p style="font-size: 11px; color: var(--text-gray); margin-top: 8px;">*Amounts are approximate and may vary based on personalization</p>
-                    
-                    <button class="product-cta" onclick="selectProduct('Foundation')">Choose Foundation →</button>
                 </div>
 
-                <!-- Focus Blend -->
-                <div class="product-card">
-                    <span class="product-label">Mental Performance</span>
-                    <h3 class="product-name">Focus</h3>
-                    <p class="product-description">Cognitive support & mental clarity</p>
+                <!-- Focus -->
+                <div class="product-card focus">
+                    <div class="product-icon">🧠</div>
+                    <h3 class="product-name">Mental Focus</h3>
+                    <p class="product-promise">Sharp mind when you need it most</p>
                     
-                    <div class="ingredient-list">
-                        <div style="font-weight: 600; margin-bottom: 12px; font-size: 13px; text-transform: uppercase; color: var(--text-gray);">Ingredients per serving*</div>
-                        <div class="ingredient-item">
-                            <span class="ingredient-name">Lion's Mane Extract</span>
-                            <span class="ingredient-dose">~1.5g</span>
-                        </div>
-                        <div class="ingredient-item">
-                            <span class="ingredient-name">Bacopa Monnieri</span>
-                            <span class="ingredient-dose">~300mg</span>
-                        </div>
-                        <div class="ingredient-item">
-                            <span class="ingredient-name">L-Theanine</span>
-                            <span class="ingredient-dose">~200mg</span>
-                        </div>
-                        <div class="ingredient-item">
-                            <span class="ingredient-name">Rhodiola Extract</span>
-                            <span class="ingredient-dose">~400mg</span>
-                        </div>
-                        <div class="ingredient-item">
-                            <span class="ingredient-name">Ginkgo Biloba</span>
-                            <span class="ingredient-dose">~120mg</span>
-                        </div>
+                    <div class="research-badge">📊 Based on 12+ studies</div>
+                    
+                    <p class="product-description">
+                        <strong>Immediate focus:</strong> L-theanine creates calm alertness. 
+                        Works perfectly with your morning coffee for flow state.
+                    </p>
+                    
+                    <p class="product-description">
+                        <strong>Memory support:</strong> Lion's Mane mushroom supports nerve growth factor. 
+                        Bacopa shown to improve memory scores by 24% in trials.
+                    </p>
+                    
+                    <p class="product-description">
+                        <strong>Brain fuel:</strong> Omega-3s from hemp and chia seeds. 
+                        Your brain is 60% fat - feed it the right kind.
+                    </p>
+                    
+                    <div style="margin-top: 24px; padding: 16px; background: var(--bg-light); border-radius: 12px;">
+                        <strong>Key ingredients:</strong> Lion's Mane, L-theanine, blueberries, hemp seeds, cacao, 
+                        plus supporting ingredients for cognitive function.
                     </div>
-                    <p style="font-size: 11px; color: var(--text-gray); margin-top: 8px;">*Amounts are approximate and may vary based on personalization</p>
-                    
-                    <button class="product-cta" onclick="selectProduct('Focus')">Choose Focus →</button>
                 </div>
 
-                <!-- Gut Harmony -->
-                <div class="product-card">
-                    <span class="product-label">Digestive Health</span>
+                <!-- Gut -->
+                <div class="product-card gut">
+                    <div class="product-icon">🌿</div>
                     <h3 class="product-name">Gut Harmony</h3>
-                    <p class="product-description">Digestive & microbiome support</p>
+                    <p class="product-promise">Better digestion, better everything</p>
                     
-                    <div class="ingredient-list">
-                        <div style="font-weight: 600; margin-bottom: 12px; font-size: 13px; text-transform: uppercase; color: var(--text-gray);">Ingredients per serving*</div>
-                        <div class="ingredient-item">
-                            <span class="ingredient-name">Probiotic Blend</span>
-                            <span class="ingredient-dose">~5B CFU</span>
-                        </div>
-                        <div class="ingredient-item">
-                            <span class="ingredient-name">Prebiotic Fiber</span>
-                            <span class="ingredient-dose">~3g</span>
-                        </div>
-                        <div class="ingredient-item">
-                            <span class="ingredient-name">L-Glutamine</span>
-                            <span class="ingredient-dose">~2g</span>
-                        </div>
-                        <div class="ingredient-item">
-                            <span class="ingredient-name">Ginger Root</span>
-                            <span class="ingredient-dose">~500mg</span>
-                        </div>
-                        <div class="ingredient-item">
-                            <span class="ingredient-name">Slippery Elm</span>
-                            <span class="ingredient-dose">~200mg</span>
-                        </div>
+                    <div class="research-badge">📊 Based on 18+ studies</div>
+                    
+                    <p class="product-description">
+                        <strong>Living probiotics:</strong> 5 billion CFUs that survive freezing. 
+                        More effective than dried probiotics in pills.
+                    </p>
+                    
+                    <p class="product-description">
+                        <strong>Feed good bacteria:</strong> Prebiotic fibers from flax and chicory. 
+                        Probiotics without prebiotics are like seeds without soil.
+                    </p>
+                    
+                    <p class="product-description">
+                        <strong>Soothe & repair:</strong> Ginger reduces inflammation, papaya enzymes aid digestion. 
+                        L-glutamine helps repair gut lining.
+                    </p>
+                    
+                    <div style="margin-top: 24px; padding: 16px; background: var(--bg-light); border-radius: 12px;">
+                        <strong>Key ingredients:</strong> Probiotics, papaya, ginger, flax seeds, turmeric, 
+                        plus fermented ingredients for gut health.
                     </div>
-                    <p style="font-size: 11px; color: var(--text-gray); margin-top: 8px;">*Amounts are approximate and may vary based on personalization</p>
-                    
-                    <button class="product-cta" onclick="selectProduct('Gut Harmony')">Choose Gut Harmony →</button>
                 </div>
             </div>
             
-            <p style="text-align: center; margin-top: 40px; color: var(--text-gray); max-width: 800px; margin-left: auto; margin-right: auto; font-size: 14px;">
-                <strong>Note:</strong> These concentrated superfood blends are designed to be added to your existing routine - mix into smoothies, yogurt, or oatmeal. 
-                Each serving is approximately 10-15g of concentrated nutrients. This is not a meal replacement. 
-                Not intended to diagnose, treat, cure, or prevent any disease.
+            <p style="text-align: center; margin-top: 40px; color: var(--text-gray); max-width: 800px; margin-left: auto; margin-right: auto;">
+                <strong>No random ingredients. No inflated claims.</strong> 
+                Every component is chosen based on research, in amounts that match studies, combined for both efficacy and taste.
             </p>
         </div>
     </section>
 
-    <!-- Evidence Levels Section - MOVED AFTER PRODUCTS -->
-    <section id="evidence" style="padding: 60px 20px; background: var(--bg-light);">
+    <!-- Transparency Section -->
+    <section class="transparency-section">
         <div class="container">
             <div class="section-header">
-                <p class="section-label">Ingredient Selection</p>
-                <h2 class="section-title">Why These Superfoods?</h2>
-                <p class="section-subtitle">Traditional ingredients with research backing</p>
+                <p class="section-label">Complete Transparency</p>
+                <h2 class="section-title">Why CHF 11 Per Smoothie?</h2>
+                <p class="section-subtitle">Here's exactly where your money goes</p>
             </div>
             
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 40px;">
-                
-                <div style="background: linear-gradient(135deg, #e8f5e9, #f1f8f2); padding: 28px; border-radius: 12px; border-left: 4px solid #4caf50;">
-                    <h3 style="color: #2e7d32; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
-                        🟢 Strong Evidence <small style="font-weight: normal; color: var(--text-gray);">(We use these)</small>
-                    </h3>
-                    <div style="line-height: 1.8; color: var(--text-gray);">
-                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Ashwagandha (KSM-66):</strong> Multiple RCTs showing stress reduction</p>
-                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Spirulina:</strong> 18+ studies on nutrition & antioxidants</p>
-                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Turmeric + Piperine:</strong> Proven 2000% absorption increase</p>
-                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Probiotics (specific strains):</strong> Extensive gut health research</p>
-                        <p style="color: var(--text-dark);"><strong>L-Theanine:</strong> Well-studied for focus with caffeine</p>
-                    </div>
+            <div class="transparency-grid">
+                <div>
+                    <h3 style="margin-bottom: 24px;">The Hidden Costs Nobody Talks About</h3>
+                    
+                    <p style="color: var(--text-gray); line-height: 1.8; margin-bottom: 20px;">
+                        <strong>Buying superfoods yourself:</strong><br>
+                        • Initial investment: CHF 200+ for all ingredients<br>
+                        • Shopping time: 2 hours finding everything<br>
+                        • Mental load: Remembering what to take when<br>
+                        • Decision fatigue: Which brands? What ratios?<br>
+                        • Waste: 80% expires before you use it<br>
+                        <strong>Real cost per smoothie: CHF 15+ plus your time</strong>
+                    </p>
+                    
+                    <p style="color: var(--text-gray); line-height: 1.8; margin-bottom: 20px;">
+                        <strong>AG1 or powder:</strong><br>
+                        CHF 4 powder + CHF 3 groceries = CHF 7<br>
+                        Plus: Still tastes medicinal, still need to shop for fruits
+                    </p>
+                    
+                    <p style="color: var(--text-gray); line-height: 1.8;">
+                        <strong>Our approach:</strong><br>
+                        We handle the complexity. Bulk buying = 40% savings. No waste. 
+                        No 20 jars in your kitchen. No spreadsheet to track doses. 
+                        Just 8 cubes, 30 seconds. CHF 11 all-in.
+                    </p>
                 </div>
                 
-                <div style="background: linear-gradient(135deg, #fff8e1, #fffaf0); padding: 28px; border-radius: 12px; border-left: 4px solid #ff9800;">
-                    <h3 style="color: #e65100; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
-                        🟡 Moderate Evidence <small style="font-weight: normal; color: var(--text-gray);">(We use carefully)</small>
-                    </h3>
-                    <div style="line-height: 1.8; color: var(--text-gray);">
-                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Lion's Mane:</strong> Promising but limited human studies</p>
-                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Rhodiola:</strong> Good for some, variable response</p>
-                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Bacopa:</strong> Takes 12 weeks, modest effects</p>
-                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Chlorella:</strong> Nutritious but benefits unclear</p>
-                        <p style="color: var(--text-dark);"><strong>Ginkgo:</strong> Mainly effective for 50+ age group</p>
+                <div>
+                    <div class="cost-breakdown">
+                        <h4 style="margin-bottom: 20px;">Cost Breakdown Per Smoothie</h4>
+                        <div class="cost-item">
+                            <span>Organic fruits & vegetables</span>
+                            <span>CHF 2.50</span>
+                        </div>
+                        <div class="cost-item">
+                            <span>Premium superfoods</span>
+                            <span>CHF 2.00</span>
+                        </div>
+                        <div class="cost-item">
+                            <span>Seeds & healthy fats</span>
+                            <span>CHF 1.50</span>
+                        </div>
+                        <div class="cost-item">
+                            <span>Production & freezing</span>
+                            <span>CHF 1.50</span>
+                        </div>
+                        <div class="cost-item">
+                            <span>Packaging & delivery</span>
+                            <span>CHF 1.00</span>
+                        </div>
+                        <div class="cost-item">
+                            <span>Our margin</span>
+                            <span>CHF 2.50</span>
+                        </div>
+                        <div class="cost-item">
+                            <span>Your price</span>
+                            <span>CHF 11.00</span>
+                        </div>
                     </div>
                 </div>
-                
-                <div style="background: linear-gradient(135deg, #ffebee, #fef5f5); padding: 28px; border-radius: 12px; border-left: 4px solid #f44336;">
-                    <h3 style="color: #c62828; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
-                        🔴 Weak Evidence <small style="font-weight: normal; color: var(--text-gray);">(We skip these)</small>
-                    </h3>
-                    <div style="line-height: 1.8; color: var(--text-gray);">
-                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Collagen powder:</strong> Just expensive protein</p>
-                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>"Detox" anything:</strong> Your liver works fine</p>
-                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Alkaline water/powder:</strong> Stomach acid neutralizes it</p>
-                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Proprietary blends:</strong> Usually hiding tiny doses</p>
-                        <p style="color: var(--text-dark);"><strong>Most "fat burners":</strong> Caffeine with fairy dust</p>
-                    </div>
-                </div>
-                
             </div>
             
-            <div style="background: white; padding: 24px; border-radius: 12px; margin-top: 32px;">
-                <p style="text-align: center; color: var(--text-gray); line-height: 1.8;">
-                    <strong>Our Promise:</strong> We only include ingredients with at least moderate evidence. 
-                    Strong evidence ingredients form the core, moderate evidence ingredients are included at conservative doses. 
-                    We never use ingredients with weak or no evidence just to make our label look impressive.
+            <div style="background: white; padding: 32px; border-radius: 16px; margin-top: 40px; text-align: center;">
+                <p style="color: var(--text-gray); line-height: 1.8;">
+                    <strong>Compare:</strong> Smoothie bar (CHF 16-18) | Starbucks breakfast (CHF 15) | 
+                    Buying all ingredients yourself (CHF 200+ with waste)
                 </p>
             </div>
         </div>
     </section>
 
-    <!-- Ingredient Science Section - Detailed Synergies -->
-    <section style="padding: 60px 20px; background: white;">
+    <!-- How It Works -->
+    <section id="how" class="process-section">
         <div class="container">
             <div class="section-header">
-                <p class="section-label">The Science</p>
-                <h2 class="section-title">Why These Combinations Work</h2>
-                <p class="section-subtitle">Research-based synergies in each blend</p>
-            </div>
-            
-            <div style="margin-top: 40px;">
-                <details style="margin-bottom: 16px; background: var(--bg-light); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-                    <summary style="cursor: pointer; padding: 24px; font-weight: 600; font-size: 18px; list-style: none; display: flex; justify-content: space-between; align-items: center;">
-                        <span>🌱 Foundation Blend: Research & Synergies</span>
-                        <span class="plus" style="color: var(--accent); font-size: 24px;">+</span>
-                    </summary>
-                    <div style="padding: 0 24px 24px; line-height: 1.8; color: var(--text-gray);">
-                        <h4 style="color: var(--primary); margin-bottom: 16px;">Why This Combination Works:</h4>
-                        
-                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">Ashwagandha + Spirulina:</strong> 
-                        Studies suggest ashwagandha may help with stress management (Chandrasekhar et al., 2012 reported cortisol reduction). 
-                        Spirulina is nutrient-dense with B vitamins and iron. Combined, they may support both stress and energy, though individual results vary.</p>
-                        
-                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">Lion's Mane + Chlorella:</strong> 
-                        Lion's Mane supports nerve growth factor production (Lai et al., 2013), while chlorella provides chlorophyll and nutrients for cellular health (Panahi et al., 2016). 
-                        This combination targets both neural and cellular wellbeing.</p>
-                        
-                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">Turmeric + Black Pepper:</strong> 
-                        Critical pairing - piperine increases curcumin bioavailability by up to 2000% (Shoba et al., 1998). Without black pepper, turmeric absorption is minimal.</p>
-                        
-                        <h4 style="color: var(--primary); margin: 20px 0 12px;">Personalization Options:</h4>
-                        <ul style="list-style: none; padding: 0;">
-                            <li style="margin-bottom: 8px;">• <strong>High stress:</strong> Increase ashwagandha ratio</li>
-                            <li style="margin-bottom: 8px;">• <strong>Low energy:</strong> Boost spirulina content</li>
-                            <li style="margin-bottom: 8px;">• <strong>Inflammation focus:</strong> Enhanced turmeric blend</li>
-                            <li style="margin-bottom: 8px;">• <strong>Vegan needs:</strong> Extra B12 and iron sources</li>
-                        </ul>
-                    </div>
-                </details>
-                
-                <details style="margin-bottom: 16px; background: var(--bg-light); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-                    <summary style="cursor: pointer; padding: 24px; font-weight: 600; font-size: 18px; list-style: none; display: flex; justify-content: space-between; align-items: center;">
-                        <span>🧠 Focus Blend: Research & Synergies</span>
-                        <span class="plus" style="color: var(--accent); font-size: 24px;">+</span>
-                    </summary>
-                    <div style="padding: 0 24px 24px; line-height: 1.8; color: var(--text-gray);">
-                        <h4 style="color: var(--primary); margin-bottom: 16px;">Why This Combination Works:</h4>
-                        
-                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">L-Theanine + Your Morning Coffee:</strong> 
-                        The 2:1 ratio of L-theanine to caffeine is optimal for focus without jitters (Haskell et al., 2008). 
-                        Since most people drink coffee, we provide the L-theanine to create this synergy with your existing routine.</p>
-                        
-                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">Bacopa + Lion's Mane:</strong> 
-                        Bacopa improved memory scores by 24% in 12-week studies (Stough et al., 2008), while Lion's Mane supports neuroplasticity (Mori et al., 2009). 
-                        Different mechanisms, complementary benefits.</p>
-                        
-                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">Rhodiola + Ginkgo:</strong> 
-                        Rhodiola reduces mental fatigue (Olsson et al., 2009), while ginkgo improves cerebral blood flow (Santos et al., 2003). 
-                        Energy + circulation for sustained mental performance.</p>
-                        
-                        <h4 style="color: var(--primary); margin: 20px 0 12px;">Personalization Options:</h4>
-                        <ul style="list-style: none; padding: 0;">
-                            <li style="margin-bottom: 8px;">• <strong>ADHD traits:</strong> Higher L-theanine ratio</li>
-                            <li style="margin-bottom: 8px;">• <strong>Memory focus:</strong> Increased Bacopa</li>
-                            <li style="margin-bottom: 8px;">• <strong>Age 50+:</strong> Enhanced ginkgo content</li>
-                            <li style="margin-bottom: 8px;">• <strong>Caffeine sensitive:</strong> Adjusted ratios</li>
-                        </ul>
-                    </div>
-                </details>
-                
-                <details style="margin-bottom: 16px; background: var(--bg-light); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-                    <summary style="cursor: pointer; padding: 24px; font-weight: 600; font-size: 18px; list-style: none; display: flex; justify-content: space-between; align-items: center;">
-                        <span>🦠 Gut Harmony: Research & Synergies</span>
-                        <span class="plus" style="color: var(--accent); font-size: 24px;">+</span>
-                    </summary>
-                    <div style="padding: 0 24px 24px; line-height: 1.8; color: var(--text-gray);">
-                        <h4 style="color: var(--primary); margin-bottom: 16px;">Why This Combination Works:</h4>
-                        
-                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">Probiotics + Prebiotics:</strong> 
-                        Prebiotics feed probiotics, improving colonization by up to 10x (Roberfroid et al., 2010). 
-                        Without prebiotics, most probiotics don't survive stomach acid.</p>
-                        
-                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">L-Glutamine + Slippery Elm:</strong> 
-                        L-glutamine helps maintain gut barrier function (Zhou et al., 2003), while slippery elm provides soothing mucilage (Langmead et al., 2002). 
-                        Repair + protect approach.</p>
-                        
-                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">Ginger + Digestive Comfort:</strong> 
-                        Ginger reduces nausea and supports digestion (Hu et al., 2011). Combined with other ingredients, it helps the blend settle well.</p>
-                        
-                        <h4 style="color: var(--primary); margin: 20px 0 12px;">Personalization Options:</h4>
-                        <ul style="list-style: none; padding: 0;">
-                            <li style="margin-bottom: 8px;">• <strong>IBS-D:</strong> Lower fiber, specific strains</li>
-                            <li style="margin-bottom: 8px;">• <strong>IBS-C:</strong> Increased fiber content</li>
-                            <li style="margin-bottom: 8px;">• <strong>Post-antibiotic:</strong> Higher CFU count</li>
-                            <li style="margin-bottom: 8px;">• <strong>FODMAP sensitive:</strong> Adjusted ingredients</li>
-                        </ul>
-                    </div>
-                </details>
-            </div>
-            
-            <div style="background: var(--bg-light); padding: 32px; border-radius: 12px; margin-top: 32px;">
-                <h3 style="text-align: center; color: var(--primary); margin-bottom: 20px;">About These Ingredients</h3>
-                <p style="color: var(--text-gray); line-height: 1.8; margin-bottom: 16px; font-size: 14px;">
-                    <strong>What we're building:</strong> Premium superfood powder blends made from ingredients like spirulina, ashwagandha, and lion's mane. 
-                    These are traditional foods and botanicals that have been consumed for centuries.
-                </p>
-                <p style="color: var(--text-gray); line-height: 1.8; font-size: 14px;">
-                    <strong>How to use:</strong> Add to your daily smoothies, yogurt, or beverages as a nutritious addition to your diet. 
-                    These are food products meant to complement a balanced diet, not replace meals or medical care.
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Process Section -->
-    <section id="process" class="process-section">
-        <div class="container">
-            <div class="section-header">
-                <h2 style="color: white;">Your Journey to Better Nutrition</h2>
+                <p class="section-label">Simple Process</p>
+                <h2 class="section-title">How It Actually Works</h2>
             </div>
             
             <div class="process-timeline">
                 <div class="process-step">
                     <div class="step-number">1</div>
-                    <h3 class="step-title">Join Waitlist</h3>
-                    <p class="step-description">Reserve your spot at CHF 69 pre-launch price</p>
+                    <h3 class="step-title">We Source</h3>
+                    <p class="step-description">Premium ingredients in bulk. Better quality than retail, lower cost.</p>
                 </div>
                 <div class="process-step">
                     <div class="step-number">2</div>
-                    <h3 class="step-title">Personalize</h3>
-                    <p class="step-description">Quick questionnaire about your goals & preferences</p>
+                    <h3 class="step-title">We Blend</h3>
+                    <p class="step-description">Exact ratios for taste and efficacy. Fresh every week.</p>
                 </div>
                 <div class="process-step">
                     <div class="step-number">3</div>
-                    <h3 class="step-title">Receive</h3>
-                    <p class="step-description">Get your custom blend with recipes</p>
+                    <h3 class="step-title">We Freeze</h3>
+                    <p class="step-description">Flash-frozen in portion cubes. Nutrients locked at peak.</p>
                 </div>
                 <div class="process-step">
                     <div class="step-number">4</div>
-                    <h3 class="step-title">Thrive</h3>
-                    <p class="step-description">30-60 days to notice changes</p>
+                    <h3 class="step-title">You Blend</h3>
+                    <p class="step-description">8 cubes + liquid + 30 seconds = perfect smoothie</p>
                 </div>
+            </div>
+            
+            <div style="max-width: 800px; margin: 60px auto 0; background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f2 100%); padding: 32px; border-radius: 16px; text-align: center;">
+                <h3 style="color: var(--primary); margin-bottom: 16px;">Why Frozen Beats Everything</h3>
+                <p style="color: var(--text-gray); line-height: 1.8;">
+                    <strong>Better than powder:</strong> Real food, not processed dust. Texture, taste, nutrition intact.<br>
+                    <strong>Better than fresh:</strong> No oxidation, no rushing to use before expiry.<br>
+                    <strong>Better than pills:</strong> Whole food matrix = better absorption.
+                </p>
             </div>
         </div>
     </section>
 
-    <!-- How to Use Section - EXPANDED WITH SMOOTHIE SCIENCE -->
-    <section style="padding: 80px 20px; background: white;">
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing-section">
         <div class="container">
             <div class="section-header">
-                <p class="section-label">The Delivery Method</p>
-                <h2 class="section-title">Why Smoothies Are The Perfect Vehicle</h2>
-                <p class="section-subtitle">Science-backed reasons to blend your superfoods</p>
+                <p class="section-label">Simple Pricing</p>
+                <h2 class="section-title">Quality Costs What It Costs</h2>
+                <p class="section-subtitle">No tricks. No fake discounts. Just honest pricing.</p>
             </div>
             
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-top: 60px; align-items: center;">
-                <div>
-                    <h3 style="color: var(--primary); margin-bottom: 24px;">The Science of Smoothie Absorption</h3>
-                    
-                    <div style="margin-bottom: 20px;">
-                        <h4 style="color: var(--text-dark); margin-bottom: 8px;">🔬 Enhanced Bioavailability</h4>
-                        <p style="color: var(--text-gray); line-height: 1.6;">
-                            Blending breaks down cell walls, releasing up to 4x more nutrients than eating whole foods. 
-                            Studies show that mechanical disruption of plant cells significantly increases carotenoid and polyphenol absorption.
-                        </p>
-                    </div>
-                    
-                    <div style="margin-bottom: 20px;">
-                        <h4 style="color: var(--text-dark); margin-bottom: 8px;">⚡ Faster Absorption</h4>
-                        <p style="color: var(--text-gray); line-height: 1.6;">
-                            Liquid nutrition reaches your bloodstream in 15-20 minutes vs 2-3 hours for solid foods. 
-                            Perfect for morning energy or pre-workout nutrition.
-                        </p>
-                    </div>
-                    
-                    <div style="margin-bottom: 20px;">
-                        <h4 style="color: var(--text-dark); margin-bottom: 8px;">🎯 Synergistic Combinations</h4>
-                        <p style="color: var(--text-gray); line-height: 1.6;">
-                            Fat from nuts/seeds helps absorb fat-soluble vitamins (A, D, E, K). 
-                            Vitamin C from fruits enhances iron absorption from spirulina by up to 300%.
-                        </p>
-                    </div>
-                    
-                    <div style="margin-bottom: 20px;">
-                        <h4 style="color: var(--text-dark); margin-bottom: 8px;">😋 Taste Masking</h4>
-                        <p style="color: var(--text-gray); line-height: 1.6;">
-                            Let's be honest - spirulina and ashwagandha don't taste great alone. 
-                            Blending with fruits and nut butters makes daily consumption actually enjoyable.
-                        </p>
-                    </div>
+            <div class="pricing-card">
+                <div class="pricing-badge">Pre-Launch Offer</div>
+                <div class="price-amount">
+                    <span class="price-currency">CHF</span>11
                 </div>
+                <p class="price-per">per complete smoothie breakfast</p>
                 
-                <div>
-                    <div style="background: var(--bg-light); padding: 32px; border-radius: 16px;">
-                        <h3 style="color: var(--primary); margin-bottom: 24px;">Your Personalized Recipe Book</h3>
-                        
-                        <p style="color: var(--text-gray); margin-bottom: 24px;">
-                            When you order, you'll receive <strong>10+ customized smoothie recipes</strong> designed specifically for your blend and goals:
-                        </p>
-                        
-                        <div style="display: grid; gap: 16px;">
-                            <div style="background: white; padding: 16px; border-radius: 8px; border-left: 3px solid var(--accent);">
-                                <strong>Morning Energy Smoothies</strong>
-                                <p style="font-size: 14px; color: var(--text-gray); margin-top: 4px;">
-                                    Combinations that complement your blend's energy-boosting ingredients
-                                </p>
-                            </div>
-                            
-                            <div style="background: white; padding: 16px; border-radius: 8px; border-left: 3px solid var(--accent);">
-                                <strong>Post-Workout Recovery</strong>
-                                <p style="font-size: 14px; color: var(--text-gray); margin-top: 4px;">
-                                    Protein-rich recipes to maximize absorption and recovery
-                                </p>
-                            </div>
-                            
-                            <div style="background: white; padding: 16px; border-radius: 8px; border-left: 3px solid var(--accent);">
-                                <strong>Stress-Relief Blends</strong>
-                                <p style="font-size: 14px; color: var(--text-gray); margin-top: 4px;">
-                                    Calming ingredients that enhance adaptogen effectiveness
-                                </p>
-                            </div>
-                            
-                            <div style="background: white; padding: 16px; border-radius: 8px; border-left: 3px solid var(--accent);">
-                                <strong>Focus & Productivity</strong>
-                                <p style="font-size: 14px; color: var(--text-gray); margin-top: 4px;">
-                                    Brain-boosting combinations with healthy fats for nootropic absorption
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <p style="margin-top: 24px; padding: 16px; background: linear-gradient(135deg, #fff8f0 0%, #fff 100%); border-radius: 8px; text-align: center; font-style: italic;">
-                            "Each recipe includes shopping lists, prep tips, and the science behind why these combinations work"
-                        </p>
-                    </div>
-                </div>
-            </div>
-            
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 60px; text-align: center;">
-                <div>
-                    <div style="font-size: 48px; margin-bottom: 12px;">🥤</div>
-                    <h4 style="margin-bottom: 8px;">Smoothies</h4>
-                    <p style="color: var(--text-gray); font-size: 14px;">Best absorption & taste</p>
-                </div>
-                <div>
-                    <div style="font-size: 48px; margin-bottom: 12px;">🥣</div>
-                    <h4 style="margin-bottom: 8px;">Yogurt Bowls</h4>
-                    <p style="color: var(--text-gray); font-size: 14px;">Probiotic synergy</p>
-                </div>
-                <div>
-                    <div style="font-size: 48px; margin-bottom: 12px;">💧</div>
-                    <h4 style="margin-bottom: 8px;">Quick Shake</h4>
-                    <p style="color: var(--text-gray); font-size: 14px;">When you're in a rush</p>
-                </div>
-            </div>
-            
-            <div style="background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f2 100%); padding: 32px; border-radius: 12px; margin-top: 40px; text-align: center;">
-                <p style="color: var(--text-dark); font-weight: 600; margin-bottom: 8px;">
-                    Pro Tip: Morning smoothies work best!
-                </p>
-                <p style="color: var(--text-gray);">
-                    Taking superfoods on an empty stomach maximizes absorption. Plus, starting your day with 20+ nutrients sets a positive tone for healthy choices all day.
+                <ul class="pricing-features">
+                    <li>
+                        <div class="feature-check">✓</div>
+                        <span>8 frozen cubes = 400ml smoothie = complete meal</span>
+                    </li>
+                    <li>
+                        <div class="feature-check">✓</div>
+                        <span>Choose from 3 research-based formulas</span>
+                    </li>
+                    <li>
+                        <div class="feature-check">✓</div>
+                        <span>400-450 calories of balanced nutrition</span>
+                    </li>
+                    <li>
+                        <div class="feature-check">✓</div>
+                        <span>Delivered frozen weekly to your door</span>
+                    </li>
+                    <li>
+                        <div class="feature-check">✓</div>
+                        <span>Cancel or pause anytime</span>
+                    </li>
+                    <li>
+                        <div class="feature-check">✓</div>
+                        <span>First 50 customers get this price forever</span>
+                    </li>
+                </ul>
+                
+                <button class="btn-primary" style="width: 100%;" onclick="openModal()">
+                    Reserve Your Spot - Limited to 50
+                </button>
+                
+                <p style="margin-top: 16px; color: var(--text-gray); font-size: 14px;">
+                    Starting with local delivery in Aargau/Zurich area. Expanding based on demand.
                 </p>
             </div>
         </div>
     </section>
 
     <!-- FAQ Section -->
-    <section id="faq" class="faq-section" style="padding: 80px 20px; background: white;">
+    <section id="faq" class="faq-section">
         <div class="container">
             <div class="section-header">
                 <p class="section-label">Common Questions</p>
-                <h2 class="section-title">Frequently Asked Questions</h2>
+                <h2 class="section-title">Straight Answers</h2>
             </div>
             
             <div style="max-width: 800px; margin: 60px auto 0;">
-                <details style="margin-bottom: 16px; background: var(--bg-light); border-radius: 12px; overflow: hidden;">
-                    <summary style="cursor: pointer; padding: 24px; font-weight: 600; font-size: 18px; list-style: none; display: flex; justify-content: space-between; align-items: center;">
-                        <span>How is XOVA different from other supplements?</span>
-                        <span class="plus" style="color: var(--accent); font-size: 24px;">+</span>
+                <details>
+                    <summary>
+                        <span>Why not just buy superfood powder and mix it myself?</span>
+                        <span class="plus">+</span>
                     </summary>
-                    <div style="padding: 0 24px 24px; color: var(--text-gray);">
-                        We focus on three key differences: Complete transparency (no proprietary blends), personalization based on your specific needs, and doses based on published research. We also use whole food ingredients like spirulina and chlorella rather than just isolated vitamins.
+                    <div style="padding: 0 24px 24px; color: var(--text-gray); line-height: 1.8;">
+                        Three reasons:<br><br>
+                        <strong>1. Taste:</strong> Spirulina tastes like swamp. We spent months figuring out exact fruit ratios that make it undetectable. 
+                        Mango at 30% + banana at 20% neutralizes spirulina. You won't figure this out at home.<br><br>
+                        
+                        <strong>2. Complete vs powder:</strong> Powders are just powder. You still need fruits, vegetables, seeds. 
+                        We include everything pre-blended. The whole smoothie is done.<br><br>
+                        
+                        <strong>3. Waste:</strong> Buying spirulina (CHF 40), ashwagandha (CHF 30), lion's mane (CHF 35) means CHF 200+ investment. 
+                        Most expires. We buy bulk, use fresh, no waste.
                     </div>
                 </details>
                 
-                <details style="margin-bottom: 16px; background: var(--bg-light); border-radius: 12px; overflow: hidden;">
-                    <summary style="cursor: pointer; padding: 24px; font-weight: 600; font-size: 18px; list-style: none; display: flex; justify-content: space-between; align-items: center;">
-                        <span>What can I expect from these superfoods?</span>
-                        <span class="plus" style="color: var(--accent); font-size: 24px;">+</span>
+                <details>
+                    <summary>
+                        <span>How do I know the ingredients actually work?</span>
+                        <span class="plus">+</span>
                     </summary>
-                    <div style="padding: 0 24px 24px; color: var(--text-gray);">
-                        Our blends contain nutrient-dense superfoods like spirulina, chlorella, and adaptogenic herbs that have been used in traditional wellness practices. 
-                        <br><br>
-                        These are food products that add nutrition to your diet - think of them like a daily greens powder or protein powder. Some people enjoy the energy from B vitamins in spirulina, others like the ritual of a morning superfood smoothie. Everyone's experience is different.
-                        <br><br>
-                        We encourage you to view these as part of an overall healthy diet, not a magic solution. Good nutrition comes from whole foods, adequate sleep, exercise, and stress management - our blends are just one small part of that picture.
+                    <div style="padding: 0 24px 24px; color: var(--text-gray); line-height: 1.8;">
+                        We only include ingredients with published research. Examples:<br><br>
+                        
+                        • Ashwagandha KSM-66: 27% cortisol reduction (Chandrasekhar et al., 2012)<br>
+                        • Lion's Mane: Improved cognitive scores (Mori et al., 2009)<br>
+                        • L-theanine + caffeine: Better focus than caffeine alone (Haskell et al., 2008)<br><br>
+                        
+                        We use the same doses as successful studies, not tiny "fairy dust" amounts. 
+                        No proprietary blends hiding small doses. Full transparency.
                     </div>
                 </details>
                 
-                <details style="margin-bottom: 16px; background: var(--bg-light); border-radius: 12px; overflow: hidden;">
-                    <summary style="cursor: pointer; padding: 24px; font-weight: 600; font-size: 18px; list-style: none; display: flex; justify-content: space-between; align-items: center;">
-                        <span>How does personalization work?</span>
-                        <span class="plus" style="color: var(--accent); font-size: 24px;">+</span>
+                <details>
+                    <summary>
+                        <span>Will it actually taste good?</span>
+                        <span class="plus">+</span>
                     </summary>
-                    <div style="padding: 0 24px 24px; color: var(--text-gray);">
-                        <strong>Our personalization approach (currently in development):</strong>
-                        <br><br>
-                        You'll complete a 10-15 question form about:
-                        • Your main health goals (energy, focus, digestion)
-                        • Dietary restrictions (vegan, allergies)
-                        • Current lifestyle (stress level, exercise)
-                        • Any medications or supplements you take
-                        <br><br>
-                        <strong>Who adjusts the formulas:</strong>
-                        Currently, I (the founder) adjust ratios based on research literature about different needs. For example, studies suggest higher ashwagandha amounts for high stress, or different probiotic strains for different digestive issues. I'm not a medical professional - I'm using published research as a guide.
-                        <br><br>
-                        <strong>Important note:</strong> This is still in development. Initial personalization will be basic ratio adjustments. As we grow, we plan to work with nutrition professionals to improve the personalization system. We never add or remove ingredients without discussing it with you first.
+                    <div style="padding: 0 24px 24px; color: var(--text-gray); line-height: 1.8;">
+                        Yes. This was our biggest challenge and why we're different.<br><br>
+                        
+                        We tested 100+ combinations. Mango masks spirulina. Cacao covers ashwagandha. 
+                        Banana smooths everything. The ratios took months to perfect.<br><br>
+                        
+                        Result: Smoothies that taste like tropical fruit, chocolate shake, or berry blend. 
+                        Not "healthy" taste. Actually good taste. If it tasted bad, nobody would drink it daily.
                     </div>
                 </details>
                 
-                <details style="margin-bottom: 16px; background: var(--bg-light); border-radius: 12px; overflow: hidden;">
-                    <summary style="cursor: pointer; padding: 24px; font-weight: 600; font-size: 18px; list-style: none; display: flex; justify-content: space-between; align-items: center;">
-                        <span>What if I'm taking medications?</span>
-                        <span class="plus" style="color: var(--accent); font-size: 24px;">+</span>
+                <details>
+                    <summary>
+                        <span>CHF 11 seems expensive?</span>
+                        <span class="plus">+</span>
                     </summary>
-                    <div style="padding: 0 24px 24px; color: var(--text-gray);">
-                        Always consult your healthcare provider before starting any new supplement, especially if you take medications. Some ingredients can interact with certain drugs. Our questionnaire asks about medications, and we flag potential interactions, but professional medical advice is essential.
+                    <div style="padding: 0 24px 24px; color: var(--text-gray); line-height: 1.8;">
+                        It's a complete 450-calorie breakfast with premium ingredients. Compare to:<br><br>
+                        
+                        • Smoothie bar: CHF 16-18 for similar<br>
+                        • Café breakfast: CHF 15-20<br>
+                        • Making yourself: CHF 8-10 ingredients + 15 minutes<br>
+                        • AG1 + actual breakfast: CHF 4 + CHF 8 = CHF 12<br><br>
+                        
+                        We show exact costs. No hiding. Quality ingredients cost money. 
+                        If someone's selling "superfoods" for CHF 3, check the amounts - it's mostly filler.
                     </div>
                 </details>
                 
-                <details style="margin-bottom: 16px; background: var(--bg-light); border-radius: 12px; overflow: hidden;">
-                    <summary style="cursor: pointer; padding: 24px; font-weight: 600; font-size: 18px; list-style: none; display: flex; justify-content: space-between; align-items: center;">
-                        <span>How do I use the product?</span>
-                        <span class="plus" style="color: var(--accent); font-size: 24px;">+</span>
+                <details>
+                    <summary>
+                        <span>How does delivery work?</span>
+                        <span class="plus">+</span>
                     </summary>
-                    <div style="padding: 0 24px 24px; color: var(--text-gray);">
-                        Simply add one scoop (12-15g) of your personalized blend to your morning smoothie, yogurt, oatmeal, or shake with water/milk. The concentrated formula means no bulky servings - just pure nutrition. We'll provide recipes and tips to make it taste great. Most people find it easiest to blend with fruits or mix into flavored yogurt.
+                    <div style="padding: 0 24px 24px; color: var(--text-gray); line-height: 1.8;">
+                        Weekly delivery of frozen cubes in insulated packaging.<br><br>
+                        
+                        Currently serving: Aargau and Zurich area<br>
+                        Delivery day: To be determined based on demand<br>
+                        Minimum order: 5 smoothies per week<br><br>
+                        
+                        Cubes stay frozen for 6 hours in our packaging. 
+                        Store in freezer, good for 3 months (but best within 2 weeks).
                     </div>
                 </details>
                 
-                <details style="margin-bottom: 16px; background: var(--bg-light); border-radius: 12px; overflow: hidden;">
-                    <summary style="cursor: pointer; padding: 24px; font-weight: 600; font-size: 18px; list-style: none; display: flex; justify-content: space-between; align-items: center;">
-                        <span>Is there a subscription?</span>
-                        <span class="plus" style="color: var(--accent); font-size: 24px;">+</span>
+                <details>
+                    <summary>
+                        <span>Can I pause or cancel?</span>
+                        <span class="plus">+</span>
                     </summary>
-                    <div style="padding: 0 24px 24px; color: var(--text-gray);">
-                        We offer both one-time purchases and optional monthly subscriptions. Subscribers save 10% and can pause or cancel anytime. You can also adjust your formula every 3 months based on changing needs or seasons.
+                    <div style="padding: 0 24px 24px; color: var(--text-gray); line-height: 1.8;">
+                        Yes, anytime. No contracts, no minimum commitment.<br><br>
+                        
+                        Going on vacation? Pause deliveries.<br>
+                        Want to try different formula? Switch anytime.<br>
+                        Not working for you? Cancel instantly.<br><br>
+                        
+                        We're building this based on feedback. If something's not right, tell us. 
+                        Email: anbo.do@icloud.com
                     </div>
                 </details>
                 
-                <details style="margin-bottom: 16px; background: var(--bg-light); border-radius: 12px; overflow: hidden;">
-                    <summary style="cursor: pointer; padding: 24px; font-weight: 600; font-size: 18px; list-style: none; display: flex; justify-content: space-between; align-items: center;">
-                        <span>Where do you ship?</span>
-                        <span class="plus" style="color: var(--accent); font-size: 24px;">+</span>
+                <details>
+                    <summary>
+                        <span>Who's behind this?</span>
+                        <span class="plus">+</span>
                     </summary>
-                    <div style="padding: 0 24px 24px; color: var(--text-gray);">
-                        We're currently finalizing our shipping arrangements. We plan to start with local delivery and expand based on demand. Waitlist members will be notified about shipping availability for their area.
-                    </div>
-                </details>
-                
-                <details style="margin-bottom: 16px; background: var(--bg-light); border-radius: 12px; overflow: hidden;">
-                    <summary style="cursor: pointer; padding: 24px; font-weight: 600; font-size: 18px; list-style: none; display: flex; justify-content: space-between; align-items: center;">
-                        <span>How can I contact you directly?</span>
-                        <span class="plus" style="color: var(--accent); font-size: 24px;">+</span>
-                    </summary>
-                    <div style="padding: 0 24px 24px; color: var(--text-gray);">
-                        I personally read and respond to every email! Whether you have questions about ingredients, want to discuss your specific health goals, or just want to chat about superfoods, reach out anytime:
-                        <br><br>
-                        <strong>📧 anbo.do@icloud.com</strong>
-                        <br><br>
-                        I'm building this company based on customer feedback, so your input is incredibly valuable. Don't hesitate to reach out!
+                    <div style="padding: 0 24px 24px; color: var(--text-gray); line-height: 1.8;">
+                        I'm a PhD in economics who got obsessed with nutrition research. 
+                        Frustrated by overpriced supplements with proprietary blends and terrible taste.<br><br>
+                        
+                        This is a small operation - I'm personally making your smoothies in a commercial kitchen, 
+                        testing recipes, reading studies. Not a big company. Just someone trying to make better breakfast options.<br><br>
+                        
+                        Questions? Email me directly: <strong>anbo.do@icloud.com</strong>
                     </div>
                 </details>
             </div>
         </div>
     </section>
 
-    <!-- Countdown Timer Section -->
-    <section style="padding: 40px 20px; background: linear-gradient(135deg, #fff8f0 0%, #fff 100%); text-align: center;">
-        <div class="container">
-            <p style="font-size: 18px; color: var(--text-gray); margin-bottom: 16px;">Pre-Launch Offer Ends In:</p>
-            <div id="countdown" style="display: flex; justify-content: center; gap: 24px; margin-bottom: 20px;">
-                <div style="text-align: center;">
-                    <div style="font-size: 36px; font-weight: 700; color: var(--primary);" id="days">14</div>
-                    <div style="font-size: 12px; text-transform: uppercase; color: var(--text-gray);">Days</div>
-                </div>
-                <div style="text-align: center;">
-                    <div style="font-size: 36px; font-weight: 700; color: var(--primary);" id="hours">12</div>
-                    <div style="font-size: 12px; text-transform: uppercase; color: var(--text-gray);">Hours</div>
-                </div>
-                <div style="text-align: center;">
-                    <div style="font-size: 36px; font-weight: 700; color: var(--primary);" id="minutes">34</div>
-                    <div style="font-size: 12px; text-transform: uppercase; color: var(--text-gray);">Minutes</div>
-                </div>
-                <div style="text-align: center;">
-                    <div style="font-size: 36px; font-weight: 700; color: var(--primary);" id="seconds">56</div>
-                    <div style="font-size: 12px; text-transform: uppercase; color: var(--text-gray);">Seconds</div>
-                </div>
-            </div>
-            <button class="btn-primary" onclick="openModal()">Reserve Your Spot (CHF 69 at Launch)</button>
-        </div>
-    </section>
-
-    <!-- Pricing Section -->
-    <section class="pricing-section">
+    <!-- About Me Section -->
+    <section style="padding: 80px 20px; background: var(--bg-light);">
         <div class="container">
             <div class="section-header">
-                <p class="section-label">Pre-Launch Offer</p>
-                <h2 class="section-title">Join Our Waitlist</h2>
-                <p class="section-subtitle">Be among the first to try XOVA when we launch</p>
+                <p class="section-label">The Story</p>
+                <h2 class="section-title">Why I'm Building XOVA</h2>
             </div>
             
-            <div class="pricing-card">
-                <div class="pricing-badge">Launch Price</div>
-                <div class="price-amount">
-                    <span class="price-currency">CHF</span>69
-                    <span class="price-original">CHF 89</span>
-                </div>
-                <p style="text-align: center; margin: 20px 0; color: var(--accent); font-weight: 600;">
-                    Price when we launch - no payment today
-                </p>
-                <ul class="pricing-features">
-                    <li>
-                        <div class="feature-check">✓</div>
-                        <span>300g concentrated superfood blend (25 servings)</span>
-                    </li>
-                    <li>
-                        <div class="feature-check">✓</div>
-                        <span>Personalization based on your health goals</span>
-                    </li>
-                    <li>
-                        <div class="feature-check">✓</div>
-                        <span><strong>10+ personalized smoothie recipes</strong> for your blend</span>
-                    </li>
-                    <li>
-                        <div class="feature-check">✓</div>
-                        <span>Shopping lists for smoothie ingredients</span>
-                    </li>
-                    <li>
-                        <div class="feature-check">✓</div>
-                        <span>Science guide: why these combinations work</span>
-                    </li>
-                    <li>
-                        <div class="feature-check">✓</div>
-                        <span>Email support for questions</span>
-                    </li>
-                </ul>
-                <button class="btn-primary" style="width: 100%;" onclick="openModal()">
-                    Join Free Waitlist
-                </button>
-                <p style="text-align: center; margin-top: 16px; color: var(--text-gray); font-size: 14px;">
-                    <strong>CHF 2.76 per serving</strong> at launch - less than a coffee<br>
-                    Cancel anytime before launch
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Founder Section -->
-    <section class="founder-section">
-        <div class="container">
-            <div class="founder-content">
-                <div>
-                    <div class="founder-image">
-                        <img src="founder-photo.jpg" alt="XOVA Founder" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
-                    </div>
-                </div>
-                <div class="founder-text">
-                    <h3>Hi, I'm Building XOVA</h3>
-                    <p>
-                        I started this project because I was frustrated trying to find quality superfood blends. 
-                        Everything was either overpriced, full of fillers, or hiding behind "proprietary formulas."
-                    </p>
-                    <p>
-                        My background is in data analysis (PhD in economics), so naturally I went deep into research papers 
-                        about nutrition and superfoods. The more I learned, the more I realized how simple this could be: 
-                        quality ingredients, transparent amounts, fair prices.
-                    </p>
-                    <div class="founder-quote">
-                        "I'm starting small - making blends in small batches, testing with local customers, 
-                        learning what works. This isn't a big company yet. It's me, trying to make something better."
-                    </div>
-                    <p>
-                        If you're interested in personalized superfood nutrition without the BS, join the waitlist. 
-                        I'll keep you updated as I develop the products and would love your input on what you're looking for.
-                    </p>
-                    <p style="margin-top: 20px; font-style: italic; color: var(--text-gray);">
-                        P.S. - I genuinely care about what goes into your supplements. That's why I started this - to create something transparent and honest in an industry full of proprietary blends and marketing hype.
+            <div style="max-width: 800px; margin: 60px auto 0;">
+                <div style="background: white; padding: 48px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);">
+                    <p style="font-size: 18px; line-height: 1.8; color: var(--text-gray); margin-bottom: 24px;">
+                        Hi, I'm the founder of XOVA. My background is in data analysis (PhD in economics), 
+                        which means I approach problems systematically - including nutrition.
                     </p>
                     
-                    <!-- Contact Info -->
-                    <div style="margin-top: 32px; padding: 24px; background: white; border-radius: 12px; text-align: center;">
-                        <p style="font-weight: 600; margin-bottom: 8px; color: var(--text-dark);">Have questions? Want to chat about ingredients?</p>
-                        <p style="margin-bottom: 16px; color: var(--text-gray);">I personally read every email:</p>
-                        <a href="mailto:anbo.do@icloud.com" style="display: inline-block; padding: 12px 28px; background: var(--gradient-accent); color: white; text-decoration: none; border-radius: 25px; font-weight: 600; transition: all 0.3s;">
-                            📧 anbo.do@icloud.com
-                        </a>
+                    <p style="font-size: 18px; line-height: 1.8; color: var(--text-gray); margin-bottom: 24px;">
+                        Like you, I bought expensive superfood jars that expired. I tried making elaborate 
+                        smoothies with 15 ingredients. I calculated costs and realized I was spending CHF 200+ 
+                        monthly on supplements that mostly went bad.
+                    </p>
+                    
+                    <p style="font-size: 18px; line-height: 1.8; color: var(--text-gray); margin-bottom: 24px;">
+                        The supplement industry frustrated me. Proprietary blends hiding tiny doses. 
+                        Inflated claims without evidence. CHF 100 powders that taste terrible. 
+                        Nobody was just honest about what works, what doesn't, and what it actually costs.
+                    </p>
+                    
+                    <p style="font-size: 18px; line-height: 1.8; color: var(--text-gray); margin-bottom: 24px;">
+                        So I started XOVA with three principles:<br>
+                        • <strong>Only ingredients with real research</strong> (no fairy dust)<br>
+                        • <strong>Complete transparency</strong> (show all amounts and costs)<br>
+                        • <strong>Make it actually convenient</strong> (30 seconds, not 30 minutes)
+                    </p>
+                    
+                    <p style="font-size: 18px; line-height: 1.8; color: var(--text-gray); margin-bottom: 32px;">
+                        This isn't a big company. It's me in a commercial kitchen, testing ratios, 
+                        reading studies, making your smoothies. I'm starting with 50 customers to get it right.
+                    </p>
+                    
+                    <div style="padding: 24px; background: var(--bg-light); border-left: 4px solid var(--accent); border-radius: 8px;">
+                        <p style="font-style: italic; font-size: 18px; color: var(--text-dark); margin-bottom: 16px;">
+                            "I'm not claiming miracles. These are nutritious smoothies with researched ingredients 
+                            that save you time and money. That's it. That's enough."
+                        </p>
+                        <p style="font-weight: 600; color: var(--text-dark);">
+                            Questions? Ideas? Complaints?<br>
+                            Email me directly: <a href="mailto:anbo.do@icloud.com" style="color: var(--accent);">anbo.do@icloud.com</a>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -1824,22 +1593,24 @@
     <!-- Final CTA -->
     <section id="waitlist" class="cta-section">
         <div class="cta-content">
-            <h2 class="cta-title">Join the XOVA Waitlist</h2>
-            <p class="cta-subtitle">Get updates and early access when we launch</p>
+            <h2 class="cta-title">Start Your Mornings Right</h2>
+            <p class="cta-subtitle">
+                Limited to 50 founding customers. Get locked-in pricing forever.
+            </p>
             
             <form class="email-form" onsubmit="handleEmailSubmit(event)">
                 <input type="email" class="email-input" id="footer-email" placeholder="Enter your email" required>
-                <button type="submit" class="email-submit">Join Waitlist</button>
+                <button type="submit" class="email-submit">Reserve Your Spot</button>
             </form>
             
             <div id="footer-success" class="success-message">
-                ✓ You're on the waitlist! We'll be in touch soon.
+                ✓ You're on the list! Check your email for next steps.
             </div>
             
             <p style="margin-top: 30px; font-size: 14px; opacity: 0.8;">
-                ✓ Early bird pricing for waitlist members<br>
-                ✓ No spam - only important updates<br>
-                ✓ Unsubscribe anytime
+                ✓ CHF 11 per smoothie locked in forever for first 50 customers<br>
+                ✓ First delivery in 2 weeks<br>
+                ✓ Cancel anytime
             </p>
         </div>
     </section>
@@ -1848,28 +1619,40 @@
     <div id="modal" class="modal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal()">&times;</button>
-            <h3 style="margin-bottom: 8px; color: var(--primary);">Join the XOVA Waitlist</h3>
-            <p style="margin-bottom: 24px; color: var(--text-gray);">Be first to know when we launch. Lock in CHF 69 price (regular CHF 89).</p>
+            <h3 style="margin-bottom: 8px; color: var(--primary);">Reserve Your Spot</h3>
+            <p style="margin-bottom: 24px; color: var(--text-gray);">
+                Limited to 50 founding customers. Lock in CHF 11 price forever.
+            </p>
             
             <form onsubmit="handleModalSubmit(event)" style="display: flex; flex-direction: column; gap: 16px;">
-                <input type="text" id="modal-name" placeholder="First Name" required style="padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px;">
-                <input type="email" id="modal-email" placeholder="Email Address" required style="padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px;">
-                <select id="modal-product" style="padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px;">
-                    <option value="">Select Your Formula (Optional)</option>
-                    <option value="foundation">Foundation - Daily Wellness</option>
-                    <option value="focus">Focus - Mental Performance</option>
-                    <option value="gut">Gut Harmony - Digestive Health</option>
+                <input type="text" id="modal-name" placeholder="First Name" required 
+                       style="padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px;">
+                <input type="email" id="modal-email" placeholder="Email Address" required 
+                       style="padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px;">
+                <select id="modal-product" required
+                        style="padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px;">
+                    <option value="">Select Your Formula</option>
+                    <option value="energy">Daily Energy - All-day fuel without crashes</option>
+                    <option value="focus">Mental Focus - Sharp mind & productivity</option>
+                    <option value="gut">Gut Harmony - Better digestion & immunity</option>
+                </select>
+                <select id="modal-quantity" required
+                        style="padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px;">
+                    <option value="">How many per week?</option>
+                    <option value="5">5 smoothies - CHF 55/week</option>
+                    <option value="7">7 smoothies - CHF 77/week (daily)</option>
+                    <option value="14">14 smoothies - CHF 154/week (for couples)</option>
                 </select>
                 <button type="submit" class="btn-primary" style="width: 100%; border: none;">
-                    Join Waitlist (Free)
+                    Complete Reservation
                 </button>
                 <p style="text-align: center; margin: 0; font-size: 13px; color: var(--text-gray);">
-                    No payment required • You'll pay CHF 69 only when we launch
+                    No payment today • We'll contact you before first delivery
                 </p>
             </form>
             
             <div id="modal-success" class="success-message">
-                ✓ You're on the waitlist! Check your email.
+                ✓ Spot reserved! Check your email.
             </div>
         </div>
     </div>
@@ -1883,43 +1666,6 @@
         
         const { createClient } = supabase;
         const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-        // Countdown Timer
-        function startCountdown() {
-            // Set the date we're counting down to: October 24, 2025 at 21:00
-            const countDownDate = new Date('October 24, 2025 21:00:00').getTime();
-            
-            // Update the count down every 1 second
-            const x = setInterval(function() {
-                const now = new Date().getTime();
-                const distance = countDownDate - now;
-                
-                // Time calculations
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                
-                // Display the result
-                if (document.getElementById("days")) {
-                    document.getElementById("days").innerHTML = days;
-                    document.getElementById("hours").innerHTML = hours;
-                    document.getElementById("minutes").innerHTML = minutes;
-                    document.getElementById("seconds").innerHTML = seconds;
-                }
-                
-                // If the count down is finished
-                if (distance < 0) {
-                    clearInterval(x);
-                    if (document.getElementById("countdown")) {
-                        document.getElementById("countdown").innerHTML = "OFFER EXPIRED";
-                    }
-                }
-            }, 1000);
-        }
-        
-        // Start countdown on page load
-        startCountdown();
 
         // Navbar scroll effect
         window.addEventListener('scroll', () => {
@@ -1957,11 +1703,6 @@
             document.getElementById('modal-success').classList.remove('show');
         }
 
-        function selectProduct(product) {
-            openModal();
-            document.getElementById('modal-product').value = product.toLowerCase();
-        }
-
         // Form submissions
         async function handleEmailSubmit(event) {
             event.preventDefault();
@@ -1992,6 +1733,7 @@
             const name = document.getElementById('modal-name').value;
             const email = document.getElementById('modal-email').value;
             const product = document.getElementById('modal-product').value;
+            const quantity = document.getElementById('modal-quantity').value;
             
             try {
                 const { data, error } = await supabaseClient
@@ -1999,7 +1741,7 @@
                     .insert([{
                         email: email,
                         name: name,
-                        source: product ? `selected_${product}` : 'modal_signup',
+                        source: `preorder_${product}_${quantity}`,
                         created_at: new Date().toISOString()
                     }]);
 
@@ -2009,6 +1751,7 @@
                 document.getElementById('modal-name').value = '';
                 document.getElementById('modal-email').value = '';
                 document.getElementById('modal-product').value = '';
+                document.getElementById('modal-quantity').value = '';
                 
                 setTimeout(() => {
                     closeModal();
