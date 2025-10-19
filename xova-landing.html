@@ -117,12 +117,12 @@
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+            box-shadow: 0 4px 15px rgba(107, 142, 35, 0.3);
         }
         
         .nav-cta:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(255, 152, 0, 0.4);
+            box-shadow: 0 6px 25px rgba(107, 142, 35, 0.4);
         }
         
         /* Hero Section */
@@ -141,7 +141,7 @@
             position: absolute;
             width: 500px;
             height: 500px;
-            background: radial-gradient(circle, rgba(255, 152, 0, 0.1) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(107, 142, 35, 0.1) 0%, transparent 70%);
             top: -200px;
             right: -200px;
             animation: float 6s ease-in-out infinite;
@@ -208,14 +208,14 @@
             font-weight: 600;
             font-size: 18px;
             transition: all 0.3s;
-            box-shadow: 0 6px 20px rgba(255, 152, 0, 0.3);
+            box-shadow: 0 6px 20px rgba(107, 142, 35, 0.3);
             border: none;
             cursor: pointer;
         }
         
         .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(255, 152, 0, 0.4);
+            box-shadow: 0 8px 30px rgba(107, 142, 35, 0.4);
         }
         
         .btn-secondary {
@@ -345,101 +345,8 @@
             padding: 12px 24px;
             border-radius: 30px;
             font-weight: 700;
-            box-shadow: 0 4px 20px rgba(255, 152, 0, 0.3);
+            box-shadow: 0 4px 20px rgba(107, 142, 35, 0.3);
             animation: pulse 2s ease-in-out infinite;
-        }
-        
-        /* Problem Section */
-        .problem-section {
-            padding: 100px 20px;
-            background: white;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .section-header {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-        
-        .section-label {
-            color: var(--accent);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 12px;
-            margin-bottom: 16px;
-        }
-        
-        .section-title {
-            font-size: clamp(32px, 4vw, 48px);
-            font-weight: 700;
-            margin-bottom: 20px;
-            letter-spacing: -0.02em;
-        }
-        
-        .section-subtitle {
-            font-size: 18px;
-            color: var(--text-gray);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .problem-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 24px;
-        }
-        
-        .problem-card {
-            padding: 32px;
-            background: linear-gradient(135deg, #fff 0%, #fcfcfc 100%);
-            border: 1px solid #f0f0f0;
-            border-radius: 16px;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .problem-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #ff4444 0%, #ff6666 100%);
-            transform: scaleX(0);
-            transition: transform 0.3s;
-        }
-        
-        .problem-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        
-        .problem-card:hover::before {
-            transform: scaleX(1);
-        }
-        
-        .problem-icon {
-            font-size: 32px;
-            margin-bottom: 16px;
-        }
-        
-        .problem-title {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: var(--text-dark);
-        }
-        
-        .problem-description {
-            color: var(--text-gray);
-            line-height: 1.6;
         }
         
         /* Solution Strip */
@@ -475,7 +382,7 @@
         .stat-number {
             font-size: 48px;
             font-weight: 800;
-            color: var(--accent);
+            color: var(--accent-light);
             margin-bottom: 8px;
         }
         
@@ -618,57 +525,7 @@
         
         .product-cta:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 152, 0, 0.3);
-        }
-        
-        /* Science Section */
-        .science-section {
-            padding: 100px 20px;
-            background: white;
-        }
-        
-        .science-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-            margin-top: 60px;
-        }
-        
-        .science-card {
-            text-align: center;
-            padding: 40px;
-            background: var(--bg-light);
-            border-radius: 20px;
-            transition: all 0.3s;
-        }
-        
-        .science-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        
-        .science-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 24px;
-            background: var(--gradient-accent);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 36px;
-            color: white;
-        }
-        
-        .science-title {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-        
-        .science-description {
-            color: var(--text-gray);
-            line-height: 1.6;
+            box-shadow: 0 6px 20px rgba(107, 142, 35, 0.3);
         }
         
         /* Process Section */
@@ -685,7 +542,7 @@
             position: absolute;
             width: 1000px;
             height: 1000px;
-            background: radial-gradient(circle, rgba(255, 152, 0, 0.05) 0%, transparent 50%);
+            background: radial-gradient(circle, rgba(107, 142, 35, 0.05) 0%, transparent 50%);
             bottom: -500px;
             left: -500px;
         }
@@ -715,7 +572,7 @@
             font-size: 24px;
             font-weight: 700;
             margin: 0 auto 20px;
-            box-shadow: 0 4px 20px rgba(255, 152, 0, 0.3);
+            box-shadow: 0 4px 20px rgba(107, 142, 35, 0.3);
         }
         
         .step-title {
@@ -745,7 +602,7 @@
             border-radius: 24px;
             text-align: center;
             position: relative;
-            box-shadow: 0 20px 60px rgba(255, 152, 0, 0.15);
+            box-shadow: 0 20px 60px rgba(107, 142, 35, 0.15);
         }
         
         .pricing-badge {
@@ -872,7 +729,7 @@
             position: absolute;
             width: 1200px;
             height: 1200px;
-            background: radial-gradient(circle, rgba(255, 152, 0, 0.08) 0%, transparent 50%);
+            background: radial-gradient(circle, rgba(107, 142, 35, 0.08) 0%, transparent 50%);
             top: -600px;
             left: 50%;
             transform: translateX(-50%);
@@ -924,15 +781,48 @@
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 6px 20px rgba(255, 152, 0, 0.3);
+            box-shadow: 0 6px 20px rgba(107, 142, 35, 0.3);
         }
         
         .email-submit:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(255, 152, 0, 0.4);
+            box-shadow: 0 8px 30px rgba(107, 142, 35, 0.4);
         }
         
-        /* FAQ Styles */
+        /* General Styles */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-label {
+            color: var(--accent);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .section-title {
+            font-size: clamp(32px, 4vw, 48px);
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+        
+        .section-subtitle {
+            font-size: 18px;
+            color: var(--text-gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
         details {
             margin-bottom: 16px;
             background: var(--bg-light);
@@ -958,7 +848,7 @@
         }
         
         summary:hover {
-            background: rgba(255, 152, 0, 0.05);
+            background: rgba(107, 142, 35, 0.05);
         }
         
         summary::marker {
@@ -1127,7 +1017,11 @@
                 </div>
             </div>
             <div class="hero-visual">
-                <img src="xova-foundation.png" alt="XOVA Superfood Package" style="width: 100%; max-width: 500px; height: auto; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.1);">
+                <div class="product-mockup">
+                    <div class="product-label-mock">
+                        <h3>XOVA</h3>
+                        <p>Pure Superfoods</p>
+                    </div>
                     <div class="product-info-mock">
                         <div class="weight">300g</div>
                         <div class="servings">25 servings</div>
@@ -1137,8 +1031,6 @@
             </div>
         </div>
     </section>
-
-    <!-- Problem Section - REMOVED - Content merged into other sections -->
 
     <!-- Solution Strip -->
     <section class="solution-strip">
@@ -1199,176 +1091,48 @@
         </div>
     </section>
 
-    <!-- Evidence Levels Section -->
+    <!-- Why Three Blends Section -->
     <section style="padding: 60px 20px; background: white;">
         <div class="container">
             <div class="section-header">
-                <p class="section-label">Ingredient Selection</p>
-                <h2 class="section-title">Why These Superfoods?</h2>
-                <p class="section-subtitle">Traditional ingredients with interesting research</p>
+                <p class="section-label">Our Approach</p>
+                <h2 class="section-title">Why Start With These Three Blends?</h2>
+                <p class="section-subtitle">Testing the most common health goals first</p>
             </div>
             
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 40px;">
-                
-                <div style="background: linear-gradient(135deg, #e8f5e9, #f1f8f2); padding: 28px; border-radius: 12px; border-left: 4px solid #4caf50;">
-                    <h3 style="color: #2e7d32; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
-                        🟢 Strong Evidence <small style="font-weight: normal; color: var(--text-gray);">(We use these)</small>
-                    </h3>
-                    <div style="line-height: 1.8; color: var(--text-gray);">
-                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Ashwagandha (KSM-66):</strong> Multiple RCTs showing stress reduction</p>
-                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Spirulina:</strong> 18+ studies on nutrition & antioxidants</p>
-                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Turmeric + Piperine:</strong> Proven 2000% absorption increase</p>
-                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Probiotics (specific strains):</strong> Extensive gut health research</p>
-                        <p style="color: var(--text-dark);"><strong>L-Theanine:</strong> Well-studied for focus with caffeine</p>
-                    </div>
-                </div>
-                
-                <div style="background: linear-gradient(135deg, #fff8e1, #fffaf0); padding: 28px; border-radius: 12px; border-left: 4px solid #ff9800;">
-                    <h3 style="color: #e65100; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
-                        🟡 Moderate Evidence <small style="font-weight: normal; color: var(--text-gray);">(We use carefully)</small>
-                    </h3>
-                    <div style="line-height: 1.8; color: var(--text-gray);">
-                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Lion's Mane:</strong> Promising but limited human studies</p>
-                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Rhodiola:</strong> Good for some, variable response</p>
-                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Bacopa:</strong> Takes 12 weeks, modest effects</p>
-                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Chlorella:</strong> Nutritious but benefits unclear</p>
-                        <p style="color: var(--text-dark);"><strong>Ginkgo:</strong> Mainly effective for 50+ age group</p>
-                    </div>
-                </div>
-                
-                <div style="background: linear-gradient(135deg, #ffebee, #fef5f5); padding: 28px; border-radius: 12px; border-left: 4px solid #f44336;">
-                    <h3 style="color: #c62828; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
-                        🔴 Weak Evidence <small style="font-weight: normal; color: var(--text-gray);">(We skip these)</small>
-                    </h3>
-                    <div style="line-height: 1.8; color: var(--text-gray);">
-                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Collagen powder:</strong> Just expensive protein</p>
-                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>"Detox" anything:</strong> Your liver works fine</p>
-                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Alkaline water/powder:</strong> Stomach acid neutralizes it</p>
-                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Proprietary blends:</strong> Usually hiding tiny doses</p>
-                        <p style="color: var(--text-dark);"><strong>Most "fat burners":</strong> Caffeine with fairy dust</p>
-                    </div>
-                </div>
-                
-            </div>
-            
-            <div style="background: var(--bg-light); padding: 24px; border-radius: 12px; margin-top: 32px;">
-                <p style="text-align: center; color: var(--text-gray); line-height: 1.8;">
-                    <strong>Our Promise:</strong> We only include ingredients with at least moderate evidence. 
-                    Strong evidence ingredients form the core, moderate evidence ingredients are included at conservative doses. 
-                    We never use ingredients with weak or no evidence just to make our label look impressive.
+            <div style="max-width: 800px; margin: 40px auto; background: var(--bg-light); padding: 32px; border-radius: 12px;">
+                <p style="line-height: 1.8; color: var(--text-gray); margin-bottom: 20px;">
+                    After researching hundreds of studies and talking to potential customers, I found three main patterns in what people are looking for:
                 </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Ingredient Science Section -->
-    <section style="padding: 60px 20px; background: var(--bg-light);">
-        <div class="container">
-            <div class="section-header">
-                <p class="section-label">The Science</p>
-                <h2 class="section-title">Why These Specific Ingredients?</h2>
-                <p class="section-subtitle">Research-based selection and synergistic combinations</p>
-            </div>
-            
-            <div style="margin-top: 40px;">
-                <details style="margin-bottom: 16px; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-                    <summary style="cursor: pointer; padding: 24px; font-weight: 600; font-size: 18px; list-style: none; display: flex; justify-content: space-between; align-items: center; background: white;">
-                        <span>🌱 Foundation Blend: Research & Synergies</span>
-                        <span class="plus" style="color: var(--accent); font-size: 24px;">+</span>
-                    </summary>
-                    <div style="padding: 0 24px 24px; line-height: 1.8; color: var(--text-gray);">
-                        <h4 style="color: var(--primary); margin-bottom: 16px;">Why This Combination Works:</h4>
-                        
-                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">Ashwagandha + Spirulina:</strong> 
-                        Studies suggest ashwagandha may help with stress management (Chandrasekhar et al., 2012 reported cortisol reduction). 
-                        Spirulina is nutrient-dense with B vitamins and iron. Combined, they may support both stress and energy, though individual results vary.</p>
-                        
-                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">Lion's Mane + Chlorella:</strong> 
-                        Lion's Mane supports nerve growth factor production (Lai et al., 2013), while chlorella provides chlorophyll and nutrients for cellular health (Panahi et al., 2016). 
-                        This combination targets both neural and cellular wellbeing.</p>
-                        
-                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">Turmeric + Black Pepper:</strong> 
-                        Critical pairing - piperine increases curcumin bioavailability by up to 2000% (Shoba et al., 1998). Without black pepper, turmeric absorption is minimal.</p>
-                        
-                        <h4 style="color: var(--primary); margin: 20px 0 12px;">Personalization Options:</h4>
-                        <ul style="list-style: none; padding: 0;">
-                            <li style="margin-bottom: 8px;">• <strong>High stress:</strong> Increase ashwagandha ratio</li>
-                            <li style="margin-bottom: 8px;">• <strong>Low energy:</strong> Boost spirulina content</li>
-                            <li style="margin-bottom: 8px;">• <strong>Inflammation focus:</strong> Enhanced turmeric blend</li>
-                            <li style="margin-bottom: 8px;">• <strong>Vegan needs:</strong> Extra B12 and iron sources</li>
-                        </ul>
-                    </div>
-                </details>
                 
-                <details style="margin-bottom: 16px; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-                    <summary style="cursor: pointer; padding: 24px; font-weight: 600; font-size: 18px; list-style: none; display: flex; justify-content: space-between; align-items: center; background: white;">
-                        <span>🧠 Focus Blend: Research & Synergies</span>
-                        <span class="plus" style="color: var(--accent); font-size: 24px;">+</span>
-                    </summary>
-                    <div style="padding: 0 24px 24px; line-height: 1.8; color: var(--text-gray);">
-                        <h4 style="color: var(--primary); margin-bottom: 16px;">Why This Combination Works:</h4>
-                        
-                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">L-Theanine + Your Morning Coffee:</strong> 
-                        The 2:1 ratio of L-theanine to caffeine is optimal for focus without jitters (Haskell et al., 2008). 
-                        Since most people drink coffee, we provide the L-theanine to create this synergy with your existing routine.</p>
-                        
-                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">Bacopa + Lion's Mane:</strong> 
-                        Bacopa improved memory scores by 24% in 12-week studies (Stough et al., 2008), while Lion's Mane supports neuroplasticity (Mori et al., 2009). 
-                        Different mechanisms, complementary benefits.</p>
-                        
-                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">Rhodiola + Ginkgo:</strong> 
-                        Rhodiola reduces mental fatigue (Olsson et al., 2009), while ginkgo improves cerebral blood flow (Santos et al., 2003). 
-                        Energy + circulation for sustained mental performance.</p>
-                        
-                        <h4 style="color: var(--primary); margin: 20px 0 12px;">Personalization Options:</h4>
-                        <ul style="list-style: none; padding: 0;">
-                            <li style="margin-bottom: 8px;">• <strong>ADHD traits:</strong> Higher L-theanine ratio</li>
-                            <li style="margin-bottom: 8px;">• <strong>Memory focus:</strong> Increased Bacopa</li>
-                            <li style="margin-bottom: 8px;">• <strong>Age 50+:</strong> Enhanced ginkgo content</li>
-                            <li style="margin-bottom: 8px;">• <strong>Caffeine sensitive:</strong> Adjusted ratios</li>
-                        </ul>
+                <div style="display: grid; gap: 20px;">
+                    <div style="display: flex; gap: 16px; align-items: start;">
+                        <div style="width: 40px; height: 40px; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0; font-weight: bold;">1</div>
+                        <div>
+                            <strong style="color: var(--text-dark);">Daily Energy & Stress (Foundation):</strong>
+                            <p style="margin-top: 4px; font-size: 14px;">Most people want more energy and less stress. This blend combines adaptogens with nutrient-dense superfoods based on the strongest research evidence.</p>
+                        </div>
                     </div>
-                </details>
+                    
+                    <div style="display: flex; gap: 16px; align-items: start;">
+                        <div style="width: 40px; height: 40px; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0; font-weight: bold;">2</div>
+                        <div>
+                            <strong style="color: var(--text-dark);">Mental Performance (Focus):</strong>
+                            <p style="margin-top: 4px; font-size: 14px;">The second biggest request was for cognitive support - better focus, memory, and mental clarity. This blend uses nootropics with actual human studies.</p>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 16px; align-items: start;">
+                        <div style="width: 40px; height: 40px; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0; font-weight: bold;">3</div>
+                        <div>
+                            <strong style="color: var(--text-dark);">Digestive Health (Gut Harmony):</strong>
+                            <p style="margin-top: 4px; font-size: 14px;">Gut health affects everything. This blend combines probiotics, prebiotics, and gut-supporting nutrients based on microbiome research.</p>
+                        </div>
+                    </div>
+                </div>
                 
-                <details style="margin-bottom: 16px; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-                    <summary style="cursor: pointer; padding: 24px; font-weight: 600; font-size: 18px; list-style: none; display: flex; justify-content: space-between; align-items: center; background: white;">
-                        <span>🦠 Gut Harmony: Research & Synergies</span>
-                        <span class="plus" style="color: var(--accent); font-size: 24px;">+</span>
-                    </summary>
-                    <div style="padding: 0 24px 24px; line-height: 1.8; color: var(--text-gray);">
-                        <h4 style="color: var(--primary); margin-bottom: 16px;">Why This Combination Works:</h4>
-                        
-                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">Probiotics + Prebiotics:</strong> 
-                        Prebiotics feed probiotics, improving colonization by up to 10x (Roberfroid et al., 2010). 
-                        Without prebiotics, most probiotics don't survive stomach acid.</p>
-                        
-                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">L-Glutamine + Slippery Elm:</strong> 
-                        L-glutamine helps maintain gut barrier function (Zhou et al., 2003), while slippery elm provides soothing mucilage (Langmead et al., 2002). 
-                        Repair + protect approach.</p>
-                        
-                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">Ginger + Digestive Comfort:</strong> 
-                        Ginger reduces nausea and supports digestion (Hu et al., 2011). Combined with other ingredients, it helps the blend settle well.</p>
-                        
-                        <h4 style="color: var(--primary); margin: 20px 0 12px;">Personalization Options:</h4>
-                        <ul style="list-style: none; padding: 0;">
-                            <li style="margin-bottom: 8px;">• <strong>IBS-D:</strong> Lower fiber, specific strains</li>
-                            <li style="margin-bottom: 8px;">• <strong>IBS-C:</strong> Increased fiber content</li>
-                            <li style="margin-bottom: 8px;">• <strong>Post-antibiotic:</strong> Higher CFU count</li>
-                            <li style="margin-bottom: 8px;">• <strong>FODMAP sensitive:</strong> Adjusted ingredients</li>
-                        </ul>
-                    </div>
-                </details>
-            </div>
-            
-            <div style="background: white; padding: 32px; border-radius: 12px; margin-top: 32px;">
-                <h3 style="text-align: center; color: var(--primary); margin-bottom: 20px;">About These Ingredients</h3>
-                <p style="color: var(--text-gray); line-height: 1.8; margin-bottom: 16px; font-size: 14px;">
-                    <strong>What we offer:</strong> Premium superfood powder blends made from ingredients like spirulina, ashwagandha, and lion's mane. 
-                    These are traditional foods and botanicals that have been consumed for centuries.
-                </p>
-                <p style="color: var(--text-gray); line-height: 1.8; font-size: 14px;">
-                    <strong>How to use:</strong> Add to your daily smoothies, yogurt, or beverages as a nutritious addition to your diet. 
-                    These are food products meant to complement a balanced diet, not replace meals or medical care.
+                <p style="margin-top: 24px; padding-top: 24px; border-top: 1px solid #e0e0e0; text-align: center; font-style: italic; color: var(--text-gray);">
+                    "I'm starting with these three to validate the concept. If there's interest, I'll develop more specialized blends based on your feedback."
                 </p>
             </div>
         </div>
@@ -1495,50 +1259,180 @@
         </div>
     </section>
 
-    <!-- Research Evidence Section -->
-    <section id="evidence" class="evidence-section" style="padding: 60px 20px; background: var(--bg-light);">
+    <!-- Evidence Levels Section - MOVED AFTER PRODUCTS -->
+    <section id="evidence" style="padding: 60px 20px; background: var(--bg-light);">
         <div class="container">
             <div class="section-header">
-                <p class="section-label">Published Research</p>
-                <h2 class="section-title">What Studies Suggest</h2>
-                <p class="section-subtitle">Key findings from research on our ingredients</p>
+                <p class="section-label">Ingredient Selection</p>
+                <h2 class="section-title">Why These Superfoods?</h2>
+                <p class="section-subtitle">Traditional ingredients with research backing</p>
             </div>
             
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 40px;">
-                <div style="background: white; padding: 28px; border-radius: 12px; border-left: 4px solid var(--accent);">
-                    <h4 style="color: var(--primary); margin-bottom: 8px;">Stress & Adaptogens</h4>
-                    <p style="font-style: italic; color: var(--text-gray); margin-bottom: 12px; line-height: 1.6;">
-                        "Ashwagandha supplementation was associated with reductions in stress and anxiety scores"
-                    </p>
-                    <p style="font-size: 13px; color: var(--text-gray);">
-                        Chandrasekhar et al., 2012 (64 participants)
-                    </p>
+                
+                <div style="background: linear-gradient(135deg, #e8f5e9, #f1f8f2); padding: 28px; border-radius: 12px; border-left: 4px solid #4caf50;">
+                    <h3 style="color: #2e7d32; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                        🟢 Strong Evidence <small style="font-weight: normal; color: var(--text-gray);">(We use these)</small>
+                    </h3>
+                    <div style="line-height: 1.8; color: var(--text-gray);">
+                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Ashwagandha (KSM-66):</strong> Multiple RCTs showing stress reduction</p>
+                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Spirulina:</strong> 18+ studies on nutrition & antioxidants</p>
+                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Turmeric + Piperine:</strong> Proven 2000% absorption increase</p>
+                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Probiotics (specific strains):</strong> Extensive gut health research</p>
+                        <p style="color: var(--text-dark);"><strong>L-Theanine:</strong> Well-studied for focus with caffeine</p>
+                    </div>
                 </div>
                 
-                <div style="background: white; padding: 28px; border-radius: 12px; border-left: 4px solid var(--accent);">
-                    <h4 style="color: var(--primary); margin-bottom: 8px;">Focus & Cognition</h4>
-                    <p style="font-style: italic; color: var(--text-gray); margin-bottom: 12px; line-height: 1.6;">
-                        "L-theanine and caffeine combination improved attention task performance"
-                    </p>
-                    <p style="font-size: 13px; color: var(--text-gray);">
-                        Haskell et al., 2008 (27 participants)
-                    </p>
+                <div style="background: linear-gradient(135deg, #fff8e1, #fffaf0); padding: 28px; border-radius: 12px; border-left: 4px solid #ff9800;">
+                    <h3 style="color: #e65100; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                        🟡 Moderate Evidence <small style="font-weight: normal; color: var(--text-gray);">(We use carefully)</small>
+                    </h3>
+                    <div style="line-height: 1.8; color: var(--text-gray);">
+                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Lion's Mane:</strong> Promising but limited human studies</p>
+                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Rhodiola:</strong> Good for some, variable response</p>
+                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Bacopa:</strong> Takes 12 weeks, modest effects</p>
+                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Chlorella:</strong> Nutritious but benefits unclear</p>
+                        <p style="color: var(--text-dark);"><strong>Ginkgo:</strong> Mainly effective for 50+ age group</p>
+                    </div>
                 </div>
                 
-                <div style="background: white; padding: 28px; border-radius: 12px; border-left: 4px solid var(--accent);">
-                    <h4 style="color: var(--primary); margin-bottom: 8px;">Nutrient Density</h4>
-                    <p style="font-style: italic; color: var(--text-gray); margin-bottom: 12px; line-height: 1.6;">
-                        "Spirulina showed benefits for lipid profiles and antioxidant status"
-                    </p>
-                    <p style="font-size: 13px; color: var(--text-gray);">
-                        Wu et al., 2016 (Review of multiple studies)
-                    </p>
+                <div style="background: linear-gradient(135deg, #ffebee, #fef5f5); padding: 28px; border-radius: 12px; border-left: 4px solid #f44336;">
+                    <h3 style="color: #c62828; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                        🔴 Weak Evidence <small style="font-weight: normal; color: var(--text-gray);">(We skip these)</small>
+                    </h3>
+                    <div style="line-height: 1.8; color: var(--text-gray);">
+                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Collagen powder:</strong> Just expensive protein</p>
+                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>"Detox" anything:</strong> Your liver works fine</p>
+                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Alkaline water/powder:</strong> Stomach acid neutralizes it</p>
+                        <p style="margin-bottom: 12px; color: var(--text-dark);"><strong>Proprietary blends:</strong> Usually hiding tiny doses</p>
+                        <p style="color: var(--text-dark);"><strong>Most "fat burners":</strong> Caffeine with fairy dust</p>
+                    </div>
                 </div>
+                
+            </div>
+            
+            <div style="background: white; padding: 24px; border-radius: 12px; margin-top: 32px;">
+                <p style="text-align: center; color: var(--text-gray); line-height: 1.8;">
+                    <strong>Our Promise:</strong> We only include ingredients with at least moderate evidence. 
+                    Strong evidence ingredients form the core, moderate evidence ingredients are included at conservative doses. 
+                    We never use ingredients with weak or no evidence just to make our label look impressive.
+                </p>
             </div>
         </div>
     </section>
 
-    <!-- Science Section - REMOVED - Redundant with evidence levels -->
+    <!-- Ingredient Science Section - Detailed Synergies -->
+    <section style="padding: 60px 20px; background: white;">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-label">The Science</p>
+                <h2 class="section-title">Why These Combinations Work</h2>
+                <p class="section-subtitle">Research-based synergies in each blend</p>
+            </div>
+            
+            <div style="margin-top: 40px;">
+                <details style="margin-bottom: 16px; background: var(--bg-light); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                    <summary style="cursor: pointer; padding: 24px; font-weight: 600; font-size: 18px; list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                        <span>🌱 Foundation Blend: Research & Synergies</span>
+                        <span class="plus" style="color: var(--accent); font-size: 24px;">+</span>
+                    </summary>
+                    <div style="padding: 0 24px 24px; line-height: 1.8; color: var(--text-gray);">
+                        <h4 style="color: var(--primary); margin-bottom: 16px;">Why This Combination Works:</h4>
+                        
+                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">Ashwagandha + Spirulina:</strong> 
+                        Studies suggest ashwagandha may help with stress management (Chandrasekhar et al., 2012 reported cortisol reduction). 
+                        Spirulina is nutrient-dense with B vitamins and iron. Combined, they may support both stress and energy, though individual results vary.</p>
+                        
+                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">Lion's Mane + Chlorella:</strong> 
+                        Lion's Mane supports nerve growth factor production (Lai et al., 2013), while chlorella provides chlorophyll and nutrients for cellular health (Panahi et al., 2016). 
+                        This combination targets both neural and cellular wellbeing.</p>
+                        
+                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">Turmeric + Black Pepper:</strong> 
+                        Critical pairing - piperine increases curcumin bioavailability by up to 2000% (Shoba et al., 1998). Without black pepper, turmeric absorption is minimal.</p>
+                        
+                        <h4 style="color: var(--primary); margin: 20px 0 12px;">Personalization Options:</h4>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin-bottom: 8px;">• <strong>High stress:</strong> Increase ashwagandha ratio</li>
+                            <li style="margin-bottom: 8px;">• <strong>Low energy:</strong> Boost spirulina content</li>
+                            <li style="margin-bottom: 8px;">• <strong>Inflammation focus:</strong> Enhanced turmeric blend</li>
+                            <li style="margin-bottom: 8px;">• <strong>Vegan needs:</strong> Extra B12 and iron sources</li>
+                        </ul>
+                    </div>
+                </details>
+                
+                <details style="margin-bottom: 16px; background: var(--bg-light); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                    <summary style="cursor: pointer; padding: 24px; font-weight: 600; font-size: 18px; list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                        <span>🧠 Focus Blend: Research & Synergies</span>
+                        <span class="plus" style="color: var(--accent); font-size: 24px;">+</span>
+                    </summary>
+                    <div style="padding: 0 24px 24px; line-height: 1.8; color: var(--text-gray);">
+                        <h4 style="color: var(--primary); margin-bottom: 16px;">Why This Combination Works:</h4>
+                        
+                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">L-Theanine + Your Morning Coffee:</strong> 
+                        The 2:1 ratio of L-theanine to caffeine is optimal for focus without jitters (Haskell et al., 2008). 
+                        Since most people drink coffee, we provide the L-theanine to create this synergy with your existing routine.</p>
+                        
+                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">Bacopa + Lion's Mane:</strong> 
+                        Bacopa improved memory scores by 24% in 12-week studies (Stough et al., 2008), while Lion's Mane supports neuroplasticity (Mori et al., 2009). 
+                        Different mechanisms, complementary benefits.</p>
+                        
+                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">Rhodiola + Ginkgo:</strong> 
+                        Rhodiola reduces mental fatigue (Olsson et al., 2009), while ginkgo improves cerebral blood flow (Santos et al., 2003). 
+                        Energy + circulation for sustained mental performance.</p>
+                        
+                        <h4 style="color: var(--primary); margin: 20px 0 12px;">Personalization Options:</h4>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin-bottom: 8px;">• <strong>ADHD traits:</strong> Higher L-theanine ratio</li>
+                            <li style="margin-bottom: 8px;">• <strong>Memory focus:</strong> Increased Bacopa</li>
+                            <li style="margin-bottom: 8px;">• <strong>Age 50+:</strong> Enhanced ginkgo content</li>
+                            <li style="margin-bottom: 8px;">• <strong>Caffeine sensitive:</strong> Adjusted ratios</li>
+                        </ul>
+                    </div>
+                </details>
+                
+                <details style="margin-bottom: 16px; background: var(--bg-light); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                    <summary style="cursor: pointer; padding: 24px; font-weight: 600; font-size: 18px; list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                        <span>🦠 Gut Harmony: Research & Synergies</span>
+                        <span class="plus" style="color: var(--accent); font-size: 24px;">+</span>
+                    </summary>
+                    <div style="padding: 0 24px 24px; line-height: 1.8; color: var(--text-gray);">
+                        <h4 style="color: var(--primary); margin-bottom: 16px;">Why This Combination Works:</h4>
+                        
+                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">Probiotics + Prebiotics:</strong> 
+                        Prebiotics feed probiotics, improving colonization by up to 10x (Roberfroid et al., 2010). 
+                        Without prebiotics, most probiotics don't survive stomach acid.</p>
+                        
+                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">L-Glutamine + Slippery Elm:</strong> 
+                        L-glutamine helps maintain gut barrier function (Zhou et al., 2003), while slippery elm provides soothing mucilage (Langmead et al., 2002). 
+                        Repair + protect approach.</p>
+                        
+                        <p style="margin-bottom: 12px;"><strong style="color: var(--text-dark);">Ginger + Digestive Comfort:</strong> 
+                        Ginger reduces nausea and supports digestion (Hu et al., 2011). Combined with other ingredients, it helps the blend settle well.</p>
+                        
+                        <h4 style="color: var(--primary); margin: 20px 0 12px;">Personalization Options:</h4>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin-bottom: 8px;">• <strong>IBS-D:</strong> Lower fiber, specific strains</li>
+                            <li style="margin-bottom: 8px;">• <strong>IBS-C:</strong> Increased fiber content</li>
+                            <li style="margin-bottom: 8px;">• <strong>Post-antibiotic:</strong> Higher CFU count</li>
+                            <li style="margin-bottom: 8px;">• <strong>FODMAP sensitive:</strong> Adjusted ingredients</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+            
+            <div style="background: var(--bg-light); padding: 32px; border-radius: 12px; margin-top: 32px;">
+                <h3 style="text-align: center; color: var(--primary); margin-bottom: 20px;">About These Ingredients</h3>
+                <p style="color: var(--text-gray); line-height: 1.8; margin-bottom: 16px; font-size: 14px;">
+                    <strong>What we're building:</strong> Premium superfood powder blends made from ingredients like spirulina, ashwagandha, and lion's mane. 
+                    These are traditional foods and botanicals that have been consumed for centuries.
+                </p>
+                <p style="color: var(--text-gray); line-height: 1.8; font-size: 14px;">
+                    <strong>How to use:</strong> Add to your daily smoothies, yogurt, or beverages as a nutritious addition to your diet. 
+                    These are food products meant to complement a balanced diet, not replace meals or medical care.
+                </p>
+            </div>
+        </div>
+    </section>
 
     <!-- Process Section -->
     <section id="process" class="process-section">
@@ -1697,6 +1591,20 @@
                         We're currently finalizing our shipping arrangements. We plan to start with local delivery and expand based on demand. Waitlist members will be notified about shipping availability for their area.
                     </div>
                 </details>
+                
+                <details style="margin-bottom: 16px; background: var(--bg-light); border-radius: 12px; overflow: hidden;">
+                    <summary style="cursor: pointer; padding: 24px; font-weight: 600; font-size: 18px; list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                        <span>How can I contact you directly?</span>
+                        <span class="plus" style="color: var(--accent); font-size: 24px;">+</span>
+                    </summary>
+                    <div style="padding: 0 24px 24px; color: var(--text-gray);">
+                        I personally read and respond to every email! Whether you have questions about ingredients, want to discuss your specific health goals, or just want to chat about superfoods, reach out anytime:
+                        <br><br>
+                        <strong>📧 anbo.do@icloud.com</strong>
+                        <br><br>
+                        I'm building this company based on customer feedback, so your input is incredibly valuable. Don't hesitate to reach out!
+                    </div>
+                </details>
             </div>
         </div>
     </section>
@@ -1787,7 +1695,9 @@
         <div class="container">
             <div class="founder-content">
                 <div>
-                    <img src="founder-photo.jpg" alt="XOVA Founder" style="width: 250px; height: 250px; border-radius: 50%; object-fit: cover; box-shadow: 0 20px 40px rgba(44, 85, 48, 0.2); margin: 0 auto; display: block;">
+                    <div class="founder-image">
+                        👩‍🔬
+                    </div>
                 </div>
                 <div class="founder-text">
                     <h3>Hi, I'm Building XOVA</h3>
@@ -1809,9 +1719,17 @@
                         I'll keep you updated as I develop the products and would love your input on what you're looking for.
                     </p>
                     <p style="margin-top: 20px; font-style: italic; color: var(--text-gray);">
-                        P.S. - Yes, I read research papers for fun. Yes, my friends think I'm weird. 
-                        But hey, someone needs to care about what's actually in your smoothie.
+                        P.S. - I genuinely care about what goes into your supplements. That's why I started this - to create something transparent and honest in an industry full of proprietary blends and marketing hype.
                     </p>
+                    
+                    <!-- Contact Info -->
+                    <div style="margin-top: 32px; padding: 24px; background: white; border-radius: 12px; text-align: center;">
+                        <p style="font-weight: 600; margin-bottom: 8px; color: var(--text-dark);">Have questions? Want to chat about ingredients?</p>
+                        <p style="margin-bottom: 16px; color: var(--text-gray);">I personally read every email:</p>
+                        <a href="mailto:anbo.do@icloud.com" style="display: inline-block; padding: 12px 28px; background: var(--gradient-accent); color: white; text-decoration: none; border-radius: 25px; font-weight: 600; transition: all 0.3s;">
+                            📧 anbo.do@icloud.com
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2046,4 +1964,4 @@
         });
     </script>
 </body>
-</html><link rel="icon" type="image/x-icon" href="/favicon.ico">
+</html>
